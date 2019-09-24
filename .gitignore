@@ -1,6 +1,21 @@
+# Custom ignore: folders
+.dump
+
+# Haskell ignore
+
+# folders
 dist
 dist-*
+.HTF/
+.stack-work/
+.cabal-sandbox/
 cabal-dev
+
+# files
+cabal.sandbox.config
+cabal.project.local
+cabal.project.local~
+.ghc.environment.*
 *.o
 *.hi
 *.chi
@@ -9,14 +24,8 @@ cabal-dev
 *.dyn_hi
 .hpc
 .hsenv
-.cabal-sandbox/
-cabal.sandbox.config
 *.prof
 *.aux
 *.hp
 *.eventlog
-.stack-work/
-cabal.project.local
-cabal.project.local~
-.HTF/
-.ghc.environment.*
+

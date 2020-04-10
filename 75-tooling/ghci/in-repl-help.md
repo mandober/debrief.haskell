@@ -1,15 +1,13 @@
-# Help system inside the REPL
+# ghci help
 
-`ghci> :?`
+## Commands
 
-## Commands available from the prompt
-
-### General
+General
 * `it`          Value of the last evaluated expr
 * :help, :?     Display this list of commands
 * :quit         Exit GHCi
 
-### Shell
+Shell
 * :cd <dir>          cd to <dir>
 * :edit <file>       Edit file
 * :edit              Edit last module
@@ -18,7 +16,7 @@
 * :ctags[!] [<file>] Create tags file <file> for Vi. Default: "tags".
   To use regex instead of line number `!:`
 
-### Commands
+Commands
 * :                  Repeat last command
 * <stmnt>            Evaluate/run <stmnt>
 * :{\n ... \n:}\n    Multiline command
@@ -27,7 +25,7 @@
 * :def <cmd> <expr>  Define command :<cmd>. 
   Latter cmds have precedence, `::<cmd>` is always a builtin command.
 
-### Modules
+Modules
 * :load[!] [*]<mod...>   Load modules and their deps; defer type errors `!:`
 * :reload[!]             Reload the current module set; defer type errors `!:`
 * :edit                  Edit last module
@@ -37,23 +35,20 @@
 * :browse[!] [[*]<mod>]     Display names defined by module
         more details `!:`;  all top-level names `*:`
 
-### Info
+Info
 * :type <expr>          Show the type of <expr>
 * :info[!] [<name...>]  Show info about names; don't filter instances `!:`
 * :kind[!] <type>       Show the kind of <type>; print normalised type `!:`
 
-### Run
+Run
 * :main [<args> ...]         Run the main function with the given args
 * :run function [<args...>]  Run function with given args
 * :script <file>             Run script <file>
 
-### Misc
+Misc
 * :complete <dom> [<rng>] <s>  List completions for partial input string
 
-
-
-## Commands for changing settings
-
+Settings
 * :set <option> ...           set options
 * :seti <option> ...          set options for interactive evaluation only
 * :set args <arg> ...         set the arguments returned by `System.getArgs`
@@ -64,9 +59,7 @@
 * :set stop [<n>] <cmd>       set the command to run when a breakpoint is hit
 * :unset <option> ...         unset options
 
-
-## Options for :set and :unset
-
+Options for :set / :unset
 * `+t`  enable printing inferred type after evaluation
 * `+m`  enable multiline commands
 * `+s`  enable printing of timing/memory stats after each evaluation
@@ -80,33 +73,31 @@
   - For GHCi-specific flags see: User Guide › Flag reference › Interactive-mode
 
 
-> :t quot
+```hs
+-- display forall type signature
+λ> :t quot
 quot :: Integral a => a -> a -> a
-> :set -fglasgow-exts
-> :t quot
+
+λ> :set -fglasgow-exts
+λ> :t quot
 quot :: forall {a}. Integral a => a -> a -> a
+```
+
+Show
+* :showi language   language flags for interactive evaluation
+* :show imports     current imports
+* :show modules     currently loaded modules
+* :show bindings    bindings made in the current session
+* :show packages    currently active package flags
+* :show <setting>   value of <setting>: args, prog, prompt, editor, stop
+* :show paths       currently active search paths
+* :show language    currently active language flags
+* :show linker      current linker state
+* :show breaks      active breakpoints
+* :show context     breakpoint context
 
 
-
-## Commands for displaying information
-
-* :show bindings  Show bindings made in the current repl session
-* :show breaks    Show the active breakpoints
-* :show context   Show the breakpoint context
-* :show imports   Show the current imports
-* :show linker    Show current linker state
-* :show modules   Show the currently loaded modules
-* :show packages  Show the currently active package flags
-* :show paths     Show the currently active search paths
-* :show language  Show the currently active language flags
-* :showi language Show language flags for interactive evaluation
-* :show <setting> Show value of <setting>,one of [args,prog,prompt,editor,stop]
-
-
-
-
-## Commands for debugging
-
+Debugging
 * :abandon                    at a breakpoint, abandon current computation
 * :back [<n>]                 go back in the history N steps (after :trace)
 * :break [<mod>] <l> [<col>]  set a breakpoint at the specified location

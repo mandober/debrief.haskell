@@ -1,32 +1,30 @@
-# Haskell: Hierarchy
+# HIERARCHY
 
 
 ## About Haskell
-- versions
-- defining features
+- Implementations
+- Versions
+- Defining features
 
-## Haskell Language
-
-
+## Haskell Language Reference
+- Language
 
 ## Theoretical Foundation
-
+- Theoretical Foundation
 
 ## GHC Extensions
-
-
+- GHC extensions
 
 ## Tooling
-ghc
-ghc extensions
-ghci
-stack
-cabal
+- GHC
+- GHCi
+- stack
+- cabal
 
 ## Index
-modules
-functions
-prelude
+- Index of modules
+- Index of functions
+- Index of prelude
 
 ## Appendix
-links
+- Links

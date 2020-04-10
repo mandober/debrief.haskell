@@ -1,22 +1,27 @@
-# Abbreviations
+# ABBREVIATIONS
+
+## ADT
+1. Algebraic Data Type
+2. Abstract Data Type
 
 ## CABAL
 Common Architecture for Building Applications and Libraries
 
 ## ctor
-a constructor (type or data constructor); tycon is type constructor, dacon is data constructor
+constructor
 
 ## GHC
 Glasgow Haskell Compiler
 
-## dacon
-Data constructor
+## HRT
+Higher-Rank Type
 
-## tycon
-Type constructor
+## LC
+Lambda Calculus
 
 ## WHNF
 Weak Head Normal Form
 
 ## cons
-constructor (in context of list creation)
+1. list constructor, `:`
+2. append operation ("to cons a new value/cell onto a list")

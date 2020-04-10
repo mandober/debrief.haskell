@@ -2,10 +2,8 @@
 
 https://gitlab.haskell.org/ghc/ghc/wikis/overloaded-lists
 
-## Overloaded list notation
 
-- `OverloadedLists`
-- since GHC 7.8
+*OverloadedLists* extension, since GHC 7.8, allows the list notation brackets to be reused for construction of other structures, such as `Set`, `Map`, `IntMap`, `Vector`, `Text`, `Array`.
 
 
 ## Current Implementation
@@ -22,7 +20,7 @@ In Haskell, the list notation is used in 7 ways:
 [x,y .. z]  -- enumFromThenTo x y z
 ```
 
-With `OverloadedLists` extension turned on, the 7 notations are desugared as:
+With *OverloadedLists* extension turned on, the 7 notations are desugared as:
 
 ```hs
 []          -- fromListN 0 []
@@ -34,14 +32,7 @@ With `OverloadedLists` extension turned on, the 7 notations are desugared as:
 [x,y .. z]  -- fromList (enumFromThenTo x y z)
 ```
 
-This ext allows the use of list notation for construction of structures like:
-- `Set`
-- `Map`
-- `IntMap`
-- `Vector`
-- `Text`
-- `Array`
-
+*OverloadedLists* extension enables:
 
 ```hs
 ['0' .. '9']             :: Set Char
@@ -50,21 +41,20 @@ This ext allows the use of list notation for construction of structures like:
 ['a' .. 'z']             :: Text
 ```
 
-List patterns are also overloaded. 
-When the `OverloadedLists` extension is turned on, the definitions:
+List patterns are also overloaded so when the *OverloadedLists* extension is turned on, the definition
 - `f [] = ...`      is treated as `f (toList -> []) = ...`
 - `g [x,y,z] = ...` is treated as `g (toList -> [x,y,z]) = ...`
 
 
-GHC, during the typechecking and desugaring phases, uses whatever is in scope with the names of `fromList`, `toList` and `fromListN` (i.e. these 3 are rebindable).
+GHC, during the *typechecking* and *desugaring* phases, uses whatever is in scope with the names of `fromList`, `toList` and `fromListN` (i.e. these 3 are rebindable).
 
 
 ## IsList class
 
-That said, the `GHC.Exts` module exports the `IsList` class that can be used to overload `fromListN` and `fromListN` for different structures.
+That said, the *GHC.Exts* module exports the `IsList` class that can be used to overload `fromListN` and `fromListN` for different structures.
 
 The `IsList` class and its methods are intended to be used in conjunction with the `OverloadedLists` extension.
-- `Item` *type function* returns the type of items of the structure `l`
+- `Item` type function returns the type of items of the structure `l`
 - `fromList` fn constructs the structure `l` from the given list of `Item l`
 - `fromListN` fn takes the input list's length as a hint. Its behaviour should be equivalent to `fromList`. The hint can be used for more efficient construction of the structure `l` compared to `fromList`. If the given hint is not equal to the input list's length the behaviour of `fromListN` is not specified.
 - The instances of the `IsList` class should satisfy the following property: `fromList . toList = id`
@@ -112,14 +102,12 @@ instance IsList (Vector a) where
   fromListN = Vector.fromListN
 ```
 
-
-Further GHC improvements/extensions that may benefit `OverloadedLists`
+Further GHC improvements/extensions that may benefit *OverloadedLists*
 
 
 ## Defaulting
 
-Currently, the IsList class is not accompanied with defaulting rules.
-Although feasible, not much thought has gone into how to specify the meaning
+Currently, the `IsList` class is not accompanied with defaulting rules. Although feasible, not much thought has gone into how to specify the meaning
 of the default declarations like: `default ([a])`
 
 ## Literal Lists
@@ -142,7 +130,7 @@ Somewhat related discussions:
 
 ## Heterogeneous Lists
 
-The `OverloadedLists` extension as, implemented above, would not be able to be used on heterogeneous lists, for example, as implemented below:
+The *OverloadedLists* extension as, implemented above, would not be able to be used on heterogeneous lists, for example, as implemented below:
 
 ```hs
 data HList :: [*] -> * where
@@ -155,11 +143,11 @@ This is a bit disappointing. However, I'm not really sure how you could make thi
 
 ## Length-{indexed,observed} Vectors
 
-The current extension can't be used to represent list literals for length-indexed vectors as e.g.
+Currently the extension cannot be used to represent list literals for *length-indexed vectors*, such as
 
-```
--- (alternatively, GHC.TypeLits.Nat)
+```hs
 data Nat = Ze | Su Nat
+-- (alternatively, GHC.TypeLits.Nat)
 
 data Vec :: * -> Nat -> * where
   Nil  :: Vec a Ze

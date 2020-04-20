@@ -1,5 +1,6 @@
 # Custom ignore: folders
 .dump
+.gitignore
 
 # Haskell ignore
 

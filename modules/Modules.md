@@ -1,0 +1,24 @@
+# Modules
+
+* **Control**
+  * *Control.Applicative*
+  * *Control.Arrow*
+  * *Control.Category*
+  * *Control.Concurrent*
+  * *Control.DeepSeq*
+  * *Control.Exception*
+  * *Control.Monad*
+* **Data**
+* **Debug**
+* **Distribution**
+* **GHC**
+* **GHCi**
+* **Graphics**
+* **Language**
+* **Media**
+* **System**
+* **Text**
+* **Trace**
+* **Type**
+* **Unsafe**
+* **Utils**

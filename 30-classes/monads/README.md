@@ -1,1 +1,0 @@
-# Functors, Applicatives and Monads

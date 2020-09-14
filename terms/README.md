@@ -1,0 +1,47 @@
+# Haskell syntactic and semantic terminology
+
+
+- expression
+  - let expression
+  - where expression
+- type classes
+  - index of classes
+    - basic
+    - numeric
+    - algebraic
+    - categoric
+  - basic classes
+    - Enum
+    - Bounded
+    - Eq
+    - Ord
+    - Show
+    - Read
+  - numeric classes
+    - Num
+    - Integral
+    - Floating
+    - Fractional
+    - Real
+  - algebraic classes
+    - Semigroup class
+    - Monoid class
+    - Foldable
+    - Traversable
+  - categoric classes
+    - Functor class
+    - Applicative class
+    - Monad class
+    - MonadPlus class
+    - MonadFix class
+    - MonadFail class
+    - Comonad class
+    - Bifunctor class
+    - Category class
+  - arrow classes
+    - Arrow
+    - ArrowZero
+    - ArrowPlus
+    - ArrowApply
+    - ArrowChoice
+    - ArrowLoop

@@ -1,8 +1,7 @@
 # Haskell Features
 
 Haskell concepts and features:
-- functional PL
-- purely functional PL
+- functional, purely functional PL
 - declarative PL
 - garbage collected memory management
 - lazy evaluation discipline
@@ -42,7 +41,6 @@ Haskell concepts and features:
 - functional dependencies
 - type families (GHC extension)
 - type promotion (GHC extension)
-
 - first-class functions
 - lambda expressions
 - let expressions

@@ -1,22 +1,26 @@
 # Namespace
 
-Namespace is split into 3 categories, each with its own subcategories, totaling to 6 different names. In the same scope, the same name may be used for one thing out of each category.
+Haskell's namespace is split into 3 categories, each with its own subcategories, totaling to 6 different kinds of names (identifiers). 
 
-So you can use the same name but only for one item from each of the 3 categories, e.g. in the same scope, `Int` may simultaneously be the name of a data ctor (ns-values), type class (ns-types) and module (ns-modules).
+1. Names of values are in the value namespace, *ns-values*
+  - variables           (lowercase)
+  - data constructors   (UPPERCASE)
+2. entities related to type-system are in `types-namespace`, *ns-types*
+  - type variables      (lowercase)
+  - type constructors   (UPPERCASE)
+  - type classes        (UPPERCASE)
+3. module names are in `module-namespace`, *ns-modules*
+  - modules             (UPPERCASE)
+
+Within the same scope, the same name may be used to refer to one thing from each category.
+
+* ns-values  : vars, DataCtors
+* ns-types   : typeParams, TypeCtors, TypeClasses
+* ns-modules : Modules (packages?)
+
+So you can use the same name but only for one entity from each of the 3 categories, e.g. in the same scope, `Int` may simultaneously be the name of a data ctor (ns-values), type class (ns-types) and module (ns-modules).
 
 That is, there is nothing to choose from *ns-modules* as only the names of modules themselves belong to this category. Next, concerning the *ns-values*, there is not much of a choice either since a module's name had to start with a capital letter. Thus, you can only have the same-named data ctor. There is osme choice only in the *ns-types* - you can choose between having the same-named type ctor or a type class. In practice, people often exploit this to have the eponymous type and one of the data ctors (especially with unary types).
-
-
-Namespaces:
-1. value names are in value-namespace, *ns-values*
-  - variables (lc)
-  - data constructors (uc)
-2. entities related to type-system are in types namespace, *ns-types*
-  - type variables (lc)
-  - type constructors (uc)
-  - type classes (uc)
-3. module names are in module namespace, *ns-modules*
-  - modules (uc)
 
 
 ## Names of language entities

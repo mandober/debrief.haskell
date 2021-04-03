@@ -1,0 +1,4 @@
+# DeriveFoldable
+
+Lang Pragma: `DeriveFoldable`
+

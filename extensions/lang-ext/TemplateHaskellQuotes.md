@@ -1,0 +1,4 @@
+# TemplateHaskellQuotes
+
+Lang Pragma: `TemplateHaskellQuotes`
+

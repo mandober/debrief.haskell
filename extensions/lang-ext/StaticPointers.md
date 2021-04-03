@@ -1,0 +1,4 @@
+# StaticPointers
+
+Lang Pragma: `StaticPointers`
+

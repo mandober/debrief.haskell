@@ -1,0 +1,4 @@
+# GHCForeignImportPrim
+
+Lang Pragma: `GHCForeignImportPrim`
+

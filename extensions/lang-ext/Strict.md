@@ -1,0 +1,4 @@
+# Strict
+
+Lang Pragma: `Strict`
+

@@ -1,0 +1,4 @@
+# TypeFamilies
+
+Lang Pragma: `TypeFamilies`
+

@@ -1,0 +1,4 @@
+# RecordPuns
+
+Lang Pragma: `RecordPuns`
+

@@ -1,0 +1,4 @@
+# MagicHash
+
+Lang Pragma: `MagicHash`
+

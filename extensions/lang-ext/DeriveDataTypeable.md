@@ -1,0 +1,4 @@
+# DeriveDataTypeable
+
+Lang Pragma: `DeriveDataTypeable`
+

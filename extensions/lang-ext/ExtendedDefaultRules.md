@@ -1,0 +1,4 @@
+# ExtendedDefaultRules
+
+Lang Pragma: `ExtendedDefaultRules`
+

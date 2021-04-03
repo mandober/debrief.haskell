@@ -1,0 +1,4 @@
+# LiberalTypeSynonyms
+
+Lang Pragma: `LiberalTypeSynonyms`
+

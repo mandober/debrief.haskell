@@ -1,0 +1,4 @@
+# MonadFailDesugaring
+
+Lang Pragma: `MonadFailDesugaring`
+

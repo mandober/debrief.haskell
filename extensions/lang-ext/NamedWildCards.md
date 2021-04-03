@@ -1,0 +1,4 @@
+# NamedWildCards
+
+Lang Pragma: `NamedWildCards`
+

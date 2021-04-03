@@ -1,0 +1,4 @@
+# NumDecimals
+
+Lang Pragma: `NumDecimals`
+

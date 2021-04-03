@@ -1,0 +1,4 @@
+# RecordWildCards
+
+Lang Pragma: `RecordWildCards`
+

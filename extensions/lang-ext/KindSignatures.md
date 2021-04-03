@@ -1,0 +1,4 @@
+# KindSignatures
+
+Lang Pragma: `KindSignatures`
+

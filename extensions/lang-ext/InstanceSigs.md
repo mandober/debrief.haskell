@@ -1,0 +1,4 @@
+# InstanceSigs
+
+Lang Pragma: `InstanceSigs`
+

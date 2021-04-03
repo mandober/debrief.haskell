@@ -1,0 +1,4 @@
+# ParallelArrays
+
+Lang Pragma: `ParallelArrays`
+

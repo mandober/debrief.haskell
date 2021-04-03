@@ -1,0 +1,4 @@
+# BinaryLiterals
+
+Lang Pragma: `BinaryLiterals`
+

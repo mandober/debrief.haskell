@@ -1,0 +1,4 @@
+# LambdaCase
+
+Lang Pragma: `LambdaCase`
+

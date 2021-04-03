@@ -1,0 +1,4 @@
+# PatternSynonyms
+
+Lang Pragma: `PatternSynonyms`
+

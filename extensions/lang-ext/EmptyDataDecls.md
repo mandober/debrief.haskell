@@ -1,0 +1,4 @@
+# EmptyDataDecls
+
+Lang Pragma: `EmptyDataDecls`
+

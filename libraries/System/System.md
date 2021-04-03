@@ -1,0 +1,42 @@
+# Haskell Hierarchical Libraries: System
+
+
+- System.Cmd
+- (System.Console)
+  - System.Console.ANSI
+  - System.Console.ANSI.Codes
+  - System.Console.ANSI.Types
+  - System.Console.GetOpt
+  - System.Console.Haskeline
+  - System.Console.Haskeline.Completion
+  - System.Console.Haskeline.History
+  - System.Console.Haskeline.IO
+  - System.Console.Haskeline.MonadException
+- System.CPUTime
+- [System.Directory](./System.Directory.md)
+  - System.Directory.Internal
+  - System.Directory.Internal.Prelude
+- [System.Environment](./System.Environment.md)
+  - System.Environment.Blank
+- System.Exit
+  - System.Exit.Lens
+- [System.FilePath](./System.FilePath.md)
+  - System.FilePath.Lens
+  - System.FilePath.Posix
+  - System.FilePath.Windows
+- System.Info
+- System.IO
+  - System.IO.Error
+  - System.IO.Error.Lens
+  - System.IO.Unsafe
+- System.Mem
+  - System.Mem.StableName
+  - System.Mem.Weak
+- (System.Posix)
+- System.Posix.Internals
+- System.Posix.Types
+- System.Process
+  - System.Process.Internals
+- System.Random
+- System.Timeout
+- System.Win32

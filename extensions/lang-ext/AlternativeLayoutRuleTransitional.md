@@ -1,0 +1,4 @@
+# AlternativeLayoutRuleTransitional
+
+Lang Pragma: `AlternativeLayoutRuleTransitional`
+

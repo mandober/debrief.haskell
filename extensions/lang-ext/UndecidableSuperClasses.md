@@ -1,0 +1,4 @@
+# UndecidableSuperClasses
+
+Lang Pragma: `UndecidableSuperClasses`
+

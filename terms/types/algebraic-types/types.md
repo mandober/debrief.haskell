@@ -1,0 +1,9 @@
+# Types (datatypes)
+
+Besides their common roles (grouping similar values, signaling the size of values to the compiler, preventing the use of incorrect values, and others general applications), types in Haskell are on a whole different level then in most (imperative) PLs: they provide information and documentation, but most importantly, they incite an initial approach to a problem, help us with further maneuvering through the code, discouraging wrong turns and narrowing down the path toward a correct solution. Yeah, right. But only on special occasions.
+
+At the type-level (with data ctors squeezed in as well), only the names of type params must begin with a lowercase letter (it doesn't have to but the naming often stops there). Module names begin with an uppercase, but considering that (lowercased) functions are often imported qualified, thereby requiring either original or a custom (in any case, uppercased) prefix, names will get capital (and qualifying symbolic operators is a capital prick in the eye). Elegance comes at the price of importing things individually. Types? oh, right. they provide info.
+
+Despite seemingly shooting for generality, polymorphic types, in fact, tend to reveal much more than the basic types do. By expanding the set of types it works with, the set of possible meanings of a function shrinks. More promiscuity, less mistery. This is because it has to work with each of those types, but as the set of accepted types increases, the things those types have in common decreases. One of the most polymorphic functions, `id :: a -> a`, works with every concievable type, past, present or future, but it can only ever return its arg, untouched.
+
+Since polymorphic content cannot be examined, there is only so much a function can do with it. That is why we know, from the signature alone, that a function of type `[a] -> Int` returns the lenght of its list arg.

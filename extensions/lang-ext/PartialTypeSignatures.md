@@ -1,0 +1,4 @@
+# PartialTypeSignatures
+
+Lang Pragma: `PartialTypeSignatures`
+

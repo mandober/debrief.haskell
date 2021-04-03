@@ -1,0 +1,4 @@
+# ApplicativeDo
+
+Lang Pragma: `ApplicativeDo`
+

@@ -1,0 +1,4 @@
+# EmptyCase
+
+Lang Pragma: `EmptyCase`
+

@@ -1,0 +1,4 @@
+# StrictData
+
+Lang Pragma: `StrictData`
+

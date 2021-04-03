@@ -1,0 +1,4 @@
+# ImpredicativeTypes
+
+Lang Pragma: `ImpredicativeTypes`
+

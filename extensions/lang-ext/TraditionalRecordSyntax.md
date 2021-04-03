@@ -1,0 +1,4 @@
+# TraditionalRecordSyntax
+
+Lang Pragma: `TraditionalRecordSyntax`
+

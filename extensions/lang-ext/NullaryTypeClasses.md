@@ -1,0 +1,4 @@
+# NullaryTypeClasses
+
+Lang Pragma: `NullaryTypeClasses`
+

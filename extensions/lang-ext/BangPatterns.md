@@ -1,0 +1,4 @@
+# BangPatterns
+
+Lang Pragma: `BangPatterns`
+

@@ -1,0 +1,3 @@
+# PolymorphicComponents
+
+- Pragma: `PolymorphicComponents`

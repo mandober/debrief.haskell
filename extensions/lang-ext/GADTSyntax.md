@@ -1,0 +1,4 @@
+# GADTSyntax
+
+Lang Pragma: `GADTSyntax`
+

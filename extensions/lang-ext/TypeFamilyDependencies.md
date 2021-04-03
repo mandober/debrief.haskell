@@ -1,0 +1,4 @@
+# TypeFamilyDependencies
+
+Lang Pragma: `TypeFamilyDependencies`
+

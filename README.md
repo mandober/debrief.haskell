@@ -1,8 +1,6 @@
 # Haskell Debrief
 
-- name: haskell debris
+- name: haskell ~~debrief~~ debris
 - repo: https://github.com/mandober/debrief.haskell
-- lang: haskell
-- desc: dumped dumbed down semi-reference
+- desc: dumped dumbed-down semi-reference
 - tags: 🚌 🚏 🐀 👜
-- haha: charade you are

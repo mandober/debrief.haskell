@@ -23,7 +23,6 @@ The most significant language changes in Haskell 2010 relative to Haskell 98:
 
 ---
 
-
 ## Part I The Haskell 2010 Language
 
 1. Introduction

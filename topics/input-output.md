@@ -1,5 +1,33 @@
 # Input-output
 
+## Effects in Pure Functional Languages
+
+Moggi showed how *notions of computation* such as mutable state, exceptions, nondeterminism, and probability can be elegantly encapsulated as monads, and safely embedded within an otherwise pure functional language. It may seem that purity rules out interesting computational effects, such as update, exception handling, and choice. After all, if `coin` denotes the computation modelling a fair coin toss, a 50-50 choice between heads and tails, then two occurrences of 'coin' must certainly denote possibly different outcomes, thereby destroying referential transparency? This apparent problem is eliminated by distinguishing between types that represent values, such as 'True' or 'heads', and those that represent computations, such as 'coin'.
+
+Two occurrences of `coin` *denote the same computation*, and it is the executions of these computations that may yield different outcomes.
+
+Each class of effects, such as probabilistic choice, determines a notion of computation, in this case of probability distributions. So `coin` denotes not a single outcome, but a **distribution of outcomes**.
+
+The operations and axioms of a notion of computation can be precisely and elegantly abstracted via the categorical notion of a *monad*. Equivalently, the operations and axioms can be captured as an algebraic theory, and equational reasoning can be safely conducted within such a theory.
+
+With the monadic approach to computational effects, purely functional expressions are classified into two kinds:
+- expressions that denote values (integer, string)
+- expressions that denote computations with possible effects
+
+However, both are represented as pure data - the computations are represented as pure terms in a certain abstract syntax, rather than some kind of impure action.
+
+When the run-time system of a language encounters the first kind of expression, it evaluates it and prints it out; when it encounters the second kind, it evaluates it, interprets the term as the effectful computation it encodes, and executes that computation. Consequently, evaluation remains pure, and any impurities are quarantined within the run-time system.
+
+
+There is a general framework consisting of just two operators, which in a sense model the compositional structure of computations; then for each class of effects, there is an extension to the general framework to model the primitives specific to that class.
+
+In fact, the general framework and a specific extension together represent the *free term algebra* for the signature corresponding to the primitives for a particular class of effects. It is no coincidence that monads turn out to be useful for modelling such term algebras, because they were developed precisely as a categorical expression of *universal algebra*.
+
+
+
+
+## Input-output
+
 The `getLine` function is pure as it will return the exact same *representation of a computation* every time. There is a huge difference between a data structure representing a computation and a computation itself. The `print` is an IO instruction that prints out its arg when executed. `getLine` is a computation object that returns a string when executed. IO objects can be thought of as self-contained encapsulated packets of assembly. Haskell produces data structures that represent computer instructions. The compiler will compile the `main` into an executable binary format. Every function or declaration that makes up our program is completely pure and side-effectless. In fact, the assembly of main itself is side-effectless and pure. We assemble the `IO ()` that `main` returns in a pure way. Therefore, `main` is pure, as well. Every time we *evaluate* `main`, we get the exact same *computational data structure*.
 
 The `main` will always evaluate to the exact same computational data structure. `main` will always be the exact same program, no matter when you run it (e.g. a program that gets a string from stdin and prints it).

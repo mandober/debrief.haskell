@@ -9,7 +9,7 @@ KEYWORDS
 - Sum type
 - Product type
 - Function (exponential) type
-- The Curry–Howard Isomorphism
+- The Curry-Howard Isomorphism
 - propositions as types
 
 SECTIONS
@@ -89,7 +89,7 @@ Since it is useful to have a conventional form when working with types generical
 
 Beside making an exception for numeric types (`Int` would be too much work to express as sum), all ADTs have their **canonical representation**, which is a form they should be in when using generics.
 
-Canonical representation (CR) and algebraic equavalents
+Canonical representation (CR) and algebraic equivalents
 
 - ()            ~ 1
 - (a, b)        ~ a * b

@@ -1,123 +1,76 @@
 # Continuations
 
-- continuations use a nested forall scope, i.e. Rank-N types
-- Rank-N types are about another interplay between the caller and the callee
-- shoveling shit to and fro across the caller-callee fence
+https://stackoverflow.com/questions/3322540/how-and-why-does-the-haskell-cont-monad-work
 
+The basic idea behind a continuation is that it represents the rest of a computation.
 
-## Continuation Monad
+Consider an expression like `foo (bar x y) z`.
 
-The isomorphism between the type `a` and `forall r. (a -> r) -> r` is witnessed by the following pair of functions that convert between them:
-
-```hs
--- a to the k
-cont :: forall a. (a -> (forall r. (a -> r) -> r))
-cont a = \k -> k a
-
--- k to the a
-runCont :: forall a. ((forall r. (a -> r) -> r) -> a)
-runCont f = let k = id in f k
-```
-
-(un)intuitively, this says that having a return value (`a`) is just as good as applying a callback to it (?) The `forall r. (a -> r) -> r` is in CP style i.e. continuation-passing style (CPS).
-
-Isomorphisms are transitive: `(t1 ≅ t2) ∧ (t2 ≅ t3) ==> t1 ≅ t3`, so these three are isomorphic between themselves:
-
-`∀a.a`    ≅    `∀a. Identity a`    ≅    `∀a. (∀r. (a -> r) -> r)`
-
-Since we know that `Identity a` is a Monad and that isomorphisms preserve classes, we expect CPS also forms a Monad.
+If we extract the subexpression `bar x y`, then it is not just the function `bar` we can apply; Rather, it is a subexpression we need to apply a function to, a function that represents the rest of the computation. In this case, the function that represents the rest of the computation is `\a -> foo a z` because if we apply it to the extracted subexpression, `bar x y` we'll get the original expression back.
 
 ```hs
--- | This one repr both, `a` and `Identity a` functor - they are
--- exactly the same if we disregard the obligatory data ctor noise
-newtype Identity a = Identity { runIdentity :: a }
+e1 = foo (bar x y) z
+s1 = bar x y
+fs = \a -> foo a z
 
-newtype Cont a = Cont { runCont :: forall r. (a -> r) -> r }
+-- fs           s1        == e1
+(\a -> foo a z) (bar x y) -- foo (bar x y) z
 ```
 
-
-
-
-
-
-
-
-# Continuations
-
-* Continuations have the form `(a -> r) -> r`, where `a` is the output from the continuation and `r` is the final result after the callback is applied.
-
-`forall r. (a -> r) -> r`
-
-
-* Since isomorphisms are transitive: `Identity a ≅ a ≅ forall r. (a -> r) -> r`,and since `Identity a` is a monad, and isomorphisms preserve classes, we expect that continuation is also a monad.
-
-`Identity a ≅ a ≅ forall r. (a -> r) -> r`
-
-`a ≅ forall r. (a -> r) -> r`
-
+Now, it happens that this concept of "the rest of the computation" is useful, but it's awkward to work with, since it's something outside of the subexpression we're considering. To make things work better, we can turn things inside-out: extract the subexpression we're interested in, but then wrap it in a function that takes an arg that repr the rest of the computation: `\k -> k (bar x y)`.
 
 ```hs
--- continuation signature: forall r. (a -> r) -> r
+e1 = foo (bar x y) z
+s1 = bar x y
+fs = \a -> foo a z
 
-type Cont a = forall r. (a -> r) -> r
+c = \k -> k (bar x y)
 
-newtype Cont a = Cont { unCont :: forall r. (a -> r) -> r }
+-- c fs == e1
 
--- continuations
-twoC   = \k -> k 2
-helloC = \k -> k "hello"
-
--- id is often used as a cont
-twoC   id -- 2
-helloC id -- "hello"
-
--- create cont taking function
-mkcont f = \k -> k f
-mkcont f k = k f
-
--- create func that take continuations
-twoC'   = mkcont 2
-helloC' = mkcont "hello"
-
--- pair as func
-fpair a b k = k a b
-mkProj k p = p k
-p1 = fpair 1 2
-car = mkProj const p1
-cdr = mkProj (flip const) p1
-
-
--- bind takes a cont and a function which is provided the value of it
--- and returns a new continuation as a result:
-inC `bind` fn = \out -> inC (\inCval -> (fn inCval) out)
-
--- a simple example that doubles the value handed back from twoC:
-fourC = twoC `bind` \two -> ret (two*2)
-
--- a more complex example combining the results of two continuations:
-twoHelloC = twoC `bind` \two ->
-              helloC `bind` \hello ->
-                ret $ (show two)++hello
-The result of running these new continuations is:
-
-fourC id == 4
-twoHelloC id == "2hello"
+(\k -> k (bar x y)) (\a -> foo a z) =
+= (\a -> foo a z) (bar x y)
+= foo (bar x y) z
 ```
 
+This modified form gives us a lot of flexibility - not only does it extract a subexpression from its context, but it lets us manipulate that outer context within the subexpression itself. We can think of it as a sort of *suspended computation*, giving us explicit control over what happens next.
 
+How do we generalize this? The subexpression is pretty much unchanged, so let's just replace it with a parameter to the inside-out function, giving us `\x k -> k x`, in other words, nothing more than a reversed function application.
 
+```hs
+(&) :: a -> (a -> b) -> b
+(&) x f = f x
+-- or
+(&) x = \k -> k x
+```
 
+Now, it would be simple, albeit tedious and horribly obfuscating, to translate every piece of an expression to this form. Fortunately, there's a better way. As Haskell programmers, when we think building a computation within a background context the next thing we should think is: is this a monad? And in this case the answer is positive.
 
+To turn this into a monad, we start with two basic building blocks:
+- For a monad `m`, a value of type `m a` represents having access to a value of type `a` within the context of the monad `m`
+- The core of our "suspended computations" is flipped function application, (&)
 
+What does it mean to have access to something of type `a` within this context? It means that, for some value `x :: a`, we have already applied `(&)` to `x`, and now we have a function, which expects a function arg (which takes a type `a`) and applies that function to `x`.
 
+Let's say we have a suspended computation holding a `Bool`. What type does this give us?
 
+> :t (&) True
+(&) True :: (Bool -> b) -> b
 
+So for suspended computations, the type `m a` works out to `(a -> b) -> b`.
 
-## References
+An interesting thing to note here is that a sort of "reversal" also applies to the monad's type: `Cont b a` represents a function that takes a function `a -> b` and evaluates to `b`. As a continuation represents "the future" of a computation, so the type `a` in the signature represents in some sense "the past" or the original, would-be-returned value.
 
-https://jsdw.me/posts/haskell-cont-monad/
-https://wiki.haskell.org/Continuation
-https://en.wikipedia.org/wiki/Continuation
-http://pllab.is.ocha.ac.jp/~asai/cw2011tutorial/
-http://logic.cs.tsukuba.ac.jp/cw2011/tutorial.html
-http://okmij.org/ftp/continuations/#tutorial
+So, replacing `(a -> b) -> b` with `Cont b a`, what's the monadic type for our basic building block of reverse function application? `a -> (a -> b) -> b` translates to `a -> Cont b a`, which is the signature of `return`.
+
+From here on out, everything pretty much falls directly out from the types: there's essentially no sensible way to implement `(>>=)` besides the actual implementation. But what is it actually doing?
+
+At this point we come back to what I said initially: the continuation monad isn't really doing much of anything. Something of type `Cont r a` is trivially equivalent to something of just type `a`, simply by supplying `id` as the arg to the suspended computation.
+
+This might lead one to ask: if `Cont r a` is a monad but the conversion is so trivial, shouldn't `a` alone also be a monad? Of course that doesn't work as is, since there's no type constructor to define as a Monad instance, but say we add a trivial wrapper, like `data Id a = Id a`. This is indeed a monad, namely the identity monad.
+
+What does `>>=` do for the identity monad? The type signature is `Id a -> (a -> Id b) -> Id b`, which is equivalent to `a -> (a -> b) -> b`, which is just simple function application again.
+
+Having established that `Cont r a` is trivially equivalent to `Id a`, we can deduce that in this case as well, *`>>=` is just function application*.
+
+Of course, `Cont r a` is a crazy inverted world where everyone has goatees, so what actually happens involves shuffling things around in confusing ways in order to chain two suspended computations together into a new suspended computation, but in essence, there isn't actually anything unusual going on! Applying functions to arguments, ho hum, another day in the life of a functional programmer.

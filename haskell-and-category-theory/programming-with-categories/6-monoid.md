@@ -1,0 +1,1 @@
+# 6. Monoidal Categories

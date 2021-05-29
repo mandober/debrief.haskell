@@ -3,21 +3,25 @@
 https://en.wikipedia.org/wiki/Hindley-Milner_type_system
 https://en.wikipedia.org/wiki/Algorithm_W
 
-**Hindley-Milner (HM)** is a type system for the lambda calculus with parametric polymorphism.
+- *Hindley-Milner (HM)* is a type system for the lambda calculus with parametric polymorphism.
 
-AKA *Damas-Milner*, *Damas-Hindley-Milner*. First described by J. Roger Hindley, later rediscovered by Robin Milner. In 1982 Luis Damas finally proved that Milner's algorithm is complete and extended it to support systems with polymorphic references.
+- *Damas-Milner* and *Damas-Hindley-Milner*. First described by J. Roger Hindley, later rediscovered by Robin Milner. In 1982 Luis Damas finally proved that Milner's algorithm is complete and extended it to support systems with polymorphic references.
 
-Among HM's more notable properties are its completeness and its ability to infer the most general type for a given expression without annotations or other hints.
+- HM's more notable properties: completeness, the ability to infer the *principal type*, i.e. the most general type for a given expression, despite the lack of user annotations.
 
-*Algorithm W* is an efficient and practical type-inference algorithm, applied on large code bases, although it has a high theoretical complexity.
+- `Algorithm W` is an efficient and practical type-inference algorithm, applied on large code bases, although it has a high theoretical complexity.
 
-HM is preferably used for functional languages. It was first implemented as part of the type system of the programming language ML. Since then, HM has been extended in various ways, most notably with type class constraints like those in Haskell.
+- HM is preferably used for functional languages. It was first implemented as part of the type system of the programming language ML. Since then, HM has been extended in various ways, most notably with type class constraints like those in Haskell.
+
+- HM imposes the restriction that function params must have monomorphic types. Lifting this restriction and providing `System F` with first-class polymorphism has a consequence that inference of types becomes undecidable. 
+
+
 
 ## Hindley-Milner Type Inference
 
 Robin Milner's type system with parametric polymorphism was a significant advance over the systems of Russell and Church. Arguably it is the ability to use type variables that makes higher order logic a practical vehicle for proving non-trivial theorems. The Hindley-Milner algorithm is used to automatically infer types in theorem provers and in several other functional programing languages.
 
-Standard ML is Milner's language which uses this parametric polymorphic type system. The type inference algorithm consists of some 250 lines of code. No explicit type annotations are required, yet the type of each expression is correctly inferred (or checked if user-annotated).
+SML is Milner's language which uses this parametric polymorphic type system. The type inference algorithm consists of some 250 lines of code. No explicit type annotations are required, yet the type of each expression is correctly inferred (or checked if user-annotated).
 
 The algorithm was proven sound and complete by Damas and Milner in 1982 in their "Principal type-schemes for functional programs" paper.
 

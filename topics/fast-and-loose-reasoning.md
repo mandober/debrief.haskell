@@ -1,12 +1,10 @@
 # Fast and Loose Reasoning
-(about parametricity, ignoring bottoms)
 
-http://www.cse.chalmers.se/~nad/publications/danielsson-et-al-popl2006.html
-
-
-**Fast and Loose Reasoning is Morally Correct**
-Nils Anders Danielsson, John Hughes, Patrik Jansson and Jeremy Gibbons
-http://www.cse.chalmers.se/~nad/publications/danielsson-et-al-popl2006.pdf
+- desc: about parametricity, ignoring bottoms
+- http://www.cse.chalmers.se/~nad/publications/danielsson-et-al-popl2006.html
+- paper: *Fast and Loose Reasoning is Morally Correct*
+  Nils Anders Danielsson, John Hughes, Patrik Jansson and Jeremy Gibbons
+  http://www.cse.chalmers.se/~nad/publications/danielsson-et-al-popl2006.pdf
 
 
 ## Abstract

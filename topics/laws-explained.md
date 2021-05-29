@@ -1,18 +1,48 @@
-# Laws: All
+# Laws
 
-Everything's a **value**. A value may be a scalar value or a function value, but we usually don't know which, and besides these laws must work in either case. In cases we know that a value is more likely a scalar we use x, y, z, and when we shoot for a fn we use f, g, h, but be warned! Most of the time, people don't give a fuck denoting variables properly even if it's obvious that something's just gotta be a scalar (e.g. the last applicative value in A.4 must be lifted scalar; that is if you want to eventially end the computation), so I tend to mend.
+Class          | Axioms        | Laws
+---------------|---------------|-----------------------------------------------
+Monoid         | Identity      | m ⬥ mempty  ⟺  m  ⟺  mempty ⬥ m
+Monoid         | Associativity | x ⬥ (y ⬥ z)  ⟺  (x ⬥ y) ⬥ z
+Monoid         | Concatenation | mconcat  ⟺  foldr (⬥) mempty
+Functor        | Identity      | fmap id  ⟺  id
+Functor        | Composition   | fmap g ∘ fmap f  ⟺  fmap (g ∘ f)
+Applicative    | Identity      | pure id ⊛ x  ⟺  x
+Applicative    | Homomorphism  | pure f ⊛ pure x  ⟺  pure (f x)
+Applicative    | Interchange   | f ⊛ pure x  ⟺  pure ($ x) ⊛ f
+Applicative    | Composition   | pure (∘) ⊛ f ⊛ g ⊛ x  ⟺  f ⊛ (g ⊛ x)
+Monad          | Left  Id      | return a ⨠= k  ⟺  k a
+Monad          | Right Id      | m ⨠= return ⟺  m
+Monad          | Associativity | m ⨠= (\x → k x ⨠= h)  ⟺  (m ⨠= k) ⨠= h
+Kleisli        | Left  Id      | return >=> h  ⟺  h
+Kleisli        | Right Id      | f >=> return  ⟺  f
+Kleisli        | Associativity | (f >=> g) >=> h  ⟺  f >=> (g >=> h)
+Alternative    | Left  Id      | empty ⨠= f  ⟺  empty
+Alternative    | Right Id      | v ⨠  empty  ⟺  empty
+MonadPlus      | Left  Id      | mzero ⨠= f  ⟺  mzero
+MonadPlus      | Right Id      | v ⨠  mzero  ⟺  mzero
 
-$$\not\to$$
+
+
+
+## Conventions
+
+Everything's a value: a value may be a scalar value or a function value, but we usually don't know which, and besides, these laws must work in either case. In cases a value is more likely a scalar, we use `x`, `y`, `z`, and when we shoot for a function value we use `f`, `g`, `h`, but be careful. Most of the time, people don't bother denoting vars properly even if it's obvious that something's just gotta be a scalar. For example, the last applicative value (in A.4, marked as `x`) must be a lifted scalar, that is, if you want to eventually end the computation.
+
+## Monoid
+
+- Monoid is a Semigroup (closure, assoc) with identity
+- `mempty` is the identity element of the monoid
+
+- [MONO.1:IDENTITY]   m <> mempty === m === mempty <> m
+- [MONO.2:ASSOC]       x <> (y <> z) === (x <> y) <> z
+- [MONO.3:CONCATEN]          mconcat === foldr (<>) mempty
 
 
 ## Functors
 
 fmap id   = id                                        F.1 IDENTITY
-fmap id ϑ = id ϑ
-
 fmap g . fmap f   = fmap (g . f)                      F.2 COMPOSITION
-fmap g . fmap f ϑ = fmap (g . f) ϑ
-
 
 
 ## Applicative

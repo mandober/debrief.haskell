@@ -1,16 +1,16 @@
 # GHC Manual
 
 TOC
-1. Introduction
-2. Release notes
-3. Using GHCi
-4. Using runghc
-5. Using GHC
-6. Language extensions
-7. Extending and using GHC as a Library
-8. Profiling
-9. Debugging compiled programs
-10. What to do when something goes wrong
+01. Introduction
+02. Release notes
+03. Using GHCi
+04. Using runghc
+05. Using GHC
+06. Language extensions
+07. Extending and using GHC as a Library
+08. Profiling
+09. Debugging
+10. Troubleshooting
 11. Hints
 12. Other Haskell utility programs
 13. Running GHC on Win32 systems

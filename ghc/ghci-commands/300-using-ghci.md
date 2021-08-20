@@ -1,0 +1,15 @@
+# 3. Using GHCi
+
+3.1. [Introduction to GHCi](301-introduction.md)
+3.2. [Loading source files](302-loading-source-files.md)
+3.3. [Loading compiled code](303-loading-compiled-code.md)
+3.4. [Interactive evaluation](304-interactive-evaluation.md)
+3.5. [GHCi debugger](305-ghci-debugger.md)
+3.6. [GHCi invocation](306-ghci-invocation.md)
+3.7. [GHCi commands](307-ghci-commands.md)
+3.8. [The set and seti commands](308-set-seti-commands.md)
+3.9. [GHCi dotfiles](309-ghci-dotfiles.md)
+3.10. [Compiling to object code in GHCi](310-compiling-to-object-code.md)
+3.11. [REPL in separate process](311-repl-in-separate-process.md)
+3.12. [REPL in on a different host](312-repl-on-different-host.md)
+3.13. [FAQ and Gotchas](313-faq-and-gotchas.md)

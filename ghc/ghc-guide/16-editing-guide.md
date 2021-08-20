@@ -1,24 +1,12 @@
-Care and feeding of your GHC User's Guide
-==========================================
+# Care and feeding of your GHC User's Guide
 
-The GHC User\'s Guide is the primary reference documentation for the
-Glasgow Haskell Compiler. Even more than this, it at times serves (for
-better or for worse) as a de-facto language standard, being the sole
-non-academic reference for many widely used language extensions.
+The GHC User's Guide is the primary reference documentation for the GHC. Even more than this, it at times serves (for better or for worse) as a de-facto language standard, being the sole non-academic reference for many widely used language extensions.
 
-Since GHC 8.0, the User\'s Guide is authored in
-[ReStructuredText](https://en.wikipedia.org/wiki/ReStructuredText) (or
-ReST or RST, for short) a rich but light-weight mark-up language aimed
-at producing documentation. The [Sphinx](http://sphinx-doc.org/) tool is
-used to produce the final PDF and HTML documentation.
+Since GHC 8.0, the User's Guide is authored in [ReStructuredText](https://en.wikipedia.org/wiki/ReStructuredText) (or ReST or RST, for short) a rich but light-weight mark-up language aimed at producing documentation. The [Sphinx](http://sphinx-doc.org/) tool is used to produce the final PDF and HTML documentation.
 
-This document (also written in ReST) serves as a brief introduction to
-ReST and to document the conventions used in the User\'s Guide. This
-document is *not* intended to be a thorough guide to ReST. For this see
-the resources referenced [below](#references).
+This document serves as a brief introduction to ReST and to document the conventions used in the User's Guide.
 
-Basics
-------
+## Basics
 
 Unicode characters are allowed in the document.
 

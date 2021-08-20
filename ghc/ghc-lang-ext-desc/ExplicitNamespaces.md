@@ -1,0 +1,3 @@
+# ExplicitNamespaces
+
+Lang Pragma: `ExplicitNamespaces`

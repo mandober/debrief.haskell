@@ -1,7 +1,8 @@
 # ABBREVIATIONS
 
 ## ADT
-(1) Algebraic Data Type (2) Abstract Data Type
+1. Abstract Data Type
+2. Algebraic Data Type. ADS (Algebraic Data Structure) to disambiguate.
 
 ## AMP
 Applicative-Monad proposal
@@ -10,19 +11,22 @@ Applicative-Monad proposal
 Continuation-passing style
 
 ## ctor
-(type or data) constructor
+constructor (type, data)
+
+## CUSK
+Complete user-supplied kind signatures.
 
 ## FFI
 Foreign Function Interface
 
 ## FAM
-Functor, Applicative, Monad (classes)
+Functor, Applicative, Monad. The 3 type classes that frequently go together.
 
 ## GADT
 Generalized Algebraic Data Types
 
 ## GC
-garbage collector
+garbage collector/collection
 
 ## GHC
 Glasgow Haskell Compiler

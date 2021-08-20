@@ -1,4 +1,0 @@
-# UndecidableInstances
-
-Lang Pragma: `UndecidableInstances`
-

@@ -1,0 +1,37 @@
+# Unicode syntax
+
+The language extension `UnicodeSyntax` enables the use of Unicode characters in place of their equivalent ASCII sequences. Since: 6.8.1. The following alternatives are provided:
+
+CPoint | Name                                    | MAG    | Sym | DWG
+-------|-----------------------------------------|--------|-----|--------
+0x2237 | PROPORTION                              | ::     | ∷   |
+0x21D2 | RIGHTWARDS DOUBLE ARROW                 | =>     | ⇒   | ⟹
+0x2192 | RIGHTWARDS ARROW                        | ->     | →   | ⟶
+0x2190 | LEFTWARDS ARROW                         | <-     | ←   | ⟵
+0x291a | RIGHTWARDS ARROW-TAIL                   | >-     | ⤚   |        
+0x2919 | LEFTWARDS ARROW-TAIL                    | -<     | ⤙   |        
+0x291C | RIGHTWARDS DOUBLE ARROW-TAIL            | >>-    | ⤜   |        
+0x291B | LEFTWARDS DOUBLE ARROW-TAIL             | -<<    | ⤛   |        
+0x2605 | BLACK STAR                              | *      | ★   |        
+0x2200 | FOR ALL                                 | forall | ∀   |        
+0x2987 | Z NOTATION LEFT IMAGE BRACKET           | (|     | ⦇   |        
+0x2988 | Z NOTATION RIGHT IMAGE BRACKET          | |)     | ⦈   |        
+0x27E6 | MATHEMATICAL LEFT WHITE SQUARE BRACKET  | [|     | ⟦   |        
+0x27E7 | MATHEMATICAL RIGHT WHITE SQUARE BRACKET | |]     | ⟧   |        
+
+
+MAG - multuple ASCII glyph
+DWG - double-width unicode glyph
+
+DWGs:
+* ⟵ ⟶
+* ⟽ ⟾
+* ⟻ ⟼
+* ⟸ ⟹
+* ⟷ ⟺
+* ⟰ ⟱
+* ⟲ ⟳
+* ⤴ ⤵
+* ⟿
+* ⟴
+* ↥ 

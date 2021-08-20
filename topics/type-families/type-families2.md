@@ -1,26 +1,7 @@
-# Type family
+# GHC Users Guide: Type Families
 
-https://wiki.haskell.org/GHC/Type_families
+**The [GHC Users Guide](https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/) has [a Type Family section](https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/exts/type_families.html#).**
 
-## Intro
-
-Indexed type families (or just type families) are a GHC extension supporting ad-hoc overloading of data types.
-
-Type families are parametric types that can be assigned specialized representations based on the type parameters they are instantiated with.
-
-They are the data type analogue of type classes: families are used to define overloaded data in the same way that classes are used to define overloaded functions.
-
-Type families are useful for generic programming, for creating highly parameterised library interfaces, and for creating interfaces with enhanced static information, much like dependent types.
-
-Type families come in two flavors: data families and type synonym families:
-- Data families are the indexed form of data and newtype definitions
-- Type synonym families are the indexed form of type synonyms
-
-Each of these flavors can be defined:
-- standalone
-- associated with a type class
-
-Standalone definitions are more general, while associated types can more clearly express how a type is used and lead to better error messages.
 
 
 ## TOC

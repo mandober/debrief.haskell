@@ -44,8 +44,6 @@ Generic programming (or datatype-generic programming) addresses these concerns b
 Programming Languages - Application and Interpretation (Second Edition) by Shriram Krishnamurthi, 2017
 
 
-
-
 ## References
 
 SYB: a generic programming approach for Haskell

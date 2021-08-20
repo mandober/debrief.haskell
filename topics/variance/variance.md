@@ -20,13 +20,6 @@
 
 ## Variance in general
 
-Within the type system, variance occurs in several forms:
-- *covariance* preserves the ordering of types, from specific to generic
-- *contravariance* reverses the ordering of types
-- *bivariance* is the case when both apply at the same time
-- *variance* occurs if any of the previous three does
-- *invariance*, or *nonvariance*, if none of the previous occurs
-
 The variance issues especially occur with features that include subtyping, generic datatypes, inheritance. Most often, these rules are not consequences of other decision in a PL design, but are set liberally, commonly being used towards making type system more safe. By making type ctors co- or contra- variant (instead of leaving it invariant), more programs will be accepted as well-typed. On the other hand, people often find contravariance unintuitive, so a PL designer might choose to keep the things simple by making a type ctor invariant even if it could be safely made variant.
 
 ## Variance in Haskell
@@ -38,6 +31,7 @@ The question of variance is: if we can transform an `a` into a `b`, does that ne
 * *covariance* is a change in the same direction. A change in one triggers a similar change in the other
 * *contravariance* is a change in the opposite directions
 * *invariance* indicates the absence of this relation (two metrics are not variant, they are unrelated; change in one does not affect the other)
+
 
 
 ## Canonical type representation
@@ -66,13 +60,13 @@ Each of following types is in its canonical representation:
 
 ## Positive and negative position
 
-There is also a notion of position regarding a type variable and a type that is in a canonical form:
-- **Positive positions**
-  - both type params in product type, `(a, b)`
-  - both type params in sum type, `Either a b`
-  - type param `b` in a function type, `a -> b`
-- **Negative position**
-  - type param `a` in a function type, `a -> b`
+There is a notion of **position polarity** wrt a type variable in a type that is in the canonical form:
+- *Positive positions*
+  - both type params in product type,         `(a,b)`
+  - both type params in sum type,             `Either a b`
+  - the return type param in function type,   `n -> p`
+- *Negative position*
+  - the input type param in function type,    `neg -> pos`
 
 
 ## Determining variance

@@ -1,4 +1,0 @@
-# RelaxedPolyRec
-
-Lang Pragma: `RelaxedPolyRec`
-

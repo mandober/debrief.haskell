@@ -1,7 +1,5 @@
 # Types, Data Abstraction and Polymorphism
 
-
-
 `On Understanding Types, Data Abstraction, and Polymorphism`
 paper (1985) Luca Cardelli, Peter Wegner
 

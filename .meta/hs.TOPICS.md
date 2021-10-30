@@ -1,5 +1,4 @@
 # Haskell TOPICS
-(semi-organized list of topics and terms)
 
 
 * Code locations

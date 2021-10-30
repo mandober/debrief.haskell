@@ -13,15 +13,15 @@ A universally quantified type like `forall a. (a -> a)` means that, for any choi
 If types correspond to logical propositions, and a true proposition corresponds to an implementable type signature, and, since the proposition `a -> a` is always true (i.e. it is a tautology), then we can define such a function:
 
 ```hs
--- implict universal quantification
+-- implicit universal quantification
 id :: a -> a
 id x = x
 
--- explict quantification, implicit parens
+-- explicit quantification, implicit parens
 id :: forall a. a -> a
 id x = x
 
--- explict quantification, explict parens, λ-style definition
+-- explicit quantification, explict parens, λ-style definition
 id :: forall a. (a -> a)
 id = \ x -> x
 

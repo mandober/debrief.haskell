@@ -1,44 +1,49 @@
 # Haskell CLUSTERS
 
 
-<!-- TOC -->
 
-- [General notions](#general-notions)
-- [Tools](#tools)
-- [Recursion schemes](#recursion-schemes)
-- [Project organisation](#project-organisation)
-- [Syntax](#syntax)
-- [Declarations](#declarations)
-- [Language constructs](#language-constructs)
-- [Type system](#type-system)
-- [Types: basics](#types-basics)
-- [Types: algebraic](#types-algebraic)
-- [Kind system](#kind-system)
-- [Type-level functions](#type-level-functions)
-- [Existential types](#existential-types)
-- [Role system](#role-system)
-- [Continuations](#continuations)
-- [Curry-Howard correspondence](#curry-howard-correspondence)
-- [Type-level computation](#type-level-computation)
-- [Expressionability](#expressionability)
-- [GHC Extensions](#ghc-extensions)
-- [Error handling](#error-handling)
-- [Generics](#generics)
-- [Advanced TYPES](#advanced-types)
-- [Polymorphism](#polymorphism)
-- [Semantics](#semantics)
-- [Monads: advanced](#monads-advanced)
-- [Linear types](#linear-types)
-- [Dependent types](#dependent-types)
-- [Category theory](#category-theory)
-- [Variance](#variance)
-- [Lambda calculus](#lambda-calculus)
-- [Abstract algebra](#abstract-algebra)
-- [Math background](#math-background)
 
-<!-- /TOC -->
+## Higher rank and higher order
+  - zeroth-order logic
+  - first-order logic (FOL)
+  - second-order logic (HOL)
+  - higher-order function (HOF)
+  - higher-order type
+  - higher-order kind
+  - higher-rank (polymorphic functions)
+  - higher-rank type
+  - higher-kinded type, higher-kind type
 
-===============================================================================
+## Computation levels
+  - levels: term, type, kind
+  - Syntactic levels, syntactic categories, computational levels
+    - term-level, value expressions
+    - type-level, type expressions
+    - kind-level, kind expressions
+  - all levels support polymorphism
+  - and higher-order entities HOF, HKT, HRT, PolyKinds
+  - Some PLs have unbounded number of computational levels:
+    values, types, kinds, sorts, etc.
+  - Some have an infinite type hierarchy:
+    type0, type1, type2, etc.
+    with each higher sort available as is needed
+
+## Haskell citizens
+(entities, elements and constructs)
+
+Language entities
+- first-class entities
+- second-class entities
+  - term-level: values, expressions, functions
+  - data type declaration
+  - definition
+  - type signature
+  - class declaration
+  - instance declaration
+  - deriving-clause
+  - where-clause
+  - hiding-clause
+  - as-clause (import)
 
 ## General notions
   - purity

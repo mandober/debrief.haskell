@@ -101,11 +101,10 @@ https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/safe_haskell.html
 [RecordWildCards](./RecordWildCards.md)
 [RecursiveDo](./RecursiveDo.md)
 [RelaxedLayout](./RelaxedLayout.md)
-[RelaxedPolyRec](./RelaxedPolyRec.md)
+
 [RoleAnnotations](./RoleAnnotations.md)
 - [ScopedTypeVariables](./ScopedTypeVariables.md)
 [StandaloneDeriving](./StandaloneDeriving.md)
-- [StarIsType](./StarIsType.md)
 [StaticPointers](./StaticPointers.md)
 [Strict](./Strict.md)
 [StrictData](./StrictData.md)

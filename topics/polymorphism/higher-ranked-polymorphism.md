@@ -2,15 +2,15 @@
 
 Types of polymorphism
 - universal polymorphism
-  - parametric polymorphism, (compile-time polymorphism)
-  - subtype polymorphism, inclusion polymorphism, (runtime polymorphism)
+  - parametric polymorphism, compile-time polymorphism
+  - subtype polymorphism, inclusion polymorphism, runtime polymorphism
 - ad hoc polymorphism, nonuniversal polymorphism
-  - overloading (ad hoc polymorphism)
-  - coercion polymorphism, (casting)
+  - overloading polymorphism
+  - coercion polymorphism, casting polymorphism
 - Higher-ranked polymorphism
   - predicative polymorphism
   - impredicative polymorphism
-  - Rank-1 polymorphism (prenex polymorphism, Let-polymorphism)
+  - Rank-1 polymorphism prenex polymorphism, let-polymorphism
   - Rank-2 polymorphism
   - Rank-k polymorphism
   - Rank-n ("higher-rank") polymorphism

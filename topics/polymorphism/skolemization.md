@@ -1,10 +1,12 @@
 # Skolemization
 
-*Skolemization* is the process of removing all existential quantifiers from a logic formula. The result is a formula in *Skolem normal form* that is equivalent in computational complexity to the original.
+*Skolemization* is the process of **removing all existential quantifiers** from a logic formula. The result is a formula in *Skolem normal form* that is equivalent in computational complexity to the original.
 
-Skolemization is a way of removing existential quantifiers from a formula.
-- Variables bound by existential quantifiers which are not inside the scope of universal quantifiers can simply be replaced by constants: `∃x[x<3]` can be changed to `c < 3`, with `c` as a suitable constant.
-- When the existential quantifier is inside a universal quantifier, the bound variable must be replaced by a Skolem function of the variables bound by universal quantifiers. Thus `∀x[x = 0 ⋁ ∃y[x = y + 1]]` becomes 
+Skolemization is a way of removing existential quantifiers from a formula:
+
+* Variables bound by existential quantifiers which are not inside the scope of universal quantifiers can simply be replaced by constants: `∃x[x<3]` can be changed to `c < 3`, with `c` as a suitable constant.
+
+* When the existential quantifier is inside a universal quantifier, the bound variable must be replaced by a Skolem function of the variables bound by universal quantifiers. Thus `∀x[x = 0 ⋁ ∃y[x = y + 1]]` becomes 
 `∀x[x = 0 ⋁ x = f(x) + 1]`.
 
 

@@ -1,22 +1,16 @@
-Datatype promotion {#promotion}
-==================
+# Datatype promotion
 
-::: {.extension shortdesc="Enable datatype promotion."}
-DataKinds
+- `DataKinds`
+- since: 7.4.1
+- Allow promotion of data types to kind level
 
-since
-
-:   7.4.1
-
-Allow promotion of data types to kind level.
-:::
-
-This section describes *data type promotion*, an extension to the kind
-system that complements kind polymorphism. It is enabled by
+This section describes *data type promotion*, an extension to the kind system that complements kind polymorphism. It is enabled by
 `DataKinds`{.interpreted-text role="extension"}, and described in more
 detail in the paper [Giving Haskell a
 Promotion](http://dreixel.net/research/pdf/ghp.pdf), which appeared at
 TLDI 2012.
+
+
 
 Motivation
 ----------

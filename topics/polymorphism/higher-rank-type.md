@@ -1,9 +1,8 @@
 # Higher-rank type
 
-- rank-2 type, rank-n type, higher-rank type (HRT)
-- Higher-rank types are functions that take polymorphic functions as their args
-- Complete type inference is known to be undecidable for HRT (impredicative) type systems
-
+- Rank-2 type, Rank-n type, Higher-rank Type (HRT)
+- *Higher-rank types* are functions that take polymorphic functions as args
+- Complete type inference is known to be undecidable for HRT, i.e. these are the impredicative type systems
 
 
 ```hs
@@ -34,7 +33,10 @@ customCombine f x y = f x ++ f y
 In particular, if we've specified in the type signature that f is of type c -> String and x is of type a, the type checker won't allow us to apply f to x, because it can't prove that c represents the same type as a.
 
 
+
+
 ## Practical type inference for arbitrary-rank types
+
 Simon Peyton Jones, Dimitrios Vytiniotis, Stephanie Weirich, Mark Shields, 2007
 
 The variance of a type `T a` with respect to its type variable `a` is fully specified by the position of `a`:

@@ -1,39 +1,90 @@
-# Glossary
+# Glossary: ῾ασκϵλλ λεξικόν
+
+<!-- TOC -->
+
+- [Bidirectional typechecking](#bidirectional-typechecking)
+- [Cabal](#cabal)
+- [Call-by-need](#call-by-need)
+- [CUSK](#cusk)
+- [Defunctionalization](#defunctionalization)
+- [Dynamic binding](#dynamic-binding)
+- [Evaluation strategies](#evaluation-strategies)
+- [Haskell Core](#haskell-core)
+- [Higher-kinded polymorphism](#higher-kinded-polymorphism)
+- [Denotational semantics](#denotational-semantics)
+- [Deforestation](#deforestation)
+- [Evaluation strategy](#evaluation-strategy)
+- [Forcing](#forcing)
+- [Fusion](#fusion)
+- [Higher-kinded type](#higher-kinded-type)
+- [Higher-rank type](#higher-rank-type)
+- [Implicit typing](#implicit-typing)
+- [Impredicative polymorphism](#impredicative-polymorphism)
+- [Kind](#kind)
+- [Kind polymorphism](#kind-polymorphism)
+- [Lazy evaluation](#lazy-evaluation)
+- [Levity polymorphism](#levity-polymorphism)
+- [Lifting](#lifting)
+- [Lifted type](#lifted-type)
+- [Name equality](#name-equality)
+- [Non-strict semantics](#non-strict-semantics)
+- [Operational semantics](#operational-semantics)
+- [Polytypic functions](#polytypic-functions)
+- [Rank polymorphism](#rank-polymorphism)
+- [Regular type constructor](#regular-type-constructor)
+- [Rigid type](#rigid-type)
+- [Singletons](#singletons)
+- [Stack](#stack)
+- [Stackage](#stackage)
+- [Static binding](#static-binding)
+- [Partial type annotation](#partial-type-annotation)
+- [Program termination](#program-termination)
+- [Thunk](#thunk)
+- [Typed hole](#typed-hole)
+- [Type signature](#type-signature)
+- [Type annotation](#type-annotation)
+- [Type inference](#type-inference)
+- [Type instantiation](#type-instantiation)
+- [Type Family](#type-family)
+- [Unlifted type](#unlifted-type)
+- [Weak Head Normal Form](#weak-head-normal-form)
+- [Wobbly type](#wobbly-type)
+- [Zero-cost coercions](#zero-cost-coercions)
+
+<!-- /TOC -->
+
+## Bidirectional typechecking
+
+Bidirectional typechecking has become popular in advanced type systems because it works in many situations where inference is undecidable. 
+
+The research shows parametric polymorphism can be cleanly handled in bidirectional settings.
 
 ## Cabal
 
-`Cabal` is a project and build manager, and a part of a larger infrastructure for distributing Haskell packages.
-
-## Cabal hell
-
-The Cabal is the Haskell's build tool and project manager, whose earlier versions were known to raise hell by installing the packages globally, which, of course, had cause frequent clashes of different versions of the same package. Now, a thing of the past.
-
-## Call-by-X
-
-This term should denote the various approaches and technics regarding the time and manner of evaluation of arguments in a function application. The most common instances for X are: value, name, sharing, need, reference.
+`Cabal` is a project and build manager, and a part of a larger infrastructure for distributing Haskell packages. The earlier versions of cabal were known to cause the problem nicknamed "cabal hell", manifested because cabal not only installed packages globally without versioning: incompatible versions of the same package would compete in rewriting each other over.
 
 ## Call-by-need
+The call-by-need evaluation strategy of function's arguments in which the arguments are evaluated only when actually needed (JIT) and only once, after which the result is memoized and shared, immediately (e.g. among the duplicated arguments) or later when the need arises. Haskell's evaluation strategy is call-by-name with call-by-sharing, otherwise known as call-by-need.
 
-The *call-by-need* is an approach to evaluation of function's arguments in which the arguments are evaluated only when actually needed (JIT) and only once, after which the result is memoized and shared, immediately (e.g. among the duplicated arguments) or later when the need arises. Haskell's evaluation strategy is call-by-name with call-by-sharing, otherwise known as call-by-need.
+## Constraint
+A constraint is a relation between variables which limits the values these variables can take simultaneously. Constraints are the conditions (predicates) that restrict the types a type variable can be instantiated to. A comma in a list of constraints is playing the role of conjunction: each constraints is satisfied by some subset of types, and a variable can only be instantiated to a type belonging to the intersection of these subsets. If the constraints cannot be satisfied, the instantation of the variable fails.
 
 ## CUSK
-
 Complete user-supplied kind signatures. This is a legacy feature replaced by the modern `StandaloneKindSignatures` approach.
 
 ## Defunctionalization
-
 Defunctionalization is a program transformation that aims to turn a higher-order functional program into a first-order one, that is, to eliminate the use of functions as first-class values. Its purpose is thus identical to that of closure conversion. It differs from closure conversion, however, by storing a tag, instead of a code pointer, within every closure. Defunctionalization has been used both as a reasoning tool and as a compilation technique. Defunctionalization is commonly defined and studied in the setting of a simply-typed λ-calculus, where it is shown that semantics and well-typedness are preserved. 
 
 ## Dynamic binding
-
 A variable is called dynamically bound when it is bound by the calling context of a function, and statically bound when bound by the callee's context.
 
-## Haskell Core
+## Evaluation strategies
+Various approaches and technics regarding the time and manner of evaluation of arguments in a function application. Some common evaluation strategies are: call-by-value, call-by-name, call-by-sharing, call-by-need, call-by-reference.
 
+## Haskell Core
 The Core is the name of the basic language that normal Haskell code is desugared and translated into. The Core is a very small, System-F based, fully type-annotated language. It is a proper subset of Haskell, consisting of a dozen type ctors, type descriptions, and such, and all of the complicated surface Haskell syntax, including those introduced by extensions, must be expressable in Core. The Core is one of the several intermediate code representations in the compilation process.
 
 ## Higher-kinded polymorphism
-
 Polymorphism abstracts types, just as functions abstract values. Higher-kinded polymorphism takes things a step further, abstracting both types and type constructors, just as higher-order functions abstract both first-order values and functions.
 
 ## Denotational semantics
@@ -56,6 +107,22 @@ In Haskell, unlike in set theory, the term "forcing" denotes some way to force e
 
 Merging several operations, that operate on the same data, into one. GHC often explores opportunities to fuse multiple list traversals and operations into a single traversal with operations merged.
 
+## Higher-kinded type
+
+A higher kinded type (HKT) is a kind-polymorphic type variable that can be instantiated at type constructors of many different kinds.
+
+```hs
+-- Type variable `a` has the base kind `Type`, `a :: Type`
+type BaseKind :: Type -> Type
+type BaseKind (a :: Type) = a
+
+-- Type variable `a` has the higher kind, `a :: k`, for any kind `k`
+type HKT :: forall k. k -> k
+type HKT (a :: k) = a
+```
+
+Higher-kinded types are those which have type variables. Fully saturated HKTs in everyday Haskell always have kind `Type`, which means that their type constructors do not.
+
 ## Higher-rank type
 
 A Higher-Rank Type (HRT) is a language entity (usually a function) that takes (parametrically) polymorphic functions as args (as opposed to taking functions with concrete types).
@@ -64,9 +131,25 @@ A Higher-Rank Type (HRT) is a language entity (usually a function) that takes (p
 
 Implicitly typed expressions are those whose type is left for the compiler to infer. Between expressions that are type-annotated by a user and those that are typed by the compiler, there is some middle ground in the form of partial annotations (types with holes).
 
+## Impredicative polymorphism
+
+Generally, GHC will only instantiate *polymorphic type variables* at a *monomorphic type*, i.e. a type without `forall`s. Instantiating *polymorphic type variables* at *polymorphic types* is called *impredicative polymorphism*.
+
 ## Kind
 
-A kind is a type of a type. It is a higher-order type that classifies types. Almost all saturated type ctors usually have the kind `*`. Unsaturated type ctors have different function-shaped kinds, e.g. `Maybe`, `IO` or `[]` have kind `* -> *`, `Show :: * -> Constraint`, `MonadTrans :: ((* -> *) -> * -> *) -> Constraint`. The *DataKinds* extensions promotes all type ctors to kinds, and `GHC.TypeLit` enables type literals, such that type-level natural number have the kind `Nat`, and type-level string have the kind `Symbol`. The primitive, unlifted and mostly unboxed types have the kind `#`.
+Kinds classify types. Haskell 98 defines only 2 kinds: `κ := Type | κ -> κ`.
+
+All nullary and saturated type ctors have the kind `Type`.
+
+Unsaturated type ctors have different function-shaped kinds, e.g. `Maybe`, `IO` or `[]` have kind `* -> *`
+
+The kind `Constraint` is the kind of saturated classes:
+- `Show :: * -> Constraint`
+- `Show a :: Constraint`
+
+`MonadTrans :: ((* -> *) -> * -> *) -> Constraint`
+
+The *DataKinds* extensions promotes all type ctors to kinds, and `GHC.TypeLit` enables type literals, such that type-level natural number have the kind `Nat`, and type-level string have the kind `Symbol`. The primitive, unlifted and mostly unboxed types have the kind `#`.
 
 ## Kind polymorphism
 
@@ -106,63 +189,69 @@ deals with the operational aspects of evaluation. It describes a PL by using an 
 
 A polytypic program is a program that behaves uniformly over a large class of datatypes. This uniformity is achieved by parameterizing functions over type constructors to obtain polytypic functions. A polytypic function may be defined by induction on the structure of *regular type constructors*, or in terms of other polytypic functions.
 
+## Rank polymorphism
+
+Array-oriented PLs are primarily concerned with manipulation of array-like structures, which includes: include 0-rank scalars (scalar values), rank-1 vectors (sequences of values), rank-2 matrices (sequences of sequences), rank-3 cuboids (sequences of sequences of sequences), and so on. One consequence of this unification is the *rank polymorphism* - the type of polymorphism in which a scalar function is automatically lifted to act element-wise on a higher-ranked data structure such as array; and a scalar binary operator is lifted to act, point-wise, on pairs of arrays, and so on.
+
 ## Regular type constructor
 
 A type constructor `d` is regular if the data type `d a` contains no function spaces and if the `d`'s type argument is the same on both sides of its type declaration.
 
 ## Rigid type
 
-A rigid type is a type variable specified by the programmer. The term is used to describe types that were completely specified by a user (they were initially called "user-specified types"). Rigid type variables are usually mentioned in error messages associated with polymorphic functions. The dual of rigid types are (not co-rigid types but) wobbly types which are the types inferred by the compiler. The type of an expression, that lacks a user-supplied type-annotation or type signature, wobbles around, with every change being re-inferred by the compiler. But once a user stamps it with a type signature, it stops wobbling and becomes rigid.
+Rigid types originally went under the name "user-specified types", but the change was made [probably] because the current term unambiguously and uniquely pinpoints the issue. The term is the most comfortably used in GHC errors (the "typefucker" Easter egg is said to be triggered when the user provokes GHC to issue exactly 23 error msgs pertaining to a single type expresion), especially in situations involving type variables in polymorphic functions. They are dual to wobbly (co-rigid :) types, i.e. GHC-inferred types. [A/N] The division to rigid and wobbly types is perhaps significant from the aspect of the type-checker, which must makes sure all expressions are assigned an explicit type, procured one way or the other. The names chosen for these two sorts of types seem (to me) to imply that a type-less expression may wobble around a bit, making the type-checker busy re-infering its type (the type annotation is in the "flow"). But when the user slaps it with a type- annotation, the wobbling stops since an explicit type fox the expression in place, preventing any modification that is not accompanied by the corresponding type adjustment.
 
-## Singleton
+## Singletons
+In PLT, a singleton is a type with exactly one inhabitant. For example, the unit type, `() :: ()`, nicely showcases the essential property of singletons: the type is isomorphic to its (only) value. This means that knowing a type allows you deduce its value, and vice versa. Singletons, like all other values, go through the process of type erasure; comes the runtime, they have no associated type information left. But! Being singletons, it is easy to recover their types for various purposes. For example, a variable "length" whose type is a natural number (with natural numbers being encoded as singletons) will loose its type at RT, but the natural number encoded in its type will be recoverable from its value. This information can then be used to deduce, e.g., the length of some vector-type of value.
 
-In PLT, a singleton is a type with exactly one inhabitant. For example, the unit type, `() :: ()`, nicely showcases the essential property of singletons: the type is isomorphic to its (only) value. This means that knowing a type allows you deduce its value, and vice versa. Singletons, like all other values, go through the process of type erasure; comes the runtime, they have no associated type information left. But! Being singletons, it is easy to recover their types for various purposes. For example, a variable "length" whose type is a natural number (with natural numbers being encoded as singletons) will loose its type at RT, but the natural number encoded in its type will be recoverable from its value. This information can then be used to deduce, e.g., the lenght of some vector-type of value.
-
-## The Stack
-
-The Stack is the Haskell's project manager and package manager, created when the Cabal hell was a thing. It is not independant from Cabal, however, but it works on top of it; it creates its own project files as the convenient "views" into the cabal files. Also, the stack is associated with a curated repository of Haskell packages, called Stackage, where it pulls the dependencies from by default.
+## Stack
+Stack is Haskell's project and package manager, created back when using Cabal wasn't only inconvenient (complex configuration files), but rather a horrible experience ("cabal hell" was a thing). Stack doesn't work independently of Cabal, but on top of it. Stack creates own project files, which are just more convenient "views" into cabal's (changing a stack configuration file prompt Stack to recreate the corresponding cabal file). More originally, Stack is associated with Stackage, which is a curated repository of Haskell packages (Hackage is the central community repository).
 
 ## Stackage
-
-Curated repository of selected packages from Hackage, consisting of extensively verified important and crucial libraries.
+The curated repository of essential Haskell packages (important libraries that many packages in the Haskell ecosystem depend on) that are verified before being imported from Hackage.
 
 ## Static binding
 A variable is called dynamically bound when it is bound by the calling context of a function, and statically bound when bound by the callee's context.
 
-## Typed hole
-
-A typed hole is a part of type signature that is left unspecified. The "hole" is formed when a type-level subexpression, that is a part of the overall type signature, is annotated with an underscore (either placed there by itself or prefixing an existing name). For example, instead of writing the entire type `StateT Integer IO`, you may leave out the (easily inferrable) middle part, writing `StateT _ IO` instead. Typed holes are half-way between a compiler-inferred and a user-annotated type. Typed holes may be useful when dealing with a particularly long and verbose signature (especially in type aliases). A *partially annotated type* is a type signature or a type annotation with a typed hole.
-
-
 ## Partial type annotation
-
 A partially annotated type is a type signature/annotation with a typed hole.
 
-## Type signature
+## Program termination
+Program termination is an instance of the more general decision problem (Entscheidungsproblem) that Turing proved in the negative. Turing's proof implies that the existence of a (super) program, capable of deciding whether another program halts or not, is impossible. Still, program termination is a very active discipline in CS, invested in analyzing the specific restrictions and conditions under which the termination of an algorithm can be guaranteed. For instance, instead of employing a general (unrestricted) recursion in a function, perhaps a more tame form of recursion would work as well. For example, a function on integers, recursive in its first argument, could employ the well-founded recursion that places a strong restriction on the recursive argument: with each iteration through the recursive case, it must keep on decreasing, guaranteeing to hit the base case (in a finite number of steps).
 
+## Thunk
+In strict languages, a thunk usually refers to a function that is used as a way to delay the evaluation of an expression. Thunks are more effective in PLs with first-class function support. For example, in JS, as in all strict PLs, function application triggers a full evaluation of function's args; to prevent an argument from being evaluated, JS programmers can wrap that arg in a thunk, e.g. `let thunk = () => arg`, and pass that into function instead. Later, that arg can be retrieved and evaluated by calling the `thunk()`. In Haskell, thunks have a similar purpose, but here they are realized as highly specialized function-like objects adjusted for use in a non-strict setting.
+
+## Typed hole
+A typed hole is a part of type signature that is left unspecified. The "hole" is formed when a type-level subexpression, that is a part of the overall type signature, is annotated with an underscore (either placed there by itself or prefixing an existing name). For example, instead of writing the entire type `StateT Integer IO`, you may leave out the (easily inferrable) middle part, writing `StateT _ IO` instead. Typed holes are half-way between a compiler-inferred and a user-annotated type. Typed holes may be useful when dealing with a particularly long and verbose signature (especially in type aliases). A *partially annotated type* is a type signature or a type annotation with a typed hole.
+
+## Type signature
 A type signature is a standalone complete type-level expression describing a function. Type signatures are, by convention, welcomed at a module's top level, but they may also appear nested inside a function, as a part of a `let` or `where` clause. Although type signatures and type annotations may express the same thing in two different ways, the biggest difference between them is that type signatures are independent standalone (type) expressions. Most commonly they appear (on their own line) above the definition of the function they are associated with (associated by having the same identifier).
 
 ## Type annotation
-
 Type annotations are type-level expressions, sort of ad hoc type expressions attached to various term-level (sub)expressions. They are more required in the absence of standalone type signatures, although it can happen that type annotations are needed to describe parts of an expression even when there is a full type signature. Often, a type annotation is somewhat of a quick bandaid.
 
 ## Type inference
-
 A method implemented in the compiler/interpreter to help it resolve the types of all expressions, especially those that are not user annotated. Haskell uses the type inference system based on the Hindley-Milner approach but heavily extended.
 
-## Type Family
+## Type instantiation
+This context prescribes that certain Type variables can only be instantiated with those types that belong to certain (in the context defined) type classes."
 
-*Indexed type families*, or type families for short, are type-level functions that take types as arguments and return types as a result. They are to data what type classes are to functions, i.e. a means to overload data types.
+## Type Family
+Indexed type families, or type families for short, are type-level functions that take types as arguments and return types as a result. They are to data what type classes are to functions, i.e. a means to overload data types.
 
 ## Unlifted type
-
 Unlifted types do not include bottom value. These types live in kind `#` rather than kind `*`.
 
 ## Weak Head Normal Form
+As opposed to strict PLs, where an expression is either unevaluated or fully evaluated, Haskell's evaluation process is far more segmented. Haskell expressions undergo several intermediary forms as they progress from virginal (untouched) to fully evaluated values. Expressions can be considered as if having several value layers, and the way these layers are stripped (whether all at once, or ever so gently) depends on numerous factors, ranging from the surrounding context to the type of the value itself.
 
-WHNF is a stage in evaluating an expression. It is usually related in pattern matching against a particular data ctor. An expression that is evaluated just enough to reveal its data ctor is in weak-head normal form.
+WHNF is a stage in the process of evaluating an expression. It is usually related in pattern matching against a particular data ctor. An expression that is evaluated just enough to reveal its data ctor is in weak-head normal form.
 
 For example, a function that expects an arg of type `Val x`, where `Val` is the data ctor, and it declares the corresponding parameter as `x` i.e. using an irrefutable pattern, then the arg is not even smelled - no evaluation of the arg happens (it may even be undefined). However, if the param binds the arg using a pattern match against the data ctor, as `(Val x)` then the arg has to undergo evaluation until it reveals the expected `Val` data ctor, or it fails to pattern-match (maybe because the arg was some other type). If the pattern match fails, the pattern in the next equation is tried (and so on), but, at that point the arg has already lost a few layers, it got peeled just enough to reveal whether it was a data ctor, so the evaluation might proceed from there or the arg may be evaluated enough at that point to determine if it matches.
 
 ## Wobbly type
-If a type is user-annotated, then it's *rigid*, otherwise it's *wobbly*.
+The type annotations written by the user are referred to as *rigid*, while types left for GHC to infer are called wobbly. For instance, a type variable that's a part of the user-specified signature is a rigid type variable, while the inferred one is wobbly. Unlike the rigid type, the wobbly types are rarely mentioned in the type error messages.
+
+## Zero-cost coercions
+Haskell supports zero-cost coercions, a mechanism where types that share the same run-time representation may be freely converted between. To make sure such conversions are safe and desirable, a role system is put in place to manage and prohibit invalid coercions.

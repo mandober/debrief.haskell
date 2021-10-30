@@ -68,7 +68,7 @@ Data.IntSet
 Data.IORef
 Data.Ix
 Data.Kind
-[Data.List](Data.List.md)
+[Data.List](Data.List1.md)
   Data.List.NonEmpty
 Data.Map
   Data.Map.Lazy

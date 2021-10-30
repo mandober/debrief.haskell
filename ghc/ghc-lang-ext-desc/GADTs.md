@@ -1,7 +1,6 @@
 # GADTs
 
-Lang Pragma: `GADTs`
-
+- Pragma `GADTs`
 - GADTs allows explicit type signatures to be written for data constructors
 - Also enable type equality in context, (`~`)
 

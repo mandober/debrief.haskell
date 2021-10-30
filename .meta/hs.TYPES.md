@@ -1,19 +1,7 @@
 # Haskell Types
 
 
-- `Type` (ex star)
-- `*` (star)
-- `TYPE`
-- `TypeRep`
-
-
-* general
-type (datatype)
-datatype (type)
-abstract data type (ADT, abstract data structure)
-abstract data structure (abstract data type)
-algebraic data structure (ADS, algebraic data type)
-algebraic data type (ADT, algebraic data structure)
+algebraic data type
 generalized algebraic data type (GADT)
 
 * concepts
@@ -91,9 +79,3 @@ pi type (dependent type)
 linear type
 affine type
 refinement type
-
-* kind
-kind
-higher order kind
-
-* role

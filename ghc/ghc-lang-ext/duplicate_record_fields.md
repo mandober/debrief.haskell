@@ -1,148 +1,129 @@
-Duplicate record fields
-=======================
+# Duplicate record fields
 
-::: {.extension shortdesc="Allow definition of record types with identically-named fields."}
-DuplicateRecordFields
 
-implies
+`DuplicateRecordFields`
+- Allow definition of record types with identically-named fields
+- implies: `DisambiguateRecordFields`
+- since: 8.0.1
 
-:   `DisambiguateRecordFields`{.interpreted-text role="extension"}
 
-since
+Going beyond `DisambiguateRecordFields`, the `DuplicateRecordFields` extension allows multiple datatypes to be declared using the same field names in a single module. For example, it allows this:
 
-:   8.0.1
+```hs
+module M where
+  data S = MkS { x :: Int }
+  data T = MkT { x :: Bool }
+```
 
-Allow definition of record types with identically-named fields.
-:::
+The use of fields that are always unambiguous, because they mention the constructor, including construction and pattern-matching, may freely use duplicated field names. For example, the following are permitted, just as with `DisambiguateRecordFields`:
 
-Going beyond `DisambiguateRecordFields`{.interpreted-text
-role="extension"} (see `disambiguate-fields`{.interpreted-text
-role="ref"}), the `DuplicateRecordFields`{.interpreted-text
-role="extension"} extension allows multiple datatypes to be declared
-using the same field names in a single module. For example, it allows
-this: :
+```hs
+s = MkS { x = 3 }
+f (MkT { x = b }) = b
+```
 
-    module M where
-      data S = MkS { x :: Int }
-      data T = MkT { x :: Bool }
+Field names used as selector functions or in record updates must be unambiguous, either because there is only one such field in scope, or because a type signature is supplied.
 
-Uses of fields that are always unambiguous because they mention the
-constructor, including construction and pattern-matching, may freely use
-duplicated field names. For example, the following are permitted (just
-as with `DisambiguateRecordFields`{.interpreted-text role="extension"}):
-:
+## Selector functions
 
-    s = MkS { x = 3 }
+Fields may be used as selector functions only if they are unambiguous, so this is still not allowed if both `S(x)` and `T(x)` are in scope:
 
-    f (MkT { x = b }) = b
+```hs
+bad r = x r
+```
 
-Field names used as selector functions or in record updates must be
-unambiguous, either because there is only one such field in scope, or
-because a type signature is supplied, as described in the following
-sections.
+An ambiguous selector may be disambiguated by the type being "pushed down" to the occurrence of the selector (see higher-rank-type-inference for more details on what "pushed down" means). For example, the following are permitted:
 
-Selector functions
-------------------
+```hs
+ok1 = x :: S -> Int
 
-Fields may be used as selector functions only if they are unambiguous,
-so this is still not allowed if both `S(x)` and `T(x)` are in scope: :
+ok2 :: S -> Int
+ok2 = x
 
-    bad r = x r
+ok3 = k x -- assuming we already have k :: (S -> Int) -> _
+```
 
-An ambiguous selector may be disambiguated by the type being \"pushed
-down\" to the occurrence of the selector (see
-`higher-rank-type-inference`{.interpreted-text role="ref"} for more
-details on what \"pushed down\" means). For example, the following are
-permitted: :
+In addition, the datatype that is meant may be given as a type signature on the argument to the selector:
 
-    ok1 = x :: S -> Int
+```hs
+ok4 s = x (s :: S)
+```
 
-    ok2 :: S -> Int
-    ok2 = x
+However, we do not infer the type of the argument to determine the datatype, or have any way of deferring the choice to the constraint solver. Thus the following is ambiguous:
 
-    ok3 = k x -- assuming we already have k :: (S -> Int) -> _
+```hs
+bad :: S -> Int
+bad s = x s
+```
 
-In addition, the datatype that is meant may be given as a type signature
-on the argument to the selector: :
+Even though a field label is duplicated in its defining module, it may be possible to use the selector unambiguously elsewhere. For example, another module could import `S(x)` but not `T(x)`, and then use `x` unambiguously.
 
-    ok4 s = x (s :: S)
+## Record updates
 
-However, we do not infer the type of the argument to determine the
-datatype, or have any way of deferring the choice to the constraint
-solver. Thus the following is ambiguous: :
+In a record update such as `e { x = 1 }`, if there are multiple `x` fields in scope, then the type of the context must fix which record datatype is intended, or a type annotation must be supplied. Consider the following definitions:
 
-    bad :: S -> Int
-    bad s = x s
+```hs
+data S = MkS { foo :: Int }
+data T = MkT { foo :: Int, bar :: Int }
+data U = MkU { bar :: Int, baz :: Int }
+```
 
-Even though a field label is duplicated in its defining module, it may
-be possible to use the selector unambiguously elsewhere. For example,
-another module could import `S(x)` but not `T(x)`, and then use `x`
-unambiguously.
+Without `DuplicateRecordFields`, an update mentioning `foo` will always be ambiguous if all these definitions were in scope. When the extension is enabled, there are several options for disambiguating updates:
 
-Record updates
---------------
+* Check for types that have all the fields being updated. For example:
 
-In a record update such as `e { x = 1 }`, if there are multiple `x`
-fields in scope, then the type of the context must fix which record
-datatype is intended, or a type annotation must be supplied. Consider
-the following definitions: :
+```hs
+f x = x { foo = 3, bar = 2 }
+```
 
-    data S = MkS { foo :: Int }
-    data T = MkT { foo :: Int, bar :: Int }
-    data U = MkU { bar :: Int, baz :: Int }
+Here `f` must be updating `T` because neither `S` nor `U` have both fields.
 
-Without `DuplicateRecordFields`{.interpreted-text role="extension"}, an
-update mentioning `foo` will always be ambiguous if all these
-definitions were in scope. When the extension is enabled, there are
-several options for disambiguating updates:
 
--   Check for types that have all the fields being updated. For example:
-    :
+* Use the type being pushed in to the record update, as in the following:
 
-        f x = x { foo = 3, bar = 2 }
+```hs
+g1 :: T -> T
+g1 x = x { foo = 3 }
 
-    Here `f` must be updating `T` because neither `S` nor `U` have both
-    fields.
+g2 x = x { foo = 3 } :: T
 
--   Use the type being pushed in to the record update, as in the
-    following: :
+g3 = k (x { foo = 3 }) -- assuming we already have k :: T -> _
+```
 
-        g1 :: T -> T
-        g1 x = x { foo = 3 }
+* Use an explicit type signature on the record expression, as in: :
 
-        g2 x = x { foo = 3 } :: T
+```hs
+h x = (x :: T) { foo = 3 }
+```
 
-        g3 = k (x { foo = 3 }) -- assuming we already have k :: T -> _
+The type of the expression being updated will not be inferred, and no constraint-solving will be performed, so the following will be rejected as ambiguous:
 
--   Use an explicit type signature on the record expression, as in: :
+```hs
+let x :: T
+    x = blah
+in x { foo = 3 }
 
-        h x = (x :: T) { foo = 3 }
+\x -> [x { foo = 3 },  blah :: T ]
 
-The type of the expression being updated will not be inferred, and no
-constraint-solving will be performed, so the following will be rejected
-as ambiguous: :
+\ (x :: T) -> x { foo = 3 }
+```
 
-    let x :: T
-        x = blah
-    in x { foo = 3 }
 
-    \x -> [x { foo = 3 },  blah :: T ]
+## Import and export of record fields
 
-    \ (x :: T) -> x { foo = 3 }
+When `DuplicateRecordFields` is enabled, *an ambiguous field must be exported as part of its datatype*, rather than at the top level. For example, the following is legal:
 
-Import and export of record fields
-----------------------------------
+```hs
+module M (S(x), T(..)) where
+  data S = MkS { x :: Int }
+  data T = MkT { x :: Bool }
+```
 
-When `DuplicateRecordFields`{.interpreted-text role="extension"} is
-enabled, an ambiguous field must be exported as part of its datatype,
-rather than at the top level. For example, the following is legal: :
-
-    module M (S(x), T(..)) where
-      data S = MkS { x :: Int }
-      data T = MkT { x :: Bool }
 
 However, this would not be permitted, because `x` is ambiguous: :
 
-    module M (x) where ...
+```hs
+module M (x) where ...
+```
 
 Similar restrictions apply on import.

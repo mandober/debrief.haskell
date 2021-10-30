@@ -1,88 +1,163 @@
-# TERMS: polymorphism
-
-
-
+# Haskell :: Polymorphism :: Terms
 
 polymorphism
-polymorphic type, function, programming (language)
+parametric polymorphism
+ad hoc polymorphism
+subtype polymorphism
+inclusion polymorphism
+
+phase-time polymorphism
+compile-time polymorphism (static binding)
+runtime polymorphism (dynamic binding)
+static polymorphism
+dynamic polymorphism
+
+rank polymorphism
+rank-1 polymorphism
+prenex polymorphism
+let-polymorphism
+rank-2 polymorphism
+rank-k polymorphism
+rank-n polymorphism
+rank-n polymorphism
+higher-rank polymorphism
+higher-ranked polymorphism
+arbitrary-rank polymorphism
+
+first-class polymorphism
+row polymorphism
+nonuniversal polymorphism
+predicative polymorphism
+impredicative polymorphism
+bidirectional polymorphism
+greedy bidirectional polymorphism
+rank polymorphism (value dimensions: higher and lower rank of values)
+dimensions polymorphism
+Hindley-Milner unification-based polymorphism
+constrained polymorphism
+bounded polymorphism
+unbounded polymorphism
+predicative polymorphism
+impredicative polymorphism
+polymorphic recursion
+recursive parametrically polymorphic function
+Milner-Mycroft typability
+Milner-Mycroft calculus
+
+universal polymorphism
 parametricity
+generics
+genericity
+generic programming
+generic function
+polytypism
+polytypic type variable
+theorems for free
+relational parametricity
+type-scheme
+let-polymorphism
+let-generalization
+lambda generalization
+
+polymorphic type variables
+polymorphic type variables quantification
+polymorphic type variables instantiation
+
+universal quantification
+existential quantification
+bounded quantification
+bounded polymorphism
+unbounded polymorphism
+
+ad hoc polymorphism
+overloading polymorphism
+name overloading
+function overloading
+operator overloading
+type classes
+overloading polymorphism
+coercion polymorphism
+recursive polymorphism
+
+subtype polymorphism
+inclusion polymorphism
+inheritance polymorphism
+coercion polymorphism
+object-oriented polymorphism
+inherited polymorphism
+subtype parameter
+type inheritance
+parametric specialization
+subtype
+supertype
+
+type-dispatching mechanisms
+static dispatch
+dynamic type dispatch
+single type dispatch
+double type dispatch
+multiple type dispatch
+virtual functions
+predicate type dispatch
+
+variance
+covariance
+contravariance
+invariance
+polyvariance
+monovariance
+
+kind polymorphism
+higher-kinded polymorphism
+higher-kinded type
+kind-polymorphic type
+
+Polymorphic lambda-calculi
+System F
+System F-sub
+Curry-Howard isomorphism
+Girard-Reynolds isomorphism
+
+-----
+
 monomorphism
-monomorphic type, function, programming (language)
+polymorphism
+polytypism
+monotypism
+monomorphic type
+polymorphic type
+monotypes
+monotypism
+polytypes
+parameterized type
+parametric type
+polymorphic type
+type specialization
+type substitution
+type instantiation
+monomorphism
+monomorphic type
 monomorphisation
 polytypism
-polytypic type, function, programming (language)
-instance
-instance of the type, function
-
+polytypic type
+polymorphic type instance
 universal polymorphism
 parametric polymorphism
 unbounded polymorphism
 subtyping polymorphism
 inclusion polymorphism
 inheritance polymorphism
-nonuniversal polymorphism
-ad-hoc polymorphism
-overloading polymorphism
-coercion polymorphism
-
-generics
-genericity
-generic type, functions
-
-universal type
-top type
-bottom type
-
-type representation
-first-class type
-base type
-
 universal quantification
 parameterized type
 parametric type
 type parameter
-formal type parameter
-actual type parameter (type argument)
-type argument (actual type parameter)
 type specialization
+type instantiation
 type substitution
-
 existential quantification
-data abstraction
-abstract data type
-information hiding
-first-order hiding (let construct)
-second-order hiding (∃ quantification)
-
 bounded quantification
 bounded quantified type
-type inheritance
-subtype parameter
-object-oriented polymorphism
-inherited polymorphism
-inheritance
-subtype
-supertype
-parametric specialization
-
-base types
-structured types
-type constructors
-function spaces (->), function types
-Cartesian products (×), product types
-record types, labeled Cartesian products, records
-variant types, labeled disjoint sums, sum types
-type definition
-recursive type definition
-
-universe of all values (complete partial order)
-computable values
-ideals (are subsets of the universe with special properties)
-type system (is a collection of ideals of V)
-type expression
 monomorphic type system
 polymorphic type system
-subrange type
-function type constructor
-function type
-primitive types
+
+-----

@@ -82,10 +82,10 @@ http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.31.3551
 * `Extending the type checker for SML by polymorphic recursion: A correctness proof` - Martin Emms,Hans Leiß, 1996
 http://www.cis.uni-muenchen.de/~leiss/polyrec/polyrec.cisbericht.96-101.ps.gz
 
-* Practical Type Inference for Polymorphic Recursion: an Implementation in Haskell - C. Vasconcellos, L. Figueiredo, C. Camarao, 2003
+* `Practical Type Inference for Polymorphic Recursion: an Implementation in Haskell` - C. Vasconcellos, L. Figueiredo, C. Camarao, 2003
 https://www.academia.edu/download/34646914/Vasconcellos_C.pdf
 
-* Type Inference for Polymorphic Recursive Definitions: a Specification in Haskell - L. Figueiredo, C. Camarao
+* `Type Inference for Polymorphic Recursive Definitions: a Specification in Haskell` - L. Figueiredo, C. Camarao
 http://www.dcc.ufmg.br/~camarao/ml0-impl.ps
 
 * `Programming Examples Needing Polymorphic Recursion`

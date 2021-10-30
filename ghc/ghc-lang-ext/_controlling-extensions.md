@@ -1,106 +1,137 @@
-Controlling extensions {#options-language}
-======================
+# Controlling extensions
 
-::: {.index}
-single: language; option single: options; language single: extensions;
-options controlling
-:::
+Language extensions can be controlled in two ways:
+* Command-line flag: enable `-X…`, disable `-XNo…`
+* Using the `LANGUAGE` pragma, e.g. `{-# LANGUAGE {No}StarIsType #-}`
 
-Language extensions can be controlled (i.e. allowed or not) in two ways:
+## Extensions sets
 
--   Every language extension can be switched on by a command-line flag
-    \"`-X...`\" (e.g. `-XTemplateHaskell`), and switched off by the flag
-    \"`-XNo...`\"; (e.g. `-XNoTemplateHaskell`).
--   Language extensions can also be enabled using the `LANGUAGE` pragma,
-    thus `{-# LANGUAGE TemplateHaskell #-}` (see
-    `language-pragma`{.interpreted-text role="ref"}).
+Currently (GHC 9.2.0.2021-08-21), there are 3+1 extensions sets: 3 sets that have progressed with the language and one extra set for "fuck-it" approach.
+- langext `GHC2021`
+- langext `Haskell2010`
+- langext `Haskell98`
+- flag `-fglasgow-exts` (the only set that can be negated: `-fno-glasgow-exts`)
 
-::: {.extension shortdesc="Use the Haskell 2010 language variant."}
-Haskell2010
 
-Compile Haskell 2010 language variant. Enables the following language
-extensions:
+## GHC Haskell 2021
 
-::: {.hlist}
--   `ImplicitPrelude`{.interpreted-text role="extension"}
--   `StarIsType`{.interpreted-text role="extension"}
--   `CUSKs`{.interpreted-text role="extension"}
--   `MonomorphismRestriction`{.interpreted-text role="extension"}
--   `DatatypeContexts`{.interpreted-text role="extension"}
--   `TraditionalRecordSyntax`{.interpreted-text role="extension"}
--   `EmptyDataDecls`{.interpreted-text role="extension"}
--   `ForeignFunctionInterface`{.interpreted-text role="extension"}
--   `PatternGuards`{.interpreted-text role="extension"}
--   `DoAndIfThenElse`{.interpreted-text role="extension"}
--   `RelaxedPolyRec`{.interpreted-text role="extension"}
-:::
-:::
+The `GHC2021` enables the following extensions:
 
-::: {.extension shortdesc="Use the Haskell 98 language variant."}
-Haskell98
+BangPatterns
+BinaryLiterals
+ConstrainedClassMethods
+ConstraintKinds
+DeriveDataTypeable
+DeriveFoldable
+DeriveFunctor
+DeriveGeneric
+DeriveLift
+DeriveTraversable
+DoAndIfThenElse
+EmptyCase
+EmptyDataDecls
+EmptyDataDeriving
+ExistentialQuantification
+ExplicitForAll
+FieldSelectors
+FlexibleContexts
+FlexibleInstances
+ForeignFunctionInterface
+GADTSyntax
+GeneralisedNewtypeDeriving
+HexFloatLiterals
+ImplicitPrelude
+ImportQualifiedPost
+InstanceSigs
+KindSignatures
+MonomorphismRestriction
+MultiParamTypeClasses
+NamedFieldPuns
+NamedWildCards
+NumericUnderscores
+PatternGuards
+PolyKinds
+PostfixOperators
+RankNTypes
+RelaxedPolyRec
+ScopedTypeVariables
+StandaloneDeriving
+StandaloneKindSignatures
+StarIsType
+TraditionalRecordSyntax
+TupleSections
+TypeApplications
+TypeOperators
+TypeSynonymInstances
 
-Compile using Haskell 98 language variant. Enables the following
-language extensions:
 
-::: {.hlist}
--   `ImplicitPrelude`{.interpreted-text role="extension"}
--   `StarIsType`{.interpreted-text role="extension"}
--   `CUSKs`{.interpreted-text role="extension"}
--   `MonomorphismRestriction`{.interpreted-text role="extension"}
--   `NPlusKPatterns`{.interpreted-text role="extension"}
--   `DatatypeContexts`{.interpreted-text role="extension"}
--   `TraditionalRecordSyntax`{.interpreted-text role="extension"}
--   `NondecreasingIndentation`{.interpreted-text role="extension"}
-:::
-:::
+## Haskell2010
 
-Although not recommended, the deprecated
-`-fglasgow-exts`{.interpreted-text role="ghc-flag"} flag enables a large
-swath of the extensions supported by GHC at once.
+The `Haskell2010` enables the following extensions:
 
-::: {.ghc-flag shortdesc="Deprecated. Enable most language extensions;
-see :ref:`options-language` for exactly which ones." type="dynamic" reverse="-fno-glasgow-exts" category="misc"}
--fglasgow-exts
+CUSKs
+DatatypeContexts
+DoAndIfThenElse
+EmptyDataDecls
+FieldSelectors
+ForeignFunctionInterface
+ImplicitPrelude
+MonomorphismRestriction
+PatternGuards
+RelaxedPolyRec
+StarIsType
+TraditionalRecordSyntax
 
-The flag `-fglasgow-exts` is equivalent to enabling the following
-extensions:
 
-::: {.hlist}
--   `ConstrainedClassMethods`{.interpreted-text role="extension"}
--   `DeriveDataTypeable`{.interpreted-text role="extension"}
--   `DeriveFoldable`{.interpreted-text role="extension"}
--   `DeriveFunctor`{.interpreted-text role="extension"}
--   `DeriveGeneric`{.interpreted-text role="extension"}
--   `DeriveTraversable`{.interpreted-text role="extension"}
--   `EmptyDataDecls`{.interpreted-text role="extension"}
--   `ExistentialQuantification`{.interpreted-text role="extension"}
--   `ExplicitNamespaces`{.interpreted-text role="extension"}
--   `FlexibleContexts`{.interpreted-text role="extension"}
--   `FlexibleInstances`{.interpreted-text role="extension"}
--   `ForeignFunctionInterface`{.interpreted-text role="extension"}
--   `FunctionalDependencies`{.interpreted-text role="extension"}
--   `GeneralizedNewtypeDeriving`{.interpreted-text role="extension"}
--   `ImplicitParams`{.interpreted-text role="extension"}
--   `InterruptibleFFI`{.interpreted-text role="extension"}
--   `KindSignatures`{.interpreted-text role="extension"}
--   `LiberalTypeSynonyms`{.interpreted-text role="extension"}
--   `MagicHash`{.interpreted-text role="extension"}
--   `MultiParamTypeClasses`{.interpreted-text role="extension"}
--   `ParallelListComp`{.interpreted-text role="extension"}
--   `PatternGuards`{.interpreted-text role="extension"}
--   `PostfixOperators`{.interpreted-text role="extension"}
--   `RankNTypes`{.interpreted-text role="extension"}
--   `RecursiveDo`{.interpreted-text role="extension"}
--   `ScopedTypeVariables`{.interpreted-text role="extension"}
--   `StandaloneDeriving`{.interpreted-text role="extension"}
--   `TypeOperators`{.interpreted-text role="extension"}
--   `TypeSynonymInstances`{.interpreted-text role="extension"}
--   `UnboxedTuples`{.interpreted-text role="extension"}
--   `UnicodeSyntax`{.interpreted-text role="extension"}
--   `UnliftedFFITypes`{.interpreted-text role="extension"}
-:::
+## Haskell 1998
 
-Enabling these options is the *only* effect of `-fglasgow-exts`. We are
-trying to move away from this portmanteau flag, and towards enabling
-features individually.
-:::
+The `Haskell98` enables the following extensions:
+
+CUSKs
+DatatypeContexts
+FieldSelectors
+ImplicitPrelude
+MonomorphismRestriction
+NondecreasingIndentation
+NPlusKPatterns
+StarIsType
+TraditionalRecordSyntax
+
+
+
+## Glasgow extensions
+
+The deprecated `-fglasgow-exts` flag enables a large swath of extensions:
+
+ConstrainedClassMethods
+DeriveDataTypeable
+DeriveFoldable
+DeriveFunctor
+DeriveGeneric
+DeriveTraversable
+EmptyDataDecls
+ExistentialQuantification
+ExplicitNamespaces
+FlexibleContexts
+FlexibleInstances
+ForeignFunctionInterface
+FunctionalDependencies
+GeneralizedNewtypeDeriving
+ImplicitParams
+InterruptibleFFI
+KindSignatures
+LiberalTypeSynonyms
+MagicHash
+MultiParamTypeClasses
+ParallelListComp
+PatternGuards
+PostfixOperators
+RankNTypes
+RecursiveDo
+ScopedTypeVariables
+StandaloneDeriving
+TypeOperators
+TypeSynonymInstances
+UnboxedTuples
+UnicodeSyntax
+UnliftedFFITypes

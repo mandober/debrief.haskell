@@ -4,43 +4,60 @@
 - Variance in Haskell
 - canonical type representations
 - variance
-  - ⇉ covariance
-  - ⇄ contravariance
-  - bivariance
+  - covariance ⇉
+  - contravariance ⇄
+  - bivariance ⇉ ⇄
   - invariance (nonvariance)
-- canonical type repr
-- type var position: positive or negative
+- canonical type representation
+- polarity of position of type variables
+  - positive position
+    - a type var is in -pos if it occurs on the left of the function arrow
+    - othersise a type var is in +pos
+  - negative position
 - Variant typeclasses
   - `Functor`       (covariant)
   - `Contravariant`
   - `Invariant`     (nonvariant)
   - `Bifunctor`     (bivariant)
   - `Profuctor`
+- monovariant
 
 
 ## Variance in general
 
-The variance issues especially occur with features that include subtyping, generic datatypes, inheritance. Most often, these rules are not consequences of other decision in a PL design, but are set liberally, commonly being used towards making type system more safe. By making type ctors co- or contra- variant (instead of leaving it invariant), more programs will be accepted as well-typed. On the other hand, people often find contravariance unintuitive, so a PL designer might choose to keep the things simple by making a type ctor invariant even if it could be safely made variant.
+The variance issues especially occur with features that include subtyping, generic datatypes, inheritance.
 
-*Monovariance*: a monovariant is a property whose value only changes in one direction. It will either always increase or always decrease.
+Often, the rules regarding variance are not a consequence of other decisions in the design of a PL, but are set explicitly in order to make the type system more safe.
+
+By making type ctors variant, more programs are accepted as well-typed. Many people find contravariance unintuitive, so a PL designer may choose to simplify things by forcing, e.g. a type ctor to be invariant, even if it was safe (type-safety) to leave it contravariant.
+
+*Monovariance*: a monovariant is a property of an object whose value only changes in one direction. It will either always increase or always decrease.
 
 ## Variance in Haskell
 
-In Haskell, variance is a property of a type ctor in relation to one of its type parameters. In Haskell, by convention we tend to reserve the last param for a structure, `T a`, the function is meant to manipulate; since map-like functions transform the last parameter, we can unambiguously say that `T` is contravariant as a shorthand for `T a` is contravariant with respect to its type param `a`.
+> In Haskell, variance is a property of a type ctor in relation to one of its type parameters.
 
-The question of variance is: if we can transform an `a` into a `b`, does that necessarily mean we can transform a `T a` into a `T b`?
+By convention, we tend to reserve the last formal parameter for the data structure (`T a`) the function will operate on, and since map-like functions transform the last parameter, we can unambiguously say, e.g., 
+that the type ctor 
+`T` is contravariant -- as a shorthand for the full expression: 
+`T a` is contravariant with respect to its type param `a`.
+
+> The question of variance is: if we can transform an `a` into a `b`, does that necessarily mean we can transform a `T a` into a `T b`?
 
 * *covariance* is a change in the same direction. A change in one triggers a similar change in the other
 * *contravariance* is a change in the opposite directions
 * *invariance* indicates the absence of this relation (two metrics are not variant, they are unrelated; change in one does not affect the other)
 
 
-
 ## Canonical type representation
 
-A direct corollary that any two types with the same cardinality are isomorphic, is that there are multiple ways to represent any given type. And any time multiple forms are available it becomes useful to determine one that is most representative.
+A direct corollary of the theorem that, any two types with the same cardinality are isomorphic, is that there are multiple ways to represent any type; and any time multiple forms of the same thing are on the table, you know it's time to call the wolf to determine which one is gonna be the most representative form - the so called *canonical form*.
 
-> The **canonical representation** of ADT is a, possibly recursive, *sum of product* types.
+
+
+!!! warning Canonical Representation
+    The *canonical representation* of an algebraic data type is a **potentially recursive sum of products (SoP)**.
+
 
 * The canonical form of a sum type is a `Either a b`, tha tis the type ctor `Either` with two type vars `a` and `b`.
 * The canonical form of a product type is a pair, `(a,b)`, or more formally, the type ctor `(,)` with two type vars `a` and `b`.

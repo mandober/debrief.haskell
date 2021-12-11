@@ -107,9 +107,9 @@ any :: Foldable t => (a -> Bool) -> t a -> Bool
 concat :: Foldable t => t [a] -> [a]
 concatMap :: Foldable t => (a -> [b]) -> t a -> [b]
 
-break :: (a -> Bool) -> [a] -> ([a], [a])
-span :: (a -> Bool) -> [a] -> ([a], [a])
-splitAt :: Int -> [a] -> ([a], [a])
+break   :: (a -> Bool) -> [a] -> ([a], [a])
+span    :: (a -> Bool) -> [a] -> ([a], [a])
+splitAt :: Int         -> [a] -> ([a], [a])
 
 drop :: Int -> [a] -> [a]
 dropWhile :: (a -> Bool) -> [a] -> [a]

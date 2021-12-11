@@ -1,3 +1,35 @@
+
+
+https://sookocheff.com/post/fp/introducing-lambda-calculus/
+https://sookocheff.com/post/fp/evaluating-lambda-expressions/
+https://sookocheff.com/post/fp/typed-lambda-calculus/
+https://sookocheff.com/post/bash/bash-string-operators/
+https://sookocheff.com/post/fp/alpha-conversion/
+https://sookocheff.com/post/fp/beta-reduction/
+https://sookocheff.com/post/fp/eta-conversion/
+https://sookocheff.com/post/fp/representing-pairs-and-lists-in-lambda-calculus/
+https://sookocheff.com/post/fp/recursive-lambda-functions/
+https://sookocheff.com/post/fp/simplifying-lambda-syntax/
+https://sookocheff.com/post/fp/introducing-lambda-calculus/
+https://sookocheff.com/post/fp/domain-range-codomain/
+https://sookocheff.com/post/fp/a-functional-learning-plan/
+https://sookocheff.com/post/fp/differences-between-imperative-and-functional/
+https://sookocheff.com/post/fp/why-functional-programming/
+https://sookocheff.com/post/fp/what-is-functional-programming/
+
+
+
+https://crypto.stanford.edu/~blynn/lambda/
+http://dev.stephendiehl.com/fun/lambda_calculus.html
+
+https://sookocheff.com/post/fp/introducing-lambda-calculus/
+https://sookocheff.com/post/fp/evaluating-lambda-expressions/
+https://sookocheff.com/post/fp/typed-lambda-calculus/
+
+https://blog.ssanj.net/posts/2018-03-05-functor-applicative-and-monad-instances-for-reader.html
+https://blog.ssanj.net/tags/haskell.html
+
+
 # How to learn Haskell
 
 This is a recommended path for learning Haskell based on experience helping others. A list of recommendations from one of the authors of the [Haskell Book.](http://haskellbook.com)

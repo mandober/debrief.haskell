@@ -1,10 +1,4 @@
-worker/wrapper
 
-GHC STG
-GHC Cmm
-GHC asm
-
-/sdcard/00003.vcf
 
 abstract algebra
 abstract data type ADT

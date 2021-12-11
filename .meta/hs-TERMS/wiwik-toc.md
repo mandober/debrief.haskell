@@ -1,31 +1,34 @@
-# What I wish I Knew :: TOC
 
-- Haskell book: WIWIKWLH
-- http://dev.stephendiehl.com/hask/
-- https://github.com/nikcleju/wiwikwlh
 
-* Basics
-  GHC
+* ghci
+  GHCi
+  .ghci.conf
+
+* GHC
+  Flags
+  Pragmas
+
+* tools
   ghcup
-  Package Managers
-  Project Structure
+  Stackage
+  Hackage
+  ghcid
+  HLint
+  Docker Images
+  Ormolu
+  Haddock
+
+* Project Structure
   Cabal
-  Cabal New-Build
   Local Packages
   Version Bounds
   Stack
   Hpack
   Base
   Prelude
-  Modern Haskell
-  Flags
-  Hackage
-  Stackage
-  GHCi
-  .ghci.conf
-  Editor Integration
-  Linux Packages
-  Names
+
+* Names
+  Name Conventions
   Modules
   Functions
   Types
@@ -39,30 +42,25 @@
   Tuples
   Where & Let Clauses
   Conditionals
-  Function Composition
   List Comprehensions
+  Function Composition
   Comments
   Typeclasses
-  Side Effects
   Records
-  Pragmas
   Newtypes
   Bottoms
   Exhaustiveness
+
+* safety
+  Unsafe Functions
+  Side Effects
   Debugger
   Stack Traces
   Printf Tracing
   Type Inference
   Type Holes
   Deferred Type Errors
-  Name Conventions
-  ghcid
-  HLint
-  Docker Images
-  Continuous Integration
-  Ormolu
-  Haddock
-  Unsafe Functions
+
 * Monads
   Eightfold Path to Monad Satori
   Monad Myths
@@ -89,6 +87,7 @@
   Effect Systems
   Polysemy
   Fused Effects
+
 * Language Extensions
   Philosophy
   Classes
@@ -127,6 +126,7 @@
   DerivingVia
   DerivingStrategies
   Historical Extensions
+
 * Type Class Extensions
   Standard Hierarchy
   Instance Search
@@ -147,6 +147,7 @@
   Deepseq
   Irrefutable Patterns
   The Debate
+
 * Prelude
   What to Avoid?
   What Should be in Prelude
@@ -157,6 +158,7 @@
   Replacing Partiality
   Boolean Blindness
   Foldable / Traversable
+
 * Strings
   String
   String Conversions
@@ -174,12 +176,14 @@
   Arrows
   Bifunctors
   Polyvariadic Functions
+
 * Error Handling
   Either Monad
   ExceptT
   Control.Exception
   Exceptions
   Spoon
+
 * Advanced Monads
   Function Monad
   RWS Monad
@@ -191,6 +195,7 @@
   Free Monads
   Indexed Monads
   Lifted Base
+
 * Quantification
   Universal Quantification
   Free Theorems
@@ -199,11 +204,13 @@
   Existential Quantification
   Impredicative Types
   Scoped Type Variables
+
 * GADTs
   Kind Signatures
   Void
   Phantom Types
   Typelevel Operations
+
 * Interpreters
   HOAS
   PHOAS
@@ -213,12 +220,14 @@
   F-Algebras
   Recursion Schemes & The Morphism Zoo
   Hint and Mueval
+
 * Testing
   QuickCheck
   SmallCheck
   QuickSpec
   Tasty
   Silently
+
 * Type Families
   MultiParam Typeclasses
   Type Families
@@ -228,6 +237,7 @@
   Manual Proofs
   Constraint Kinds
   TypeFamilyDependencies
+
 * Promotion
   Higher Kinded Types
   Kind Polymorphism
@@ -246,6 +256,7 @@
   Typelevel Dictionaries
   Advanced Proofs
   Liquid Haskell
+
 * Generics
   Generic
   Generic Deriving
@@ -253,6 +264,7 @@
   Dynamic Types
   Data
   Uniplate
+
 * Mathematics
   Numeric Tower
   GMP Integers
@@ -267,6 +279,7 @@
   Constructive Reals
   SAT Solvers
   SMT Solvers
+
 * Data Structures
   Map
   Tree
@@ -279,11 +292,13 @@
   Graph Theory
   DList
   Sequence
+
 * FFI
   Pure Functions
   Storable Arrays
   Function Pointers
   hsc2hs
+
 * Concurrency
   Sparks
   Threads
@@ -297,6 +312,7 @@
   STM
   Monad Par
   Async
+
 * Parsing
   Parsec
   Custom Lexer
@@ -306,11 +322,13 @@
   Configurator
   Optparse Applicative
   Happy & Alex
+
 * Streaming
   Lazy IO
   Pipes
   ZeroMQ
   Conduits
+
 * Cryptography
   SHA Hashing
   Password Hashing
@@ -322,13 +340,16 @@
   Elliptic Curves
   Pairing Cryptography
   zkSNARKs
+
 * Dates and Times
   time
   ISO8601
+
 * Data Formats
   JSON
   Yaml
   CSV
+
 * Network & Web Programming
   Frameworks
   HTTP Requests
@@ -345,6 +366,7 @@
   Redis
   Acid State
   Selda
+
 * GHC
   Compiler Design
   GHC API
@@ -375,10 +397,12 @@
   Optimisation
   Interface Files
   Runtime System
+
 * Profiling
   Criterion
   EKG
   RTS Profiling
+
 * Compilers
   Unbound
   Unbound Generics
@@ -393,6 +417,7 @@
   Quasiquotation
   language-c-quote
   GPU Kernels
+
 * Template Haskell
   Antiquotation
   Templated Type Families
@@ -402,6 +427,7 @@
   Categories
   Do I need to Learn Category Theory?
   Abstract Algebra
+
 * Categories
   Isomorphisms
   Duality

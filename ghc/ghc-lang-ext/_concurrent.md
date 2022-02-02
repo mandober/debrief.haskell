@@ -1,33 +1,24 @@
-Concurrent and Parallel Haskell
-===============================
+# Concurrent and Parallel Haskell
 
-Concurrent Haskell
-------------------
+## Concurrent Haskell
 
-Concurrent Haskell is the name given to GHC\'s concurrency extension. It
-is enabled by default, so no special flags are required. The [Concurrent
-Haskell
-paper](https://www.haskell.org/ghc/docs/papers/concurrent-haskell.ps.gz)
-is still an excellent resource, as is [Tackling the awkward
-squad](http://research.microsoft.com/%7Esimonpj/papers/marktoberdorf/).
+*Concurrent Haskell* is the name given to GHC's concurrency extension, which is enabled by default, so no special flags are required.
 
-To the programmer, Concurrent Haskell introduces no new language
-constructs; rather, it appears simply as a library,
-`Control.Concurrent.`{.interpreted-text role="base-ref"}. The functions
+The [Concurrent Haskell paper][1] is still an excellent resource, as is [Tackling the awkward squad][2].
+
+To the programmer, Concurrent Haskell introduces no new language constructs; rather, it appears simply as a library, `Control.Concurrent`. The functions
 exported by this library include:
+- forking and killing threads
+- sleeping
+- synchronised mutable variables, called `MVars`
+- support for bound threads; see [Extending the FFI with concurrency][3]
 
--   Forking and killing threads.
--   Sleeping.
--   Synchronised mutable variables, called `MVars`
--   Support for bound threads; see the paper [Extending the FFI with
-    concurrency](http://community.haskell.org/~simonmar/papers/conc-ffi.pdf).
+[1]: https://www.haskell.org/ghc/docs/papers/concurrent-haskell.ps.gz
+[2]: http://research.microsoft.com/%7Esimonpj/papers/marktoberdorf/
+[3]: http://community.haskell.org/~simonmar/papers/conc-ffi.pdf
 
-Parallel Haskell
-----------------
 
-::: {.index}
-single: SMP
-:::
+## Parallel Haskell
 
 GHC includes support for running Haskell programs in parallel on
 symmetric, shared-memory multi-processor (SMP). By default GHC runs your

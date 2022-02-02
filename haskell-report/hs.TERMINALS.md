@@ -1,0 +1,40 @@
+# Haskell 2010 Report: TERMINALS
+
+The names of terminals used in Haskell 2010 Report
+- `topdecl`     top-level declaration
+- `impdecls`    import declaration
+- `simpletype`
+- `constrs`
+- `newconstr`
+- `context`
+- `scontext`
+- `tycls`       type class declaration
+- `tyvar`       type variable
+- `cdecls`
+- `qtycls`
+- `inst`        instance
+- `idecls`
+- `fdecl` 
+- `decl`        declaration
+- `gendecl`     general declaration
+- `funlhs`
+- `pat`         pattern
+- `rhs` 
+- `aexp`        expression
+- `gcon`        general constructor
+- `literal`
+- `qvar`        qualified variable
+- `con`         constructor
+- `gcon`        general ctor
+- `qcon`        qualified constructor
+- `qconid`
+- `gconsym`
+- `var`         variable
+- `varid`       variable identifier
+- `varsym`      variable symbolic
+- `varop`       variable operator
+- `qvarop`      qualified variable operator
+- `conop`       constructor operator
+- `qconop`      qualified constructor operator
+- `op`          qualified operator
+- `qop`         qualified variable operator

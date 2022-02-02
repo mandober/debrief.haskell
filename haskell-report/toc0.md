@@ -10,7 +10,6 @@ Haskell 2010 Specs
   - implementations (GHC)
   - theoretical background
   - category theory
-
 * Syntax
   - Notational Conventions
   - Lexical Syntax
@@ -65,12 +64,10 @@ Haskell 2010 Specs
     - separate compilation
     - abstract datatypes
     - smart ctors
-
 * Input/Output
   - standard I/O functions
   - sequencing I/O operations
   - exception handling in the I/O monad
-
 * Predefined types and classes
   - Standard Haskell Types
   - Strict Evaluation
@@ -85,7 +82,6 @@ Haskell 2010 Specs
     - Derived instances of Enum
     - Derived instances of Bounded
     - Derived instances of Read and Show
-
 * FFI
   - Foreign Function Interface
   - Foreign Languages
@@ -95,7 +91,6 @@ Haskell 2010 Specs
   - Specification of External Entities
   - Marshalling
   - The External C Interface
-
 * GHC
   * extensions
     * language pragmas

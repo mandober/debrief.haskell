@@ -1,1 +1,1 @@
-# Haskell Topics
+# Haskell Terms

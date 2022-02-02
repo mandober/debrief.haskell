@@ -1,464 +1,246 @@
----
-downloaded:       2022-01-08
-page-url:         https://wiki.haskell.org/Abbreviations
-page-title:       Abbreviations - HaskellWiki
-article-title:    Abbreviations - HaskellWiki
----
-# Abbreviations - HaskellWiki
-
-Note: if there is an abbreviation you cannot find here, it might be the name of a package, so check the Hackage package list. For GHC related abbreviations, see GHC Source Code Abbreviations. The abbreviation might also indicate a  conference.
-Note: if there is an abbreviation you cannot find here, it might be the name of a package, so check the [Hackage package list][1]. For GHC related abbreviations, see [GHC Source Code Abbreviations][2]. The abbreviation might also indicate a [conference][3].
+# Abbreviations
 
 ABI
-
 [Application Binary Interface][4]
 
 ADP
-
 [Algebraic Dynamic Programming][5]
 
 ADT
-
-[Abstract Data Type][6] / [Algebraic Data Type][7]
-
-AFAIC
-
-As Far As I'm Concerned / As Far As I Can
-
-AFAICS
-
-As Far As I Can See
-
-AFAICT
-
-As Far As I Can Tell
-
-AFAIK
-
-As Far As I Know
-
-AFAIU
-
-As Far As I Understand
+1. [Abstract Data Type][6]
+2. [Algebraic Data Type][7]
 
 AFRP
-
 [Arrows-based Functional Reactive Programming][8]
 
-AKA
-
-Also Known As
-
 alist
-
-Association list, a list of key-value pairs, \[(key, value)\]
+Association list, a list of key-value pairs
 
 AMP
-
 [Applicative-Monad Proposal][9]
 
 ANN
-
-ANNouncement / [Artificial Neural Network][10]
+1. ANNotation
+2. ANNouncement
+3. [Artificial Neural Network][10]
 
 API
-
 [Application Programming Interface][11]
 
 aPToP
-
 [A practical theory of programming][12]
 
-ASAP
-
-As Soon As Possible
-
 AST
-
 [Abstract syntax tree][13]
 
 AT
-
-[Abstract (Data) Type][14] / [Associated (Data) Type][15] (see also [Associated types with class][16])
+1. [Abstract (Data) Type][14]
+2. [Associated (Data) Type][15]
+3. [Associated types with class][16]
 
 BE
-
 [Big Endian][17]
 
 BSD
-
-[Berkeley Software Distributions (license)][18]
+(of license) [Berkeley Software Distributions ][18]
 
 Cabal
-
 [Common Architecture for Building Applications and Libraries][19]
 
 CAF
-
 [Constant Applicative Form][20]
 
-CAML
-
-A programming language
-
 CFG
-
 [Context-Free Grammar][21]
 
 CFP
-
 Call For Papers - request to send material for a symposium
 
 CLC
-
 [Core Libraries Committee][22]
 
 CPR
-
 [Constructed Product Result][23] (analysis)
 
 CPS
-
 [Continuation-Passing Style][24]
 
 CSE
-
 [Common subexpression elimination][25]
 
 CUFP
-
 [Commercial Users of Functional Programming][26]
 
 DAG
-
 [Directed acyclic graph][27]
 
 DFA
-
-[Deterministic Finite Automaton][28], [Data Flow Analysis][29], [Differential Fault Analysis][30] or [Dual Factor Authentication][31]
+1. [Deterministic Finite Automaton][28]
+2. [Data Flow Analysis][29]
+3. [Differential Fault Analysis][30]
+4. [Dual Factor Authentication][31]
 
 DPH
-
 [Data Parallel Haskell][32]
 
-DRY
-
-[Don't repeat yourself][33]
-
-DSEL
-
-[Domain-Specific Embedded Language][34]
-
 DSL
-
 [Domain-Specific Language][35]
 
 DVCS
-
 [Distributed Version Control System][36]
 
 EDSL
-
 [Embedded Domain-Specific Language][37]
 
 EHC
-
 The [Essential Haskell Compiler][38]
 
-elt
-
-Element (of a list/set/...)
-
-FAQ
-
-[Frequently Asked Questions][39]
-
 FD
-
 [Functional Dependencies][40]
+FunDeps
+[Functional Dependencies][48]
 
 FFI
-
 [Foreign Function Interface][41]
 
 FHM
-
 [Functional Hybrid Modeling][42]
 
 FPL
-
 [Functional Programming Language][43]
 
-FTFY
-
-Fixed That For You
-
 FRP
-
 [Functional Reactive Programming][44]
 
 FSF
-
 [Free Software Foundation][45]
 
 FTP
-
 [Foldable/Traversable in Prelude proposal][46]
 
 FTW
-
 [For The World / For The Win][47]
 
-FunDeps
-
-[Functional Dependencies][48]
-
-FWIW
-
-For what it's worth
-
 GCC
-
 [GNU Compiler Collection][49]
 
 GHC
-
 [Glasgow Haskell Compiler][50]
 
 GPL
-
 [GNU General Public License][51]
 
-GPL2
-
-[GNU General Public License, Version 2][52]
-
-GPL3
-
-[GNU General Public License, Version 3][53]
-
 GSoC
-
 [Google Summer of Code][54]
 
-GUI
-
-[Graphical User Interface][55]
-
 HaLVM
-
 [Haskell Lightweight Virtual Machine][56]
 
 HBC
-
 [Haskell-B Compiler][57]
 
 HBI
-
 [Haskell-B Interpreter][58]
 
 HCAR
-
 [Haskell Communities and Activities Report][59]
 
 HIE
-
 [Haskell IDE Engine][60] (see also [Haskell Language Server][61])
 
 HLS
-
 [Haskell Language Server][62]
 
 HNF
-
 [Head Normal Form][63]
 
 HOAS
-
 [Higher-Order Abstract Syntax][64] (using binding in the host language to represent binding in the embedded language)
 
 HOF
-
 [Higher-Order Functions][65]
 
 HPC
-
 [Haskell Program Coverage][66], a tool-kit to record and display Haskell program coverage / [Haskell Prime Committee][67] / High Performance Computing
 
 HPFFP
-
 [Haskell Programming From First Principles][68] (book)
 
 HSE
-
 [Haskell-Source with Extensions][69] (a package on Hackage, haskell-src-exts); an extension of the standard haskell-src package
 
-HTH
-
-Hope This Helps
-
-HTML
-
-[HyperText Markup Language][70]
-
 HUGS
-
 [Haskell User's Gofer System][71]
 
 HWN
-
 [Haskell Weekly News][72]
 
-I18n
-
-Internationalization / Internationalisation (which shows why the abbreviation is useful)
-
-IANAL
-
-I Am Not A Lawyer
-
 ICFP
-
 [International Conference on Functional Programming][73]
 
 IFL
-
 [Implementation and Application of Functional Languages][74], symposium
 
 IHG
-
 [Industrial Haskell Group][75]
 
-IIRC
-
-If I Recall Correctly
-
-IIUIC
-
-If I Understand It Correctly
-
-IIUC
-
-If I Understand Correctly
-
-IME
-
-In My Experience
-
-IMHO
-
-In My Humble Opinion
-
-IMNSHO
-
-In My Not So Humble Opinion
-
-IMO
-
-In My Opinion
-
-IOW
-
-In Other Words
-
 IR
-
 [Intermediate Representation][76] in a two-phase compiler
 
-IRC
-
-[Internet Relay Chat][77]
-
-ISTR
-
-I Seem To Recall
-
-JFYI
-
-Just For Your Information
-
 JHC
-
 [John's Haskell Compiler][78]. Compiles to efficient C programs via whole program analysis and other optimizations.
 
-JVM
-
-[Java Virtual Machine][79]
-
 LE
-
 [Little Endian][80]
 
 LGPL
-
 [GNU Lesser General Public License][81]
 
 LHC
-
 [LLVM Haskell Compiler][82]. LHC is a whole-program optimizing backend for the Glorious Glasgow Haskell Compiler
 
 LHS
-
 Left-Hand Side (of a statement)
 
 LLVM
-
 [Low-Level Virtual Machine][83]
 
 LSP
-
 [Language Server Protocol][84] (used by the [Haskell Langauge Server][85])
 
 LtU
-
 [Lambda the Ultimate][86] (Website)
 
-LYH
-
-[Learn You a Haskell for Great Good!][87]
-
 LYAH
-
 [Learn You a Haskell for Great Good!][88]
 
-LYAHFGG
-
-[Learn You a Haskell for Great Good!][89]
-
 MFP
-
 [MonadFail Proposal][90]
 
 ML
-
-A [programming language][91] / Mailing List / Machine Learning
+1. [programming language][91] "Meta language" by Milner
+2. Machine Learning
 
 MMR
-
 [MonoMorphism Restriction][92]
 
 MPTC
-
 [Multi-Parameter Type Class][93]
 
 MR
-
 [Monomorphism Restriction][94]
 
 MRP
-
-[Monad of no \`return\` Proposal (MRP)][95]: Moving \`return\` out of \`Monad\`
+[Monad of no return Proposal (MRP)][95] 
+Moving return out of Monad
 
 MTL
-
 [Monad Transformer Library][96]
 
 NCG
-
 [Native Code Generator][97], a GHC backend
 
 NF
-
 [Normal Form][98], in addition to the [explanations in the Wikipedia article][99], a fully evaluated expression
 
 nhc98
@@ -570,140 +352,84 @@ SMT
 [Satisfiability Modulo Theories][119]
 
 SO
-
 [StackOverflow][120], a programming question and answer site
 
 SOE
-
 [Haskell School Of Expression][121] (title of a book)
 
 SORF
-
 [Simple Overloaded Record Fields][122]
 
 SPJ
-
 [Simon Peyton Jones][123]
 
 SPOJ
-
 [Sphere Online Judge][124], an online judge system with over 9000 problems. The solution to problems can be submitted in over 40 languages, including Haskell
 
 SQL
-
 [Structured Query Language][125]
 
 STG machine
-
 [Spineless Tagless G-machine][126]
 
 STLC
-
 [Simply Typed Lambda Calculus][127]
 
 STM
-
 [Software transactional memory][128]
 
 SYB
-
 [Scrap Your Boilerplate][129]
 
 TaPL
-
 [Types and Programming Languages][130] (book)
 
 TCM
-
 [Type Class Morphism][131]
 
 TCO
-
 [Tail-Call Optimization][132]
 
 TDNR
-
 [Type Directed Name Resolution][133]
 
 TF
-
 [Type families][134]
 
 TFP
-
 [Trends in Functional Programming][135], symposium
 
 TH
-
 [Template Haskell][136]
 
-TIA
-
-Thanks In Advance
-
-TIL
-
-Today I Learned
-
-tl;dr
-
-Too Long; Didn't Read
-
-TLDR
-
-Too Long; Didn't Read
-
-TMI
-
-Too Much Information
-
-TMR
-
+TRM
 [The Monad.Reader][137]
 
-TTBOMK
-
-To the best of my knowledge
-
 UHC
-
 [Utrecht Haskell Compiler][138]
 
 UTF8
-
 [Unicode Transformation Format, byte-oriented][139] (also written as UTF-8)
 
 VCS
-
 [Version Control System][140]
 
 VPS
-
 [Virtual Private Server][141], a virtual machine for hosting a website
 
 WHNF
-
 [Weak Head Normal Form][142]
 
-wrt
-
-With Respect To, or With Regard To
-
 XML
-
 [eXtensible Markup Language][143]
 
 YAHT
-
 [Yet Another Haskell Tutorial][144]
 
 YHC
-
 [York Haskell Compiler][145]
 
-YMMV
 
-[Your Mileage May Vary][146]
 
 [1]: http://hackage.haskell.org/packages/
 [2]: https://gitlab.haskell.org/ghc/ghc/wikis/commentary/abbreviations

@@ -31,16 +31,16 @@ Often, the rules regarding variance are not a consequence of other decisions in 
 
 By making type ctors variant, more programs are accepted as well-typed. Many people find contravariance unintuitive, so a PL designer may choose to simplify things by forcing, e.g. a type ctor to be invariant, even if it was safe (type-safety) to leave it contravariant.
 
-*Monovariance*: a monovariant is a property of an object whose value only changes in one direction. It will either always increase or always decrease.
+**Monovariance**: a monovariant is a property of an object whose value only changes in one direction. It will either always increase or always decrease.
 
 ## Variance in Haskell
 
 > In Haskell, variance is a property of a type ctor in relation to one of its type parameters.
 
-By convention, we tend to reserve the last formal parameter for the data structure (`T a`) the function will operate on, and since map-like functions transform the last parameter, we can unambiguously say, e.g., 
-that the type ctor 
-`T` is contravariant -- as a shorthand for the full expression: 
+By convention, we tend to reserve the last formal parameter for the data structure (`T a`) the function will operate on, and since map-like functions transform the last parameter, we can unambiguously say, e.g., that a type ctor  
+`T` is contravariant, as a shorthand for the full expression:   
 `T a` is contravariant with respect to its type param `a`.
+
 
 > The question of variance is: if we can transform an `a` into a `b`, does that necessarily mean we can transform a `T a` into a `T b`?
 
@@ -59,19 +59,20 @@ A direct corollary of the theorem that, any two types with the same cardinality 
     The *canonical representation* of an algebraic data type is a **potentially recursive sum of products (SoP)**.
 
 
-* The canonical form of a sum type is a `Either a b`, tha tis the type ctor `Either` with two type vars `a` and `b`.
+* The canonical form of a sum type is a `Either a b`, that is, the type ctor `Either` with two type vars `a` and `b`.
 * The canonical form of a product type is a pair, `(a,b)`, or more formally, the type ctor `(,)` with two type vars `a` and `b`.
 * Function types have the arrow familiar form, `a -> b` or more formally, the type ctor `(->)` with two type vars `a` and `b`.
 
-Basically, asll sum types are repr by `Either` and all product types by a pair, with the arroew forms also accepted.
+Basically, all sum types are repr by `Either`, all product types by a pair, and with the arrow type forms added.
 
 Each of following types is in its canonical representation:
-- ()
-- Either a b
+- Void                          ≅ 𝟘
+- ()                            ≅ 𝟙
+- (a, b)                        ≅ ⨯
+- Either a b                    ≅ +
+- a -> b                        ≅ ^
 - Either (a, b) (c, d)
 - Either a (Either b (c, d))
-- a -> b
-- (a, b)
 - (a, Int)
 - `Either () a` is the canonical repr of `Maybe a`
 - We make an exception to the rule for numeric types (like `Int` in the last case) as it would be too much work to express them as sums.
@@ -115,18 +116,43 @@ h :: a      -> c
 
 Occurrance of a type variable is the positive position is worth 1, while the negative position is worth -1. Multiplication determines its overall sign.
 
-Examples
-* in `(a, Bool) -> Int`, `a` is in positive position in the pair, but in the negative position in the arrow; however, since a positive (1) times a negative (-1) is still a negative (-1 × 1 = -1), `a` is negative overall, so it is *contravariant*. This aligns with the currying form nicely:
-* in `a -> Bool -> Int`, `a` is *contravariant*
-* in `a -> b`, `a` is *contravariant*, `b` is covariant
-* in `a -> a`, `a` is *invariant* since it appears in both positions at once
-* in `(Int -> a) -> Int`, `a` is 1 in the nested function, but then its position in the nested function (which is in the negatove position), gets it a -1, so overall, it is -1, that is, `a` is *contravariant*.
-* in `(a -> Int) -> Int`, is similar to the above, only now `a` is in two negative positions (-1 × -1 = 1) so, overall, it is positive and *covariant*.
+A type's variance also has a more concrete interpretation: variables in *positive position are produced (owned)*, while those in *negative position are consumed*. Products, sums and the right-side of an arrow are all pieces of data that already exist or are produced, but the type on the left-side of an arrow is indeed consumed.
+
+### Examples
+
+1. Example: `(a, Bool) -> Int`
+
+The type param `a` is in the positive position (+1) in the pair `(a, Bool)`, but it is also a part of the larger expression that is the input type to a function and so in the negative position (-1). However, since (-1 ⨯ 1 = -1), the type param `a` is contravariant.
+
+This aligns with Currying nicely, because when the signatue is curryied    
+`a -> Bool -> Int` = `a -> (Bool -> Int)`   
+then the type param `a` finds itself only in one position, which is a negative one, and so `a` remains contravariant.
 
 
-A type's variance also has a more concrete interpretation: variables in *positive position are produced (owned)*, while those in *negative position are consumed*.
+2. Example: `a -> b`
 
-Products, sums and the right-side of an arrow are all pieces of data that already exist or are produced, but the type on the left-side of an arrow is indeed consumed.
+In this function type with two distinct type params:
+- `a` is contravariant (being in the negative position)
+- `b` is covariant (being in the positive position)
+
+3. Example: `a -> a`
+
+Here the function type has the same type param in both positions, so the overall variance of `a` must be calculated. Once in negatove and once in positive position means its overall veriance number is negative and so `a` is contravariant. Wrong! `a` is actually *invariant* because it appears in both positions. (See the special case above).
+
+
+4. Example: `(Int -> a) -> Int`
+
+`a` is *contravariant* overall. It gets +1 for being in the return position of a function (which is a positive position), but it gets -1 for being in a larger expression that is in a negative position (and -1 ⨯ 1 = -1).
+
+
+5. Example: `(a -> Int) -> Int`
+
+Now `a` is in two negative positions:
+- it gets -1 for `(a -> Int)`
+- it gets -1 since the exp above is itself in the negative position
+
+However, since `-1 × -1 = 1`, the type param `a` is here actually *covariant*.
+
 
 
 ## Type parameters and variance

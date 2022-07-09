@@ -1,17 +1,19 @@
 # Sets for Mathematics
 
-William Lawvere, Robert Rosebrugh, 2003
-
+Sets for Mathematics
+William Lawvere, Robert Rosebrugh
+2003
 Cambridge University Press
 p.264 (264 pages, 84 line diagrams, 219 exercises)
 ISBN: 9780521010608
 
 - Book homepage: https://www.mta.ca/~rrosebru/setsformath/
 - Download link: http://patryshev.com/books/Sets%20for%20Mathematics.pdf
-
+Sets for Mathematics
 Homepages
 - William Lawvere: http://www.acsu.buffalo.edu/~wlawvere/index.html
 - Robert Rosebrugh: https://www.mta.ca/~rrosebru/index.html
+
 
 ## Contents
 

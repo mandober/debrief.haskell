@@ -4,17 +4,23 @@
 
 Skolemization is a way of removing existential quantifiers from a formula:
 
-* Variables bound by existential quantifiers which are not inside the scope of universal quantifiers can simply be replaced by constants: `∃x[x<3]` can be changed to `c < 3`, with `c` as a suitable constant.
+* Variables bound by existential quantifiers which are not inside the scope of universal quantifiers can simply be replaced by constants: `∃x(x < 3)` can be changed to `c < 3`, with `c` as a suitable constant.
 
-* When the existential quantifier is inside a universal quantifier, the bound variable must be replaced by a Skolem function of the variables bound by universal quantifiers. Thus `∀x[x = 0 ⋁ ∃y[x = y + 1]]` becomes 
-`∀x[x = 0 ⋁ x = f(x) + 1]`.
-
-
+* When the existential quantifier is inside a universal quantifier, the bound variable must be replaced by a *Skolem function* of the variables bound by universal quantifiers. Thus `∀x(x = 0 ⋁ ∃y(x = y + 1))` becomes 
+`∀x(x = 0 ⋁ x = f(x) + 1)`.
 
 
-Conversion of sentences FOL to CNF requires skolemization.
+## Skolemization, Most General Unifiers, First-Order Resolution
 
-*Skolemization*: remove existential quantifiers by introducing new function symbols. *How*: for each existentially quantified variable introduce a n-place function where `n` is the number of previously appearing universal quantifiers. *Special case*: introducing constants (trivial functions: no previous universal quantifier).
+Skolemization, Most General Unifiers, First-Order Resolution
+CSC 384, University of Toronto, 2011 - Torsten Hahmann
+https://www.cs.toronto.edu/~sheila/384/w11/Lectures/csc384w11-KR-tutorial.pdf
+
+
+Conversion of FOL sentences to CNF requires skolemization.
+* Skolemization: remove ∃ by introducing new function symbols.
+* How: for each ∃ variable introduce a n-place function where `n` is the number of previously appearing universal quantifiers.
+* Special case: introducing constants (trivial functions: no previous universal quantifier).
 
 The simplest form of Skolemization is for existentially quantified variables that are not inside the scope of a universal quantifier. These may be replaced simply by creating fresh constants. For example, `∃xP(x)` may be changed to `P(c)`, where `c` is a fresh constant (does not occur anywhere else in the formula).
 
@@ -25,12 +31,17 @@ As an example, the formula `∀x∃y∀z[P(x,y,z)]` is not in Skolem normal form
 
 ## Skolemization: Example 1
 
-"Every philosopher (P) writes (W) at least one book (B)". Note that `W(rites)` is a relation.
+"Every philosopher (P) writes (W) at least one book (B)"
 
-```
-1 ∀p [ P(p) -> ∃b [B(b) ⋀ W(p,b)]]
-2 ∀p [¬P(p) ⋁  ∃b [B(b) ⋀ W(p,b)]]           convert implication to disjunction
-3 ∀p [¬P(p) ⋁ [B(sk(p)) ⋀ W(p, (sk(p))]]     skolemize: substitute b by g(p)
+```js
+∀x(Px -> ∃y(By ⋀ W(x,y)))
+∀x(¬Px ⋁ ∃y(By ⋀ W(x,y)))
+∀x∃y(¬Px ⋁ (By ⋀ W(x,y)))
+
+
+1 ∀p ( P(p) -> ∃b (B(b) ⋀ W(p,b)))
+2 ∀p (¬P(p) ⋁  ∃b (B(b) ⋀ W(p,b)))         implication to disjunction
+3 ∀p (¬P(p) ⋁ (B(sk(p)) ⋀ W(p, (sk(p))))   skolemize: substitute b by g(p)
 ```
 
 (1) we see that `∃b` is dependent on `∀p`, i.e. it is in the scope of `∀p`; this means skolemization will be realized via a function of `p` (and not via a constant).
@@ -127,8 +138,6 @@ https://www.youtube.com/watch?v=NFHkcB1THFc
 Skolemization: demo
 https://demonstrations.wolfram.com/Skolemization/
 
----
-
 Skolemization, Most General Unifiers, First-Order Resolution
 CSC 384, University of Toronto, March 07, 2011, prof. Torsten Hahmann
 https://www.cs.toronto.edu/~sheila/384/w11/Lectures/csc384w11-KR-tutorial.pdf
@@ -143,3 +152,61 @@ http://rg1-teaching.mpi-inf.mpg.de/autrea-ss10/script/lecture10.pdf
 First Order Logic: Prenex normal form. Skolemization. Clausal form
 Valentin Goranko, DTU Informatics, September 2010
 http://www2.imm.dtu.dk/courses/02286/Slides/FirstOrderLogicPrenexFormsSkolemizationClausalFormTrans.pdf
+
+why-skolemization
+https://mathoverflow.net/questions/114083/why-skolemization
+
+getting rid of existential quantifiers
+https://mathoverflow.net/questions/90324/getting-rid-of-existential-quantifiers
+
+When does Skolemization require the axiom of choice?
+https://mathoverflow.net/questions/191010/when-does-skolemization-require-the-axiom-of-choice?rq=1
+
+Skolemization
+https://planetmath.org/skolemization
+
+Skolemization, Most General Unifiers, First-Order Resolution - Torsten Hahmann
+CSC 384, University of Toronto, 2011
+https://www.cs.toronto.edu/~sheila/384/w11/Lectures/csc384w11-KR-tutorial.pdf
+
+Converting predicate logic formulas into Skolem Normal Form
+https://math.stackexchange.com/questions/2183166/converting-predicate-logic-formulas-into-skolem-normal-form
+
+Logical Laws
+http://sakharov.net/logic.html
+http://alex.sakharov.net/
+
+Logic - Sammy Maness
+https://www.youtube.com/playlist?list=PLMATWroaDqoqLI7soXAIaaaCblVCQZ0Fm
+
+https://www.youtube.com/watch?v=iJyweEcpsGc&list=TLPQMTcwMjIwMjIW5QhTa0hlwA&index=2
+
+https://www.youtube.com/watch?v=-KmVFv2Tde4&list=PLC_zntYv9TwSBOCyhxKbjqvBFEqMwkHnu&index=2
+
+https://www.youtube.com/watch?v=ARywou8HLQk&list=PLMATWroaDqoqLI7soXAIaaaCblVCQZ0Fm
+
+https://math.stackexchange.com/questions/2183166/converting-predicate-logic-formulas-into-skolem-normal-form
+
+Skolemization
+https://www.youtube.com/watch?v=dGyz1dgTx0I
+
+more conversion to CNF, skolemization
+https://www.youtube.com/watch?v=NFHkcB1THFc
+
+Sequent Calculus Primer
+http://sakharov.net/sequent.html#derivation
+
+Logic more...
+http://sakharov.net/foundation.html
+
+The Lambda-calculus, Combinatory Logic, and Type Systems
+http://www.rbjones.com/rbjpub/logic/cl/cl017.htm
+
+herbrand theorem
+https://mathweb.ucsd.edu/~sbuss/ResearchWeb/herbrandtheorem/
+
+Natural Deduction: Some Recent Developments - by Jan von Plato 
+https://www.mv.helsinki.fi/home/negri/dresum.pdf
+
+Logic - by Helmut Schwichtenberg
+https://www.mathematik.uni-muenchen.de/~schwicht/lectures/logic/ws03/logic.pdf

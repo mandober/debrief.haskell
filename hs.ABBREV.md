@@ -6,7 +6,10 @@
 2. Algebraic data type
 
 ## AMP
-Applicative-monad proposal (introducing the new, `Applicative`, class between `Functor` and `Monad` classes)
+Applicative-monad proposal
+
+## dApps
+Decentralized applications
 
 ## CPS
 Continuation-passing style

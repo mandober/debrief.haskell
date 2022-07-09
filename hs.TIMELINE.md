@@ -2,22 +2,24 @@
 
 https://gitlab.haskell.org/ghc/ghc/-/wikis/language-pragma-history
 
-## 1960's
-- 1964 `where` and `where rec` expressions by Peter Landin in "The mechanical evaluation of expressions"
-- 1969 `let` and `let rec` expressions in LCF language by Dana Scott, described in "A type-theoretic alternative to CUCH, ISWIM, OWHY" (unpublished)
+* 1960's
+- 1964 `where` and `where rec` expressions by Peter Landin in 
+  "The mechanical evaluation of expressions"
+- 1969 `let` and `let rec` expressions in LCF language by Dana Scott in 
+  "A type-theoretic alternative to CUCH, ISWIM, OWHY" (unpublished)
+- 1969 Rod Burstall invents *pattern matching*
+- 1970 first impl of *pattern matching* in Fred McBride's LISP variant
 
-## 1980's
-
+* 1980's
 - 1989 type classes; P.Wadler, Blott
 
-## 1990's
+* 1990's
 - 1990 Haskell Report version 1.0, April 1st, 1990
 - 1991 The notion of a singleton type was first put forward by S.Hayashi in "Singleton, union and intersection types for program extraction"
 - 1998 H. Xi and F. Pfenning use singletons to simulate dependent types in "Eliminating array bound checking through dependent types" in ML
 - 1999 H. Xi and F. Pfenning "Dependent types in practical programming"
 
-## 2000's
-
+* 2000's
 - 2000 functional dependencies, M. Jones
 - 2000 Crary, Weirich used a kind-indexed definition to create singletons for arbitrary program values "Resource bound certification"
 - 2005 data families by Chakravarty et al.
@@ -28,7 +30,7 @@ https://gitlab.haskell.org/ghc/ghc/-/wikis/language-pragma-history
 - 2006 GADTs by Peyton Jones et al.
 - 2007 Kiselyov and Shan used a variant of singleton types to provide extra static guarantees
 
-## 2010's
+* 2010's
 - 2012 datatype promotion by Yorgey et al.
 - 2012 Eisenberg, Weirich: "Dependently Typed Programming with Singletons"
 - 2013 `Type :: Type` by Weirich, Eisenberg, et al.

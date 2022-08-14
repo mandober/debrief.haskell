@@ -1,0 +1,157 @@
+# Data.List
+
+* T - Totality
+  * t - total
+  * p - partial
+* L - lainess
+  * l - lazy
+  * s - strict
+* A - arity
+  * f1 - takes a unary fn arg
+  * f2 - takes a binary fn arg
+* Ds - Description
+  * Bf - Basic functions
+  * Lt - List transformation (keeps list length)
+  * Lf - List folding
+  * Lb - List building
+  * Se - Sublist extracting
+  * Sp - Sublist predicates
+  * Ls - List searching
+  * Li - List indexing
+  * Lz - List zipping and unzipping
+  * So - Set-like list ops
+  * Sf - String functions: [Char] = String
+
+
+
+
+name             | context                | sig                                        | T | L | A | Ds | notes
+-----------------|------------------------|--------------------------------------------|---|---|---|----|------------
+null             | @[]                    | [a] -> Bool                                | t | l | 1 | Pr |
+head             |                        | [a] -> a                                   | p | l | 1 | Bf |
+last             |                        | [a] -> a                                   | p | l | 1 | Bf |
+tail             |                        | [a] -> [a]                                 | p | l | 1 | Bf |
+init             |                        | [a] -> [a]                                 | p | l | 1 | Bf |
+(++)             |                        | [a] -> [a] -> [a]                          | t | l | 2 | Bf |
+length           | @[]                    | [a] -> Int                                 | t | l | 1 | Bf |
+genericLength    | Num i                  | [a] -> i                                   |   |   | 1 | Bf |
+uncons           |                        | [a] -> Maybe (a, [a])                      | t | l | 1 | Bf | pair
+map              |                        | (a -> b) -> [a] -> [b]                     | t | l | 2 | Lt | f1
+reverse          |                        | [a] -> [a]                                 |   | l | 1 | Lt |
+intersperse      |                        | a -> [a] -> [a]                            |   | l | 2 | Lt |
+intercalate      |                        | [a] -> [[a]] -> [a]                        |   | l | 2 | Lt |
+subsequences     |                        | [a] -> [[a]]                               |   | l | 1 | Lt |
+permutations     |                        | [a] -> [[a]]                               |   | l | 1 | Lt |
+transpose        |                        | [[a]] -> [[a]]                             |   | l | 1 | Lt |
+nub              | Eq a                   | [a] -> [a]                                 |   |   | 1 | Lt |
+nubBy            |                        | (a -> a -> Bool) -> [a] -> [a]             |   |   | 2 | Lt | f2
+sort             | Ord a                  | [a] -> [a]                                 |   |   | 1 | Lt |
+sortOn           | Ord b                  | (a -> b) -> [a] -> [a]                     |   |   | 2 | Lt | f1
+sortBy           |                        | (a -> a -> Ordering) -> [a] -> [a]         |   |   | 2 | Lt | f2
+foldl            | @[]                    | (b -> a -> b) -> b -> [a] -> b             |   | l | 2 | Lf | f2
+foldr            | @[]                    | (a -> b -> b) -> b -> [a] -> b             |   | l | 2 | Lf | f2
+foldl1           | @[]                    | (a -> a -> a) -> [a] -> a                  |   | l | 2 | Lf | f2
+foldr1           | @[]                    | (a -> a -> a) -> [a] -> a                  |   | l | 2 | Lf | f2
+foldl'           | @[]                    | (b -> a -> b) -> b -> [a] -> b             |   | s | 2 | Lf | f2
+foldl1'          |                        | (a -> a -> a) -> [a] -> a                  |   | s | 2 | Lf | f2
+scanr            |                        | (a -> b -> b) -> b -> [a] -> [b]           |   | l | 2 | Lf | f2
+scanl            |                        | (b -> a -> b) -> b -> [a] -> [b]           |   | l | 2 | Lf | f2
+scanl'           |                        | (b -> a -> b) -> b -> [a] -> [b]           |   | s | 2 | Lf | f2
+scanl1           |                        | (a -> a -> a) -> [a] -> [a]                |   |   | 2 | Lf | f2
+scanr1           |                        | (a -> a -> a) -> [a] -> [a]                |   |   | 2 | Lf | f2
+mapAccumL        | @[]                    | (a -> b -> (a, c)) -> a -> [b] -> (a, [c]) |   |   | 3 | Lf | f2 pair
+mapAccumR        | @[]                    | (a -> b -> (a, c)) -> a -> [b] -> (a, [c]) |   |   | 3 | Lf | f2 pair
+concat           | @[]                    | [[a]] -> [a]                               |   |   | 1 | Lf |
+concatMap        | @[]                    | (a -> [b]) -> [a] -> [b]                   |   |   | 2 | Lf | f1
+and              | @[]                    | [Bool] -> Bool                             |   |   | 1 | Pr |
+or               | @[]                    | [Bool] -> Bool                             |   |   | 1 | Pr |
+any              | @[]                    | (a -> Bool) -> [a] -> Bool                 |   |   | 2 | Pr | f1
+all              | @[]                    | (a -> Bool) -> [a] -> Bool                 |   |   | 2 | Pr | f1
+sum              | @[] (Num a)            | [a] -> a                                   |   |   | 1 | Lf |
+product          | @[] (Num a)            | [a] -> a                                   |   |   | 1 | Lf |
+maximum          | @[] (Ord a)            | [a] -> a                                   |   |   | 1 | Lf |
+maximumBy        | @[]                    | (a -> a -> Ordering) -> [a] -> a           |   |   | 2 | Lf | f2
+minimum          | @[] (Ord a)            | [a] -> a                                   |   |   | 1 | Lf |
+minimumBy        | @[]                    | (a -> a -> Ordering) -> [a] -> a           |   |   | 2 | Lf | f2
+iterate          |                        | (a -> a) -> a -> [a]                       |   | l | 2 | Lb | ∞ f1
+iterate'         |                        | (a -> a) -> a -> [a]                       |   | s | 2 | Lb | ∞ f1
+repeat           |                        | a -> [a]                                   |   | l | 1 | Lb | ∞
+replicate        |                        | Int -> a -> [a]                            |   | l | 2 | Lb | ∞
+genericReplicate | Integral i             | i -> a -> [a]                              |   |   | 2 | Gf |
+cycle            |                        | [a] -> [a]                                 |   | l | 1 | Lb | ∞
+unfoldr          |                        | (b -> Maybe (a, b)) -> b -> [a]            |   |   | 2 | Lb | f1 pair
+group            | Eq a                   | [a] -> [[a]]                               |   |   | 1 | Sx |
+groupBy          |                        | (a -> a -> Bool) -> [a] -> [[a]]           |   |   | 2 | Sx | f2
+take             |                        | Int -> [a] -> [a]                          |   |   | 2 | Sx |
+takeWhile        |                        | (a -> Bool) -> [a] -> [a]                  |   |   | 2 | Sx | f1
+genericTake      | Integral i             | i -> [a] -> [a]                            |   |   | 2 | Gf |
+splitAt          |                        | Int -> [a] -> ([a], [a])                   |   |   | 2 | Sx |
+genericSplitAt   | Integral i             | i -> [a] -> ([a], [a])                     |   |   | 2 | Gf |    pair
+drop             |                        | Int -> [a] -> [a]                          |   |   | 2 | Sx |
+dropWhile        |                        | (a -> Bool) -> [a] -> [a]                  |   |   | 2 | Sx | f1
+dropWhileEnd     |                        | (a -> Bool) -> [a] -> [a]                  |   |   | 2 | Sx | f1
+genericDrop      | Integral i             | i -> [a] -> [a]                            |   |   | 2 | Gf |
+span             |                        | (a -> Bool) -> [a] -> ([a], [a])           |   |   | 2 | Sx | f1 pair
+break            |                        | (a -> Bool) -> [a] -> ([a], [a])           |   |   | 2 | Sx | f1 pair
+inits            |                        | [a] -> [[a]]                               |   |   | 1 | Sx |
+tails            |                        | [a] -> [[a]]                               |   |   | 1 | Sx |
+stripPrefix      | Eq a                   | [a] -> [a] -> Maybe [a]                    | t |   | 2 | Sx |
+isPrefixOf       | Eq a                   | [a] -> [a] -> Bool                         |   |   | 2 | Pr |
+isSuffixOf       | Eq a                   | [a] -> [a] -> Bool                         |   |   | 2 | Pr |
+isInfixOf        | Eq a                   | [a] -> [a] -> Bool                         |   |   | 2 | Pr |
+isSubsequenceOf  | Eq a                   | [a] -> [a] -> Bool                         |   |   | 2 | Pr |
+elem             | @[] (Eq a)             | a -> [a] -> Bool                           |   |   | 2 | Pr |
+notElem          | @[] (Eq a)             | a -> [a] -> Bool                           |   |   | 2 | Pr |
+lookup           | Eq a                   | a -> [(a, b)] -> Maybe b                   |   |   | 2 | Ls | alist
+find             | @[]                    | (a -> Bool) -> [a] -> Maybe a              |   |   | 2 | Ls | f1
+filter           |                        | (a -> Bool) -> [a] -> [a]                  |   |   | 2 | Ls | f1
+partition        |                        | (a -> Bool) -> [a] -> ([a], [a])           |   |   | 2 | Ls | f1 pair
+(!!)             |                        | [a] -> Int -> a                            |   |   | 2 | Li |
+genericIndex     | Integral i             | [a] -> i -> a                              |   |   | 2 | Li |
+elemIndex        | Eq a                   | a -> [a] -> Maybe Int                      |   |   | 2 | Li |
+elemIndices      | Eq a                   | a -> [a] -> [Int]                          |   |   | 2 | Li |
+findIndex        |                        | (a -> Bool) -> [a] -> Maybe Int            |   |   | 2 | Li | f1
+findIndices      |                        | (a -> Bool) -> [a] -> [Int]                |   |   | 2 | Li | f1
+zip              |                        | [a] -> [b] -> [(a, b)]                     |   |   | 2 | Lz | alist
+zip3             |                        | [a] -> [b] -> [c] -> [(a, b, c)]           |   |   | 3 | Lz |
+zipWith          |                        | (a -> b -> c) -> [a] -> [b] -> [c]         |   |   | 3 | Lz | f2
+unzip            |                        | [(a, b)] -> ([a], [b])                     |   |   | 1 | Lz | on alist
+unzip3           |                        | [(a, b, c)] -> ([a], [b], [c])             |   |   | 1 | Lz | on tuple
+intersect        | Eq a                   | [a] -> [a] -> [a]                          |   |   | 2 | So | 
+intersectBy      |                        | (a -> a -> Bool) -> [a] -> [a] -> [a]      |   |   | 3 | So | f2
+union            | Eq a                   | [a] -> [a] -> [a]                          |   |   | 2 | So |
+unionBy          |                        | (a -> a -> Bool) -> [a] -> [a] -> [a]      |   |   | 3 | So | f2
+(\\)             | Eq a                   | [a] -> [a] -> [a]                          |   |   | 2 | So |
+insert           | Ord a                  | a -> [a] -> [a]                            |   |   | 2 | So |
+insertBy         |                        | (a -> a -> Ordering) -> a -> [a] -> [a]    |   |   | 3 | So | f2
+delete           | Eq a                   | a -> [a] -> [a]                            |   |   | 1 |    |
+deleteBy         |                        | (a -> a -> Bool) -> a -> [a] -> [a]        |   |   | 3 |    | f2
+deleteFirstsBy   |                        | (a -> a -> Bool) -> [a] -> [a] -> [a]      |   |   | 3 |    | f2
+lines            |                        | String -> [String]                         |   |   | 1 | Sf | on String
+unlines          |                        | [String] -> String                         |   |   | 1 | Sf | on String
+words            |                        | String -> [String]                         |   |   | 1 | Sf | on String
+unwords          |                        | [String] -> String                         |   |   | 1 | Sf | on String
+null             | Foldable t             | t a -> Bool                                | t | l | 1 | Pr |
+length           | Foldable t             | t a -> Int                                 | t | l | 1 | Bf |
+foldl            | Foldable t             | (b -> a -> b) -> b -> t a -> b             |   | l | 2 | Lf | f2
+foldr            | Foldable t             | (a -> b -> b) -> b -> t a -> b             |   | l | 2 | Lf | f2
+foldl1           | Foldable t             | (a -> a -> a) -> t a -> a                  |   | l | 2 | Lf | f2
+foldr1           | Foldable t             | (a -> a -> a) -> t a -> a                  |   | l | 2 | Lf | f2
+foldl'           | Foldable t             | (b -> a -> b) -> b -> t a -> b             |   | s | 2 | Lf | f2
+concat           | Foldable t             | t [a] -> [a]                               |   |   | 1 | Lf |
+concatMap        | Foldable t             | (a -> [b]) -> t a -> [b]                   |   |   | 2 | Lf | f1
+and              | Foldable t             | t Bool -> Bool                             |   |   | 1 | Pr |
+or               | Foldable t             | t Bool -> Bool                             |   |   | 1 | Pr |
+any              | Foldable t             | (a -> Bool) -> t a -> Bool                 |   |   | 2 | Pr | f1
+all              | Foldable t             | (a -> Bool) -> t a -> Bool                 |   |   | 2 | Pr | f1
+maximumBy        | Foldable t             | (a -> a -> Ordering) -> t a -> a           |   |   | 2 | Lf | f2
+minimumBy        | Foldable t             | (a -> a -> Ordering) -> t a -> a           |   |   | 2 | Lf | f2
+find             | Foldable t             | (a -> Bool) -> t a -> Maybe a              |   |   | 2 | Ls | f1
+sum              | (Foldable t, Num a)    | t a -> a                                   |   |   | 1 | Lf |
+product          | (Foldable t, Num a)    | t a -> a                                   |   |   | 1 | Lf |
+elem             | (Foldable t, Eq a)     | a -> t a -> Bool                           |   |   | 2 | Pr |
+notElem          | (Foldable t, Eq a)     | a -> t a -> Bool                           |   |   | 2 | Pr |
+maximum          | (Foldable t, Ord a)    | t a -> a                                   |   |   | 1 | Lf |
+minimum          | (Foldable t, Ord a)    | t a -> a                                   |   |   | 1 | Lf |
+mapAccumL        | Traversable t          | (a -> b -> (a, c)) -> a -> t b -> (a, t c) |   |   | 3 | Lf | f2 pair
+mapAccumR        | Traversable t          | (a -> b -> (a, c)) -> a -> t b -> (a, t c) |   |   | 3 | Lf | f2 pair

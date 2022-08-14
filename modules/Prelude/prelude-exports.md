@@ -1,20 +1,40 @@
 # Prelude exports
 
-* Prelude exports 256 items (mostly functions, some classes)
-* Prelude mostly re-exports items defined elsewhere
-- no item starts with (Prelude.) H, K, P, Q, U, X, Y, Z
-- symbolically-named operators: 28
-- math fn: 
-- Data ctors: 9
-- Type ctors: 17
-  - `type`    : 6
-  - `newtype` : 1
-  - `data`    : 10
-- Types: 17
-  - numeric types: 6
-  - textual types: 4
-- Type Classes : 22
-  - numeric classes: 7
+- Prelude re-exports items defined elsewhere (it doesn't define anything)
+- Prelude exports 256 items
+  - majority of which are functions, few types, some classes
+  - of which 28 are symbolic operators
+  - no name starts with `Prelude.{H,K,P,Q,U,X,Y,Z}`
+
+Summary
+
+- Names
+  - 256 names total
+  - 228 alphabetic names
+  - 28 symbolic names
+- Types
+  - 17 types
+  - types by ctors
+    - 17 type ctors
+    -  9 data ctors
+  - types by declaration keyword
+    - 10 data
+    - 1  newtype
+    - 6  type
+  - types by purpose
+    - 6 numeric types
+    - 4 textual types
+
+- Functions
+  - math functions
+
+- Classes
+  - 22 classes
+    - 7 numeric
+      - Num
+      - Integral
+      - Float
+    - methods
 
 
 Prelude.-

@@ -6,7 +6,7 @@ The basic idea behind a continuation is that it represents the rest of a computa
 
 Consider an expression like `foo (bar x y) z`.
 
-If we extract the subexpression `bar x y`, then it is not just the function `bar` we can apply; Rather, it is a subexpression we need to apply a function to, a function that represents the rest of the computation. In this case, the function that represents the rest of the computation is `\a -> foo a z` because if we apply it to the extracted subexpression, `bar x y` we'll get the original expression back.
+If we extract the subexpression `bar x y`, then it is not just the function `bar` we can apply; rather, it is a subexpression we need to apply a function to, a function that represents the rest of the computation. In this case, the function that represents the rest of the computation is `\a -> foo a z` because if we apply it to the extracted subexpression, `bar x y` we'll get the original expression back.
 
 ```hs
 e1 = foo (bar x y) z

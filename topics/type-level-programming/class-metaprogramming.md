@@ -1,17 +1,17 @@
 # An introduction to class metaprogramming
 
-*class metaprogramming* (TMP) is a powerful technique available to Haskell programmers to automatically generate term-level code from static type information.
+https://lexi-lambda.github.io/blog/2021/03/25/an-introduction-to-typeclass-metaprogramming/
 
-It has been used to great effect in several popular Haskell libraries (such as the [servant][1] ecosystem), and it is the core mechanism used to implement generic programming via [GHC generics][2].
+*The Class Metaprogramming* (TMP) is a technique to automatically generate term-level code from static type information. It has been used to great effect in several popular Haskell libraries (such as the [servant][1] ecosystem), and it is the core mechanism used to implement generic programming via [GHC generics][2].
 
 
-## Class as a function from types to terms
+## Classes as functions from types to terms
 
-As its name implies, TMP centers around the class construct. Classes are viewed as a mechanism for overloading, and though that is often the most useful way to think about classes, TMP encourages a different perspective:
+TMP centers around classes which are viewed as a mechanism for overloading, but TMP encourages a different perspective: *classes as functions from types to runtime terms*.
 
-> Classes as functions from types to (runtime) terms.
+### TypeOf class
 
-Consider a class `TypeOf` that accept a value and returns the name of its type as a string.
+The class `TypeOf` accepts a value and returns the name of its type as a string.
 
 ```hs
 class TypeOf a where
@@ -26,11 +26,16 @@ instance TypeOf Char where
 instance (TypeOf a, TypeOf b) => TypeOf (a, b) where
   typeOf (a, b) = "(" ++ typeOf a ++ ", " ++ typeOf b ++ ")"
 
--- ghci> typeOf (True, 'a')
--- "(Bool, Char)"
+-- >>> typeOf (True, 'a') -- "(Bool, Char)"
 ```
 
-Note that ground instances ignore the arg to `typeOf` altogether since the point is to get access to the type information, which is the same regardless of the value provided. To make this more explicit, we can use some extensions to eliminate the value-level arg altogether.
+
+Note that ground instances ignore the arg to `typeOf` altogether since the point is to get access to the type info, which is the same for all values.
+
+### TypeOf class with a type arg only
+
+To make this more explicit, we can use some extensions to eliminate the value-level arg altogether. The following class definition is unusual as the type parameter `a` doesn't appear anywhere in the method.
+
 
 ```hs
 {-# LANGUAGE AllowAmbiguousTypes, ScopedTypeVariables, TypeApplications #-}
@@ -39,29 +44,25 @@ class TypeOf a where
   typeOf :: String
 ```
 
-This class definition is unusual, as the type parameter `a` doesn't appear in the body.
-
-> The type of each method (of a class) is implicitly extended with the class's constraint, and also implicitly quantified over the class type parameters.
+* The type of each method is implicitly extended with the class **constraint**, and implicitly **quantified over the class' type parameters**.
 
 ```hs
--- class with a method
 class Show a where
   show :: a -> String
 
--- the type of the method alone
+-- the type of the method is implicitly extended with the class constraint...
 show :: Show a => a -> String
 
--- the proper type of the method alone
+-- ...and implicitly quantified over the class' type params
 show :: forall a. Show a => a -> String
-```
 
-The type of `show` method is implicitly extended with a `Show a` constraint. Furthermore, each method is also implicitly quantified over the class's type parameter(s). In the same vein, we can write out the full type of `typeOf`.
-
-```hs
+-- Similarly, the full type of typeOf is
 typeOf :: forall a. TypeOf a => String
 ```
 
-This type is still unusual, as the `a` type parameter doesn't appear anywhere on the RHS of the `=>` arrow, which *makes the type parameter trivially ambiguous*. That is, it is impossible for GHC to infer what `a` should be at any call site. However, we can use `TypeApplications` to apply the type for `a` explicitly.
+* This type is still unusual, as the `a` type param doesn't appear anywhere on the RHS of the `=>` arrow, which makes the **type parameter ambiguous**
+
+This is because it is impossible for GHC to infer what type to instantiate `a` at, at a call site. However, we can use `TypeApplications` to supply the type explicitly as a type argument, a la System F.
 
 ```hs
 instance TypeOf Bool where
@@ -73,42 +74,54 @@ instance TypeOf Char where
 instance (TypeOf a, TypeOf b) => TypeOf (a, b) where
   typeOf = "(" ++ typeOf @a ++ ", " ++ typeOf @b ++ ")"
 
--- ghci> typeOf @Bool
--- "Bool"
-
--- ghci> typeOf @(Bool, Char)
--- "(Bool, Char)"
+-- >>> typeOf @Bool         -- "Bool"
+-- >>> typeOf @(Bool, Char) -- "(Bool, Char)"
 ```
 
-This illustrates how classes can be seen as functions from types to terms. `typeOf` is a function that accepts a single type as arg and returns a term-level String.
+* This illustrates how classes can be seen **as functions from types to terms**: the `typeOf` accepts a type as an arg and returns a term-level value.
+
 
 
 ## Type-level interpreters
 
-One important consequence of eliminating the value-level arg is that *there's no need for its arg type to actually be inhabited*. For example, consider the TypeOf instance of Void from `Data.Void`
+### Using uninhabited types at type level to convey info
+
+* One important consequence of eliminating the value-level arg is that **there's no need for its arg type to actually be inhabited**.
+
+For example, consider the `TypeOf` instance of `Void` from `Data.Void`
 
 ```hs
 instance TypeOf Void where
   typeOf = "Void"
 ```
 
-It is important to keep in mind that the language of types is mostly blind to the term-level meaning of those types. Although we usually write classes that operate on values, this is not essential. This turns out to be quite important in practice, even in something as simple as the definition of TypeOf on lists
+
+It is important to keep in mind that the language of types is mostly blind to the term-level meaning of those types. Although we usually write classes that operate on values, this is not essential. This turns out to be quite important in practice, even in something as simple as the definition of `TypeOf` on lists.
 
 ```hs
 instance TypeOf a => TypeOf [a] where
   typeOf = "[" ++ typeOf @a ++ "]"
 ```
 
-If `typeOf` required a value-level argument, not just a type, our instance above would be in a pickle when given the empty list, since it would have no value of type `a` to recursively apply `typeOf` to. But since `typeOf` only accepts a type-level argument, the term-level meaning of the list type poses no obstacle.
+* If `typeOf` required a value-level argument and not just the type arg, this instance would have a problem given the empty list, since it wouldn't have no ground value of type `a` to recursively apply `typeOf` to. But since `typeOf` **only accepts a type-level arg, the term-level meaning of the list type poses no obstacle**.
 
-A consequence of this property is that we can use classes to write functions on types even if none of the types are inhabited. For example, consider the following type definitions:
+### Type-level natural numbers
+
+* A consequence of this property is that we can use classes to write functions on types **even if none of the types are inhabited**.
+
+For example, consider the old way (before `DataKinds`) of defining type level naturals:
 
 ```hs
 data Z
 data S a
 ```
 
-It is impossible to construct any values of these types, but we can nevertheless use them to construct natural numbers at the type level. These types might not seem very useful since they aren't inhabited by any values, but remarkably, we can *use a class to distinguish them and convert them to term-level values*.
+The `Z` and `S` type ctors have no data ctors, so they are uninhabited, but they are still useful for construction of type level naturals.
+
+
+### Reifying type-level naturals
+
+* We can use a class to distinguish between the type-level naturals and to **convert type-level naturals to term-level naturals**.
 
 ```hs
 import Numeric.Natural
@@ -122,17 +135,49 @@ instance ReifyNat Z where
 instance ReifyNat a => ReifyNat (S a) where
   reifyNat = 1 + reifyNat @a
 
--- ghci> reifyNat @(S (S Z))
--- 2
+-- >>> reifyNat @(S (S Z))
 ```
 
 `reifyNat` reifies a type-level natural into a term-level `Natural` value.
 
-One way to think about `reifyNat` is as an *interpreter of a type-level language*. In this case, the type-level language is very simple, only capturing natural numbers, but in general, it could be arbitrarily complex and classes can be used to give it a useful meaning, even if it has no term-level repr.
+One way to think about `reifyNat` is as an **interpreter of a type-level language**. In this case, the type-level language is very simple, only capturing natural numbers, but in general, it could be arbitrarily complex and classes can be used to give it a meaning, even if the language has no meaningful term-level representation.
+
+
+### Reifying type-level naturals II
+
+Previously, the naturals were defined using two empty data declarations, `Z` and `S a`, which introduced these two (uninhabited) type ctors and naturals only at the type-level. We have reifyied them into the term-level naturals defined in the module `Numeric.Natural`.
+
+If the type-level naturals are introduced using `DataKinds`, they can be reifyied in a similar way. 
+
+```hs
+{-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE DataKinds #-}
+
+-- This defines term-level naturals, which are auto-promoted to type level, giving us the 'Z and 'S (uninhabited) type ctors, bith of kind Nat.
+
+data Nat = Z | S Nat
+
+
+class Rei a where
+  rei :: Nat
+
+instance Rei Z where
+  rei :: Nat
+  rei = Z
+
+instance Rei a => Rei (S a) where
+  rei :: Nat
+  rei = 1 + rei @a
+
+x3,x4,x5 :: Nat
+x3 = rei @Z          -- 0
+x4 = rei @(S Z)      -- 1
+x5 = rei @(S (S Z))  -- 2
+```
 
 
 ## Overlapping instances
-
+ 
 Generally, instances aren't supposed to overlap; if you write an instance for `Show (Maybe a)`, you aren't supposed to also write an instance for `Show (Maybe Bool)`, since it isn't clear whether `show (Just True)` should use the first instance or the second. For that reason, by default, GHC rejects any form of instance overlap as soon as it detects it.
 
 Usually, this is the right behavior. Due to the way Haskell's class system is designed to *preserve coherency* (the same combination of type arguments always selects the same instance), overlapping instances can be unintuitive or even cause nonsensical behavior if orphan instances are defined. However, when doing TMP, it's useful to make exceptions to that rule, so GHC provides the option to explicitly opt-in to overlapping instances.
@@ -397,15 +442,13 @@ This framing is one of the key ideas that makes TMP so powerful, and indeed, it 
 
 ## Part 2: Generic programming
 
-Part 1 of this blog post established the foundational techniques used in TMP, all of which are useful on their own. If you've read up to this point, you now know enough to start applying TMP yourself, and the remainder of this blog post will simply continue to build upon what you already know.
-
-In the previous section, we discussed how to use TMP to write a generic `flatten` operation. In this section, we'll aim a bit higher: totally generic functions that operate on *arbitrary* datatypes.
+In the previous section, we discussed how to use TMP to write a generic `flatten` operation. In this section, we'll aim a bit higher: totally generic functions that operate on arbitrary datatypes.
 
 ### Open type families and associated types
 
-Before we can dive into examples, we need to revisit type families. In the previous sections, we discussed closed type families, but we did not cover their counterpart, *open type families*. Like closed type families, open type families are effectively functions from types to types, but unlike closed type families, they are not defined with a predefined set of equations. Instead, new equations are added separately using `type instance` declarations. For example, we could define our `Sum` family from above like this:
+Like closed type families (CTF), **open type families** (OTF) are effectively functions from types to types, but unlike CTF, they are not defined with a predefined set of equations. Instead, new equations are added separately using `type instance` declarations. For example, we could define our `Sum` family from above like this:
 
-```
+```hs
 type family Sum a b
 type instance Sum Z b = b
 type instance Sum (S a) b = S (Sum a b)
@@ -415,7 +458,7 @@ In the case of `Sum`, this would not be very useful, and indeed, `Sum` is much b
 
 This extensibility means open type families are used less for type-level computation and more for type-level maps that associate types with other types. For example, one might define a `Key` open type family that relates types to the types used to index them:
 
-```
+```hs
 type family Key a
 type instance Key (Vector a) = Int
 type instance Key (Map k v) = k
@@ -424,7 +467,7 @@ type instance Key (Trie a) = ByteString
 
 This can be combined with a class to provide a generic way to see if a data structure contains a given key:
 
-```
+```hs
 class HasKey a where
   hasKey :: Key a -> a -> Bool
 
@@ -440,7 +483,7 @@ instance HasKey (Trie a) where
 
 In this case, anyone could define their own data structure, define instances of `Key` and `HasKey` for their data structure, and use `hasKey` to see if it contains a given key, regardless of the structure of those keys. In fact, it's so common for open type families and classes to cooperate in this way that GHC provides the option to make the connection explicit by defining them together:
 
-```
+```hs
 class HasKey a where
   type Key a
   hasKey :: Key a -> a -> Bool
@@ -458,50 +501,63 @@ instance HasKey (Trie a) where
   hasKey = Data.Trie.member
 ```
 
-An open family declared inside a class like this is called an *associated type*. It works exactly the same way as the separate definitions of `Key` and `HasKey`, it just uses a different syntax. Note that although the `family` and `instance` keywords have disappeared from the declarations, that is only an abbreviation; the keywords are simply implicitly added (and explicitly writing them is still allowed, though most people do not).
+An open family declared inside a class like this is called an **associated type**. It works exactly the same way as the separate definitions of `Key` and `HasKey`, it just uses a different syntax. Note that although the `family` and `instance` keywords have disappeared from the declarations, that is only an abbreviation; the keywords are simply implicitly added (and explicitly writing them is still allowed.
 
-Open type families and associated types are extremely useful for abstracting over similar types with slightly different structure, and libraries like [`mono-traversable`][10] are examples of how they can be used to that end for their full effect. However, those use cases can't really be classified as TMP, just using classes for their traditional purpose of operation overloading.
+>Open type families and associated types are extremely useful for abstracting over similar types with slightly different structure.
 
-However, that doesn't mean open type families aren't useful for TMP. In fact, one use case of TMP makes *heavy* use of open type families: datatype-generic programming.
+Libraries like [`mono-traversable`][10] are examples of how they can be used to that end for their full effect. However, those use cases can't really be classified as TMP, just using classes for their traditional purpose of operation overloading.
+
+However, that doesn't mean open type families aren't useful for TMP. In fact, one use case of TMP makes heavy use of open type families: datatype-generic programming.
+
 
 ### Example 2: Datatype-generic programming
 
-*Datatype-generic programming* refers to a class of techniques for writing generic functions that operate on arbitrary data structures. Some useful applications of datatype-generic programming include
+> Datatype-generic programming refers to a class of techniques for writing generic functions that operate on arbitrary data structures.
 
--   equality, comparison, and hashing,
-    
--   recursive traversal of self-similar data structures, and
-    
--   serialization and deserialization,
-    
+Some useful applications of datatype-generic programming include
+- equality, comparison, and hashing
+- recursive traversal of self-similar data structures
+- serialization and deserialization
 
-among other things. The idea is that by exploiting the structure of datatype definitions themselves, it's possible for a datatype-generic function to provide implementations of functionality like the above on *any* datatype.
+>The idea is that by exploiting the structure of datatype definitions themselves, it's possible for a datatype-generic function to provide implementations of functionality for any datatype.
 
-In Haskell, the most popular approach to datatype-generic programming leverages GHC generics, which is quite sophisticated. The [module documentation for `GHC.Generics`][11] already includes a fairly lengthy explanation of how it works, so I will not regurgitate it here (that could fill a blog post of its own!), but I will show how to construct a simplified version of the system that highlights the key role of TMP.
+In Haskell, the most popular approach to datatype-generic programming leverages GHC generics, which is quite sophisticated. The [module documentation for `GHC.Generics`][11] includes a lengthy explanation of how it works. Here, we'll construct a simplified version of the system to highlight the key role of TMP.
 
 #### Generic datatype representations
 
-At the heart of the `Generic` class is a simple concept: all non-GADT Haskell datatypes can be represented as sums of products. For example, if we have
+>At the heart of the `Generic` class is a simple concept: all non-GADT Haskell datatypes can be represented as **sums of products**.
 
-```
+For example, this sum ADT
+
+```hs
 data Authentication
   = AuthBasic Username Password
   | AuthSSH PublicKey
 ```
 
-then we have a type that is essentially equivalent to this one:
+is isomorphic to Either, since `Either` is the canonical repr for sums.
 
+```hs
+type Auth = Either (Username, Password) PublicKey
+
+v1,v2 :: Auth
+v1 = Left ("alyssa", "pass1234")
+v2 = Right "<key>"
 ```
-type Authentication = Either (Username, Password) PublicKey
-```
 
-If we know how to define a function on a nested tree built out of `Either`s and pairs, then we know how to define it on *any* such datatype! This is where TMP comes in: recall the way we viewed `Flatten` as a mechanism for compile-time code generation based on type information. Could we use the same technique to generate implementations of equality, comparison, hashing, etc. from statically-known information about the structure of a datatype?
+If we know how to define a function on a nested tree built out of `Either`s and pairs, then we know how to define it on any such datatype.
 
-The answer to that question is *yes*. To start, let's consider a particularly simple example: suppose we want to write a generic function that counts the number of fields stored in an arbitrary constructor. For example, `numFields (AuthBasic "alyssa" "pass1234")` would return `2`, while `numFields (AuthSSH "<key>")` would return `1`. Not a very useful function, admittedly, but it's a simple example of what generic programming can do.
+This is where TMP comes in: recall the way we viewed `Flatten` as a mechanism for *compile-time code generation based on type information*.
 
-We'll start by using TMP to implement a "generic" version of `numFields` that operates on trees of `Either`s and pairs as described above:
+Now we can use the same technique to generate implementations of equality, comparison, hashing, etc. from statically-known information about the structure of a datatype.
 
-```
+To start, let's consider a simple example: suppose we want to write a generic function that counts the number of fields stored in an arbitrary type ctor.
+
+For example, `numFields (AuthBasic "alyssa" "pass1234")` should return `2`, while `numFields (AuthSSH "<key>")` should return `1`.
+
+We'll start by using TMP to implement a "generic" version of `numFields` that operates on trees of `Either`s and pairs
+
+```hs
 class GNumFields a where
   gnumFields :: a -> Natural
 
@@ -518,28 +574,38 @@ instance {-# OVERLAPPING #-} (GNumFields a, GNumFields b) => GNumFields (Either 
 ```
 
 Just like our `Flatten` class from earlier, `GNumFields` uses the type-level structure of its argument to choose what to do:
+- If we find a pair, that corresponds to a product, so we recur into both sides and sum the results.
+- If we find `Left` or `Right`, that corresponds to the "spine" differentiating different constructors, so we simply recur into the contained value.
+- In the case of any other value, we're at a "leaf" in the tree of `Either`s and pairs, which corresponds to a single field, so we just return `1`.
 
--   If we find a pair, that corresponds to a product, so we recur into both sides and sum the results.
-    
--   If we find `Left` or `Right`, that corresponds to the "spine" differentiating different constructors, so we simply recur into the contained value.
-    
--   In the case of any other value, we're at a "leaf" in the tree of `Either`s and pairs, which corresponds to a single field, so we just return `1`.
-    
-
-Now if we call `gnumFields (Left ("alyssa", "pass1234"))`, we'll get `2`, and if we call `gnumFields (Right "<key>")`, we'll get `1`. All that's left to do is write a bit of code that converts our `Authentication` type to a tree of `Either`s and pairs:
-
+```hs
+nf1,nf2 :: Natural
+nf1 = gnumFields v1   -- 2
+nf2 = gnumFields v2   -- 1
 ```
-genericizeAuthentication :: Authentication -> Either (Username, Password) PublicKey
+
+All that's left to do is write a bit of code that converts our `Authentication` type to a tree of `Either`s and pairs:
+
+```hs
+-- | Convert an ADT to its canonical repr in terms of Either and pairs.
+genericizeAuthentication :: Authentication 
+                         -> Either (Username, Password) PublicKey
 genericizeAuthentication (AuthBasic user pass) = Left (user, pass)
 genericizeAuthentication (AuthSSH key)         = Right key
 
+-- | Count the fields of an ADT
 numFieldsAuthentication :: Authentication -> Natural
 numFieldsAuthentication = gnumFields . genericizeAuthentication
 ```
 
-Now we get the results we want on our `Authentication` type using `numFieldsAuthentication`, but we're not done yet, since it only works on `Authentication` values. Is there a way to define a generic `numFields` function that works on arbitrary datatypes that implement this conversion to sums-of-products? Yes, with another class:
 
-```
+Now we get the results we want on our `Authentication` type using `numFieldsAuthentication`; but we're not done yet, since it only works on `Authentication` values.
+
+We want a way to define a generic `numFields` function that works on any arbitrary datatypes that implement this conversion to sums-of-products.
+
+We can do it using another class:
+
+```hs
 class Generic a where
   type Rep a
   genericize :: a -> Rep a
@@ -551,32 +617,40 @@ instance Generic Authentication where
 
 numFields :: (Generic a, GNumFields (Rep a)) => a -> Natural
 numFields = gnumFields . genericize
+
+x1 = numFields (AuthBasic "alyssa" "pass1234") -- 2
+x2 = numFields (AuthSSH "<key>")               -- 1
 ```
 
-Now `numFields (AuthBasic "alyssa" "pass1234")` returns `2`, as desired, and it will *also* work with any datatype that provides a `Generic` instance. If the above code makes your head spin, don't worry: this is by far the most complicated piece of code in this blog post up to this point. Let's break down how it works piece by piece:
+Now `numFields (AuthBasic "alyssa" "pass1234")` returns `2`, as desired, and it will also work with any datatype that provides a `Generic` instance.
 
--   First, we define the `Generic` class, comprised of two parts:
-    
-    1.  The `Rep a` associated type maps a type `a` onto its generic, sums-of-products representation, i.e. one built out of combinations of `Either` and pairs.
-        
-    2.  The `genericize` method converts an actual *value* of type `a` to the equivalent value using the sums-of-products representation.
-        
--   Next, we define a `Generic` instance for `Authentication`. `Rep Authentication` is the sums-of-products representation we described above, and `genericize` is likewise `genericizeAuthentication` from above.
-    
--   Finally, we define `numFields` as a function with a `GNumFields (Rep a)` constraint. This is where all the magic happens:
-    
-    -   When we apply `numFields` to a datatype, `Rep` retrieves its generic, sums-of-products representation type.
-        
-    -   The `GNumFields` class then uses various TMP techniques we've already described so far in this blog post to generate a `numFields` implementation on the fly from the structure of `Rep a`.
-        
-    -   Finally, that generated `numFields` implementation is applied to the genericized term-level value, and the result is produced.
-        
+Let's break down how it works piece by piece:
 
-After all that, I suspect you might think this seems like a very convoluted way to define the (rather unhelpful) `numFields` operation. Surely just defining `numFields` on each type directly would be far easier? Indeed, if we were just considering `numFields`, you'd be right, but in fact we get much more than that. Using the same machinery, we can continue to define other generic operations-equality, comparison, etc.-the same way we defined `numFields`, and all of them would automatically work on `Authentication` because they all leverage the same `Generic` instance!
+- First, we define the `Generic` class, comprised of two parts:
+  1. The `Rep a` associated type maps a type `a` onto its generic, sums-of-products representation, i.e. one built out of combinations of `Either` and pairs.
+  2. The `genericize` method converts an actual value of type `a` to the equivalent value using the sums-of-products representation.
 
-This is the basic value proposition of generic programming: we can do a little work up front to normalize our datatype to a generic representation *once*, then get a whole buffet of generic operations on it for free. In Haskell, the code generation capabilities of TMP is a key piece of that puzzle.
+- Next, we define a `Generic` instance for `Authentication`. `Rep Authentication` is the sums-of-products representation we described above, and `genericize` is likewise `genericizeAuthentication` from above.
 
-#### Improving our definition of `Generic`
+- Finally, we define `numFields` as a function with a `GNumFields (Rep a)` constraint. This is where all the magic happens:
+
+  - When we apply `numFields` to a datatype, `Rep` retrieves its generic, sums-of-products representation type.
+
+  - The `GNumFields` class generates a `numFields` implementation on the fly from the structure of `Rep a`.
+
+  - Finally, that generated `numFields` implementation is applied to the genericized term-level value, and the result is produced.
+
+
+After all that, I suspect you might think this seems like a very convoluted way to define the (rather unhelpful) `numFields` operation. Surely, just defining `numFields` on each type directly would be far easier? Indeed, if we were just considering `numFields`, you'd be right, but in fact we get much more than that.
+
+Using the same machinery, we can continue to define other generic operations (equality, comparison, etc.) the same way we defined `numFields`, and all of them would automatically work on `Authentication` because they all leverage the same `Generic` interface.
+
+>This is the basic value proposition of generic programming: we can do a little work up front to *normalize our datatype to a generic representation once*, then get a whole buffet of generic operations on it for free.
+
+In Haskell, the code generation capabilities of TMP is a key piece of that puzzle.
+
+
+##### Improving our definition of `Generic`
 
 You may note that the definition of `Generic` provided above does not match the one in `GHC.Generic`. Indeed, our naïve approach suffers from several flaws that the real version does not. This is not a `GHC.Generics` tutorial, so I will not discuss every detail of the full implementation, but I will highlight a few improvements relevant to the broader theme of TMP.
 
@@ -584,23 +658,30 @@ You may note that the definition of `Generic` provided above does not match the 
 
 One problem with our version of `Generic` is that it provides no way to distinguish an `Either` or pair that should be considered a "leaf", as in a type like this:
 
-```
+```hs
 data Foo = A (Either Int String) | B (Char, Bool)
+
+type RepFoo = Either (Either Int String) (Char, Bool)
+
+x1 = numFields (Right ('a', True)) -- 2 rather than 1
 ```
 
-Given this type, `Rep Foo` should be `Either (Either Int String) (Char, Bool)`, and `numFields (Right ('a', True))` will erroneously return `2` rather than `1`. To fix this, we can introduce a simple wrapper newtype that distinguishes leaves specifically:
+Given this type, `Rep Foo` should be `Either (Either Int String) (Char, Bool)`, and `numFields (Right ('a', True))` will erroneously return `2` rather than `1`.
 
-```
+To fix this, we can introduce a simple wrapper newtype that specifically distinguishes leaves:
+
+```hs
 newtype Leaf a = Leaf { getLeaf :: a }
 ```
 
 Now our `Generic` instances look like this:
 
-```
+```hs
 instance Generic Authentication where
   type Rep Authentication = Either (Leaf Username, Leaf Password) (Leaf PublicKey)
   genericize (AuthBasic user pass) = Left (Leaf user, Leaf pass)
   genericize (AuthSSH key)         = Right (Leaf key)
+
 
 instance Generic Foo where
   type Rep Foo = Either (Leaf (Either Int String)) (Leaf (Char, Bool))
@@ -608,10 +689,12 @@ instance Generic Foo where
   genericize (B x) = Right (Leaf x)
 ```
 
-Since the `Leaf` constructor now distinguishes a leaf, rather than the absence of an `Either` or `(,)` constructor, we'll have to update our `GNumFields` instances as well. However, this has the additional pleasant effect of eliminating the need for overlapping instances:
 
-```
-instance GNumFields (Leaf a) where  
+>Since the `Leaf` constructor now distinguishes a leaf, rather than the absence of an `Either` or `(,)` constructor, we'll have to update our `GNumFields` instances as well. However, this has the additional pleasant effect of eliminating the need for overlapping instances:
+
+
+```hs
+instance GNumFields (Leaf a) where
   gnumFields _ = 1
 
 instance (GNumFields a, GNumFields b) => GNumFields (a, b) where
@@ -624,17 +707,19 @@ instance (GNumFields a, GNumFields b) => GNumFields (Either a b) where
 
 This is a good example of why overlapping instances can be so seductive, but they often have unintended consequences. Even when doing TMP, explicit tags are almost always preferable.
 
+
+
 ##### Handling empty constructors
 
 Suppose we have a type with nullary data constructors, like the standard `Bool` type:
 
-```
+```hs
 data Bool = False | True
 ```
 
-How do we write a `Generic` instance for `Bool`? Using just `Either`, `(,)`, and `Leaf`, we can't, but if we are willing to add a case for `()`, we can use it to denote nullary constructors:
+How do we write a `Generic` instance for `Bool`? Using just `Either`, `(,)`, and `Leaf`, we can't, but if we are willing to add a case for `()`, we can use it to denote nullary ctors:
 
-```
+```hs
 instance GNumFields () where
   gnumFields _ = 0
 
@@ -644,96 +729,51 @@ instance Generic Bool where
   genericize True  = Right ()
 ```
 
-In a similar vein, we could use `Void` to represent datatypes that don't have any constructors at all.
+In a similar vein, we could use `Void` to represent datatypes that don't have any ctors at all.
 
-#### Continuing from here
+
+##### Continuing from here
 
 The full version of `Generic` has a variety of further improvements useful for generic programming, including:
-
--   Support for converting from `Rep a` to `a`.
-    
--   Special indication of self-recursive datatypes, making generic tree traversals possible.
-    
--   Type-level information about datatype constructor and record accessor names, allowing them to be used in serialization.
-    
--   Fully automatic generation of `Generic` instances via [the `DeriveGeneric` extension][12], which reduces the per-type boilerplate to essentially nothing.
-    
+- Support for converting from `Rep a` to `a`.
+- Special indication of self-recursive datatypes, making generic tree traversals possible.
+- Type-level information about datatype constructor and record accessor names, allowing them to be used in serialization.
+- Fully automatic generation of `Generic` instances via [the `DeriveGeneric` extension][12], which reduces the per-type boilerplate to essentially nothing.
 
 The [module documentation for `GHC.Generics`][13] discusses the full system in detail, and it provides an additional example that uses the same essential TMP techniques discussed here.
 
+>What's best of all, GHC now does all these stuff automatically, you just need to auto-derive `Generic` (and `Data`) classes for your types to leverage generics for free.
+
+
 ## Part 3: Dependent typing
 
-It's time for the third and final part of this blog post: an introduction to dependently typed programming in Haskell. A full treatment of dependently typed programming is far, far too vast to be contained in a single blog post, so I will not attempt to do so here. Rather, I will cover some basic idioms for doing dependent programming and highlight how TMP can be valuable when doing so.
+An introduction to dependently typed programming in Haskell by covering some basic idioms and highlighting how TMP can be leveraged.
 
 ### Datatype promotion
 
-In part 1, we used uninhabited datatypes like `Z` and `S a` to define new type-level constants. This works, but it is awkward. Imagine for a moment that we wanted to work with type-level booleans. Using our previous approach, we could define two empty datatypes, `True` and `False`:
+Before, we used uninhabited datatypes like `Z` and `S a` to define new type-level constants. This works, but it allows unintended applications because `Z` and `S` are not unified under one kind and the kind of the `S` type ctor is `S :: Type -> Type`, while `Z :: Type`. 
 
-```
-data True
-data False
-```
-
-Now we could define type families to provide operations on these types, such as `Not`:
-
-```
-type family Not a where
-  Not True  = False
-  Not False = True
-```
-
-However, this has some frustrating downsides:
-
--   First, it's simply inconvenient that we have to define these new `True` and `False` "dummy" types, which are completely distinct from the `Bool` type provided by the prelude.
-    
--   More significantly, it means `Not` has a very unhelpful kind:
-    
-    ```
-    ghci> :kind Not
-    Not :: * -> *
-    ```
-    
-    Even though `Not` is only *supposed* to be applied to `True` or `False`, its kind allows it to be applied to any type at all. You can see this in practice if you try to evaluate something like `Not Char`:
-    
-    ```
-    ghci> :kind! Not Char
-    Not Char :: *
-    = Not Char
-    ```
-    
-    Rather than getting an error, GHC simply spits `Not Char` back at us. This is a somewhat unintuitive property of closed type families: if none of the clauses match, the type family just gets "stuck," not reducing any further. This can lead to very confusing type errors later in the typechecking process.
-    
+For example, if we had define type level Booleans like that, and than introduced the `Not` type family, we'd get inconsistencies. Even though `Not` is only supposed to be applied to `True` or `False`, its kind, `Not :: * -> *`, allows it to be applied to any type at all, e.g. `Not Char`. Rather than emitting an error, GHC simply spits `Not Char` back at us. This is a somewhat unintuitive property of closed type families: if none of the clauses match, the type family just gets *stuck*, not reducing any further. This can lead to very confusing type errors later in the typechecking process.
 
 One way to think about `Not` is that it is largely *dynamically kinded* in the same way some languages are dynamically typed. That isn't entirely true, as we technically *will* get a kind error if we try to apply `Not` to a type constructor rather than a type, such as `Maybe`:
 
-```
-ghci> :kind! Not Maybe
+It would be prefered if they both were of the kind `Nat`, i.e. `Z :: Nat` and `S :: Nat -> Nat`.
 
-<interactive>:1:5: error:
-    • Expecting one more argument to 'Maybe'
-      Expected a type, but 'Maybe' has kind '* -> *'
-```
+GHC has *datatype promotion* via the `DataKinds` language [extension][14].
 
-…but `*` is still a very big kind, much bigger than we would like to permit for `Not`.
+The idea is that for each normal, non-GADT type definition like
 
-To help with both these problems, GHC provides *datatype promotion* via [the `DataKinds` language extension][14]. The idea is that for each normal, non-GADT type definition like
+```hs
+{-# LANGUAGE DataKinds #-}
 
-```
 data Bool = False | True
 ```
 
-then in addition to the normal type constructor and value constructors, GHC also defines several *promoted* constructors:
+in addition to the normal 1 type ctor and 2 value ctors, GHC also defines *promoted ctors*:
+- `'True` and `'False` are the two new empty type ctors of kind `Bool`.
+- `Bool` is a kind that clasifies `'True` and `'False` type ctors
 
--   `Bool` is allowed as both a type and a kind.
-    
--   `'True` and `'False` are defined as new types of kind `Bool`.
-    
-
-We can see this in action if we remove our `data True` and `data False` declarations and adjust our definition of `Not` to use promoted constructors:
-
-```
-{-# LANGUAGE DataKinds #-}
-
+```hs
 type family Not a where
   Not 'True  = 'False
   Not 'False = 'True
@@ -741,23 +781,24 @@ type family Not a where
 
 Now the inferred kind of `Not` is no longer `* -> *`:
 
-```
+```hs
 ghci> :kind Not
 Not :: Bool -> Bool
 ```
 
 Consequently, we will now get a kind error if we attempt to apply `Not` to anything other than `'True` or `'False`:
 
-```
+```hs
 ghci> :kind! Not Char
 
 <interactive>:1:5: error:
     • Expected kind 'Bool', but 'Char' has kind '*'
 ```
 
-This is a nice improvement. We can make a similar change to our definitions involving type-level natural numbers:
 
-```
+This is a nice improvement. We can make a similar change to our definitions involving **type-level natural numbers**:
+
+```hs
 data Nat = Z | S Nat
 
 class ReifyNat (a :: Nat) where
@@ -770,33 +811,38 @@ instance ReifyNat a => ReifyNat ('S a) where
   reifyNat = 1 + reifyNat @a
 ```
 
-Note that we need to add an explicit kind signature on the definition of the `ReifyNat` class, since otherwise GHC will assume `a` has kind `*`, since nothing in the types of the class methods suggests otherwise. In addition to making it clearer that `Z` and `S` are related, this prevents someone from coming along and defining a nonsensical instance like `ReifyNat Char`, which previously would have been allowed but will now be rejected with a kind error.
 
-Datatype promotion is not strictly required to do TMP, but makes the process significantly less painful. It makes Haskell's kind language extensible in the same way its type language is, which allows type-level programming to enjoy static typechecking (or more accurately, static kindchecking) in the same way term-level programming does.
+Note that we need to add an explicit kind signature on the definition of the `ReifyNat` class, since otherwise GHC will assume `a` has kind `*`, since nothing in the types of the class methods suggests otherwise.
+
+In addition to making it clearer that `Z` and `S` are related, this prevents someone from coming along and defining a nonsensical instance like `ReifyNat Char`, which previously would have been allowed but will now be rejected with a kind error.
+
+Datatype promotion is not strictly required to do TMP, but makes the process significantly less painful. It makes Haskell's kind language extensible in the same way its type language is, which allows type-level programming to enjoy static typechecking (or more accurately, *static kind-checking*) in the same way term-level programming does.
+
 
 ### GADTs and proof terms
 
-So far in this blog post, we have discussed several different function-like things:
+We have seen several different "function-like" things:
+- Haskell functions are functions *from terms to terms*
+- Type families are functions *from types to types*
+- classes are functions *from types to terms*
 
--   Ordinary Haskell functions are functions from terms to terms.
-    
--   Type families are functions from types to types.
-    
--   classes are functions from types to terms.
-    
+We may wonder about the existence of the fourth class of function *from terms to types*. But what do they even mean?
 
-A curious reader may wonder about the existence of a fourth class of function:
+Functions from terms to terms and types to types are straightforward. 
+Functions from types to terms are a little trickier, but they make intuitive sense: we use information known at compile-time to generate runtime behavior.
 
--   *???* are functions from terms to types.
-    
+But how could that information possibly flow in the other direction? How could we possibly turn runtime information into compile-time information, without being able to predict the future?
 
-To reason about what could go in the *???* above, we must consider what "a function from terms to types" would even mean. Functions from terms to terms and types to types are straightforward enough. Functions from types to terms are a little trickier, but they make intuitive sense: we use information known at compile-time to generate runtime behavior. But how could information possibly flow in the other direction? How could we possibly turn runtime information into compile-time information without being able to predict the future?
+>Generally, we cannot, but GADTs allows us to do a restricted form of what's seemingly impossible: turning runtime info into compile-time info.
 
-In general, we cannot. However, one feature of Haskell allows a restricted form of seemingly doing the impossible-turning runtime information into compile-time information-and that's GADTs.
+GADTs[4][15] are described in detail in the [GHC User's Guide][16], but the key idea for our purposes is that:
 
-GADTs[4][15] are [described in detail in the GHC User's Guide][16], but the key idea for our purposes is that *pattern-matching on a GADT constructor can refine type information*. Here's a simple, silly example:
+>Pattern-matching on a GADT constructor refines type information.
 
-```
+
+Here's a silly example:
+
+```hs
 data WhatIsIt a where
   ABool :: WhatIsIt Bool
   AnInt :: WhatIsIt Int
@@ -806,17 +852,23 @@ doSomething ABool x = not x
 doSomething AnInt x = x + 1
 ```
 
-Here, `WhatIsIt` is a datatype with two nullary constructors, `ABool` and `AnInt`, similar to a normal, non-GADT datatype like this one:
+`WhatIsIt` is a datatype with two nullary constructors similar to a normal ADT data type like this one:
 
-```
+```hs
 data WhatIsIt a = ABool | AnInt
 ```
 
-What's special about GADTs is that each constructor is given an explicit type signature. With the plain ADT definition above, `ABool` and `AnInt` would both have the type `forall a. WhatIsIt a`, but in the GADT definition, we explicitly fix `a` to `Bool` in the type of `ABool` and to `Int` in the type of `AnInt`.
+What's special about GADTs is that each constructor is given an explicit type signature.
 
-This simple feature allows us to do very interesting things. The `doSomething` function is polymorphic in `a`, but on the right-hand side of the first equation, `x` has type `Bool`, while on the right-hand side of the second equation, `x` has type `Int`. This is because the `WhatIsIt a` argument effectively constrains the type of `a`, as we can see by experimenting with `doSomething` in GHCi:
+With the plain ADT definition above, `ABool` and `AnInt` would both have the type `forall a. WhatIsIt a`, but in the GADT definition, we explicitly fix the `a` typ var to `Bool` in the type of `ABool`, and to `Int` in the type of `AnInt`.
 
-```
+This simple feature allows us to do very interesting things.
+
+The `doSomething` function is polymorphic in `a`, but on the rhs of the first equation, `x` has type `Bool`, while on the rhs of the second equation, `x` has type `Int`.
+
+This is because the `WhatIsIt a` argument effectively constrains the type of `a`, as we can see by experimenting with `doSomething` in GHCi:
+
+```hs
 ghci> doSomething ABool True
 False
 ghci> doSomething AnInt 10
@@ -830,11 +882,21 @@ error:
       In an equation for 'it': it = doSomething AnInt True
 ```
 
-One way to think about GADTs is as "proofs" or "witnesses" of type equalities. The `ABool` constructor is a proof of `a ~ Bool`, while the `AnInt` constructor is a proof of `a ~ Int`. When you construct `ABool` or `AnInt`, you must be able to satisfy the equality, and it is in a sense "packed into" the constructor value. When code pattern-matches on the constructor, the equality is "unpacked from" the value, and the equality becomes available on the right-hand side of the pattern match.
 
-GADTs can be much more sophisticated than our simple `WhatIsIt` type above. Just like normal ADTs, GADT constructors can have parameters, which makes it possible to write inductive datatypes that carry type equality proofs with them:
+>One way to think about GADTs is as *proofs or witnesses of type equalities*.
 
-```
+The `ABool` constructor is a proof of `a ~ Bool`, while the `AnInt` constructor is a proof of `a ~ Int`.
+
+When you construct `ABool` or `AnInt`, you must be able to satisfy the equality, and it is in a sense "packed into" the constructor value.
+
+When you pattern-match on the data ctor, the equality is *unpacked from the value*, and the equality becomes available on the rhs of the pattern match.
+
+
+### Heterogenous list
+
+GADT ctors with type parameters make it possible to write **inductive datatypes** that carry type equality proofs with them:
+
+```hs
 infixr 5 `HCons`
 
 data HList as where
@@ -842,9 +904,9 @@ data HList as where
   HCons :: a -> HList as -> HList (a ': as)
 ```
 
-This type is a *heterogenous list*, a list that can contain elements of different types:
+This is a **heterogenous list**, a list that can contain elements of different types:
 
-```
+```hs
 ghci> :t True `HCons` "hello" `HCons` 42 `HCons` HNil
 True `HCons` "hello" `HCons` 42 `HCons` HNil
   :: Num a => HList '[Bool, [Char], a]
@@ -852,47 +914,50 @@ True `HCons` "hello" `HCons` 42 `HCons` HNil
 
 An `HList` is parameterized by a type-level list that keeps track of the types of its elements, which allows us to highlight another interesting property of GADTs: if we restrict that type information, the GHC pattern exhaustiveness checker will take the restriction into account. For example, we can write a completely total `head` function on `HList`s like this:
 
-```
+```hs
 head :: HList (a ': as) -> a
 head (x `HCons` _) = x
 ```
 
 Remarkably, GHC does not complain that this definition of `head` is non-exhaustive. Since we specified that the argument must be of type `HList (a ': as)` in the type signature for `head`, GHC knows that the argument *cannot* be `HNil` (which would have the type `HList '[]`), so it doesn't ask us to handle that case.
 
-These examples illustrate the way GADTs serve as a general-purpose construct for relating type- and term-level information. Information flows bidirectionally: type information refines the set of type constructors that can be matched on, and matching on type constructors exposes new type equalities.
+>GADTs serve as a general-purpose construct for relating type-level and term-level information. *Type information flows bidirectionally*: type information refines the set of type ctors that can be matched on, and matching on those type ctors exposes new type equalities.
 
-#### Proofs that work together
 
-This interplay is wonderfully compositional. Suppose we wanted to write a function that accepts an `HList` of exactly 1, 2, or 3 elements. There's no easy way to express that in the type signature the way we did with `head`, so it might seem like all we can do is write an entirely new container datatype that has three constructors, one for each case.
+### Proofs that work together
 
-However, a more interesting solution exists that takes advantage of the bidirectional nature of GADTs. We can start by writing a *proof term* that contains no values, it just encapsulates type equalities on a type-level list:
+This interplay is compositional: suppose we wanted to write a function that accepts an `HList` of exactly 1, 2, or 3 elements. There's no easy way to express that in the type signature the way we did with `head`, so it might seem like all we can do is write an entirely new container datatype that has 3 ctors, one for each case.
 
-```
+However, a more interesting solution exists that takes advantage of the bidirectional nature of GADTs. We can start by writing a *proof term* that contains no values, but just encapsulates type equalities on a type-level list:
+
+```hs
 data OneToThree a b c as where
   One   :: OneToThree a b c '[a]
   Two   :: OneToThree a b c '[a, b]
   Three :: OneToThree a b c '[a, b, c]
 ```
 
-We call it a proof term because a value of type `OneToThree a b c as` constitutes a *proof* that `as` has exactly 1, 2, or 3 elements. Using `OneToThree`, we can write a function that accepts an `HList` accompanied by a proof term:
+We call it a *proof term* because a value of type `OneToThree a b c as` constitutes a *proof* that `as` has exactly 1, 2, or 3 elements. Using `OneToThree`, we can write a function that accepts an `HList` accompanied by a proof term:
 
-```
+```hs
 sumUpToThree :: OneToThree Int Int Int as -> HList as -> Int
 sumUpToThree One   (x `HCons` HNil)                     = x
 sumUpToThree Two   (x `HCons` y `HCons` HNil)           = x + y
 sumUpToThree Three (x `HCons` y `HCons` z `HCons` HNil) = x + y + z
 ```
 
-As with `head`, this function is completely exhaustive, in this case because we take full advantage of the bidirectional nature of GADTs:
+This function is completely exhaustive, in this case because we take full *advantage of the bidirectional nature of GADTs*:
 
--   When we match on the `OneToThree` proof term, information flows from the term level to the type level, refining the type of `as` in that branch.
-    
--   The refined type of `as` then flows back down to the term level, restricting the shape the `HList` can take and refinine the set of patterns we have to match.
-    
+- When we match on the OneToThree proof term, information flows from the term level to the type level, refining the type of `as` in that branch.
 
-Of course, this example is not especially useful, but in general proof terms can encode any number of useful properties. For example, we can write a proof term that ensures an `HList` has an even number of elements:
+- The refined type of `as` then flows back down to the term level, restricting the shape the HList can take and refinine the set of patterns we have to match.
 
-```
+
+This example may not be useful, but, in general, proof terms can encode any number of useful properties.
+
+For example, we can write a proof term that ensures an `HList` has an even number of elements:
+
+```hs
 data Even as where
   EvenNil  :: Even '[]
   EvenCons :: Even as -> Even (a ': b ': as)

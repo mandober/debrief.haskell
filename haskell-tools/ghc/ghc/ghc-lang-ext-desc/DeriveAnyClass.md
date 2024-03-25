@@ -1,0 +1,4 @@
+# DeriveAnyClass
+
+Lang Pragma: `DeriveAnyClass`
+

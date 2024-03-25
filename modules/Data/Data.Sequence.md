@@ -1,5 +1,8 @@
 # Data.Sequence
 
+https://hackage.haskell.org/package/containers/docs/Data-Sequence.html
+
+
 ```hs
 import Data.Sequence
 
@@ -20,10 +23,13 @@ pattern Empty :: Seq a
 EmptyL :: ViewL a
 EmptyR :: ViewR a
 
-newtype Seq a -- = ...
+newtype Seq a = Data.Sequence.Internal.Seq
+               (Data.Sequence.Internal.FingerTree
+               (Data.Sequence.Internal.Elem a))
 
-data ViewL a  -- = ...
-data ViewR a  -- = ...
+data ViewL a = EmptyL | a :< (Seq a)
+data ViewR a = EmptyR | (Seq a) :> a
+
 
 empty :: Seq a
 

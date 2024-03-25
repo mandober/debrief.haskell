@@ -1,0 +1,76 @@
+# Haskell :: Reference
+
+- haskell-topics: (unsorted topics)
+- haskell-reference: syntax reference
+- haskell-concepts: programming idioms, approaches, stuff beyond syntax
+
+- haskell-index
+  - haskell-packages
+  - haskell-modules
+  - haskell-subsystems
+    - Concurrent Haskell
+    - Template Haskell
+    - Liquid Haskell
+    - Dependent Haskell
+
+- haskell-internals:
+  - haskell-language-family:
+    - Agda
+    - Idris
+    - Curry
+    - Hume
+    - Orwell
+  - haskell-language-siblings:
+    - Miranda
+    - Clean
+    - PureScript
+    - Elm
+  - haskell-language-dialects:
+    - Gofer
+      - Hugs
+  - haskell-varaints:
+    - Curry: functional logical language
+  - haskell-implementations:
+    - Frege: Haskell on JVM
+  - haskell-compilers:
+    - GHC
+      - GHCJS
+    - Huggs
+    - NHC
+    - JHC
+  - haskell-and-JS:
+    - GHCJS
+    - Frey
+  - haskell-language-reports:
+    - Haskell 98
+    - Haskell 2010
+    - GHC2021
+  - haskell-language-extensions:
+- haskell-modules:
+- haskell-tools:
+  - basic tooling:
+    - ghc
+      - ghci
+    - ghcup
+    - cabal
+    - stack
+    - hls
+    - haskell-platform
+  - tools:
+    - vscode-hls
+    - hlint
+    - stylish
+    - britaney
+  - packages:
+    - packages: with-ghc:
+      - base
+      - random
+    - packages: expansions:
+      - liquid-haskell
+    - packages: external
+      - packages: lib and exe:
+        - quickcheck
+        - tasty
+      - packages: lib
+        - unordered-containers:
+        - lens

@@ -1,0 +1,4 @@
+# DeriveGeneric
+
+Lang Pragma: `DeriveGeneric`
+

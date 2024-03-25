@@ -1,0 +1,44 @@
+# FP :: Laws
+
+```hs
+f . id ⩵ f ⩵ id . f
+curry . uncurry ⩵ id
+```
+
+
+## In terms of...
+
+```hs
+fold := foldr (<>) []
+map f := foldr ((:) . f) []
+
+foldl1 f ⩵ List.foldl1 f . toList
+
+sum = +/
+flatten = ⫲/
+all p = (∧/) ∘ (p*)
+```
+
+
+## Index of functions
+
+- id
+- curry
+- uncurry
+- on
+- fix
+- s-combo
+- fst       (pair)
+- snd       (pair)
+- fmap      (Functor)
+- fold      (Foldable)
+- concat    (list)
+- (++)      (list)
+- map       (list)
+- fold      (list)
+- filter    (list)
+- head, tail, init, last
+- iterate, repeat, cycle
+- zip
+- unzip
+- scanl, scanr

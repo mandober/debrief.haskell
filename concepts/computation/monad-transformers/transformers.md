@@ -1,0 +1,41 @@
+
+https://hackage.haskell.org/package/transformers-0.6.1.1
+
+Modules:
+- Control
+  - Applicative
+    - Control.Applicative.Backwards
+    - Control.Applicative.Lift
+  - Monad
+    - IO
+      - Control.Monad.IO.Class
+    - Control.Monad.Signatures
+    - Trans
+      - Control.Monad.Trans.Identity
+      - Control.Monad.Trans.Maybe
+      - Control.Monad.Trans.Except (Either)
+      - Control.Monad.Trans.Reader
+      - Control.Monad.Trans.Writer
+        - Control.Monad.Trans.Writer.CPS
+        - Control.Monad.Trans.Writer.Lazy
+        - Control.Monad.Trans.Writer.Strict
+      - Control.Monad.Trans.State
+        - Control.Monad.Trans.State.Lazy
+        - Control.Monad.Trans.State.Strict
+      - Control.Monad.Trans.RWS
+        - Control.Monad.Trans.RWS.CPS
+        - Control.Monad.Trans.RWS.Lazy
+        - Control.Monad.Trans.RWS.Strict
+      - Control.Monad.Trans.Select
+      - Control.Monad.Trans.Accum
+      - Control.Monad.Trans.Cont
+      - Control.Monad.Trans.Class
+- Data
+  - Functor
+    - Data.Functor.Classes
+    - Data.Functor.Compose
+    - Data.Functor.Constant
+    - Data.Functor.Identity
+    - Data.Functor.Product
+    - Data.Functor.Reverse
+    - Data.Functor.Sum

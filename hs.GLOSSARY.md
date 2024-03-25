@@ -2,18 +2,20 @@
 
 <!-- TOC -->
 
+- [Algebraic data types](#algebraic-data-types)
 - [Algebraic effects](#algebraic-effects)
 - [Ambiguous type](#ambiguous-type)
-- [Associated type family](#associated-type-family)
 - [Applicative-monad proposal](#applicative-monad-proposal)
+- [Associated type family](#associated-type-family)
 - [Bifunctor](#bifunctor)
 - [Bidirectional typechecking](#bidirectional-typechecking)
 - [Cabal](#cabal)
 - [Call-by-need](#call-by-need)
 - [Canonical representation](#canonical-representation)
-- [Constant Applicative Form](#constant-applicative-form)
+- [Constant applicative form](#constant-applicative-form)
 - [Carrier](#carrier)
 - [Closed type family](#closed-type-family)
+- [Common subexpression elimination](#common-subexpression-elimination)
 - [Constraint synonym](#constraint-synonym)
 - [Constraint trick](#constraint-trick)
 - [continuation-passing style](#continuation-passing-style)
@@ -24,23 +26,24 @@
 - [Complete User-Supplied Kind](#complete-user-supplied-kind)
 - [Defunctionalization](#defunctionalization)
 - [Dynamic binding](#dynamic-binding)
-- [defunctionalization](#defunctionalization)
-- [dependent pair](#dependent-pair)
-- [dependent type](#dependent-type)
-- [endomorphism](#endomorphism)
+- [Dependent pair](#dependent-pair)
+- [Dependent type](#dependent-type)
+- [Endomorphism](#endomorphism)
 - [Evaluation strategies](#evaluation-strategies)
-- [first class family](#first-class-family)
-- [functional dependency](#functional-dependency)
+- [Fast and loose reasoning](#fast-and-loose-reasoning)
+- [First class family](#first-class-family)
+- [Functional dependency](#functional-dependency)
 - [Higher-kinded polymorphism](#higher-kinded-polymorphism)
 - [Denotational semantics](#denotational-semantics)
 - [Deforestation](#deforestation)
 - [Evaluation strategy](#evaluation-strategy)
 - [Forcing](#forcing)
 - [Functions](#functions)
+- [Functional dependency](#functional-dependency-1)
 - [Fusion](#fusion)
 - [higher rank](#higher-rank)
-- [higher-kinded type](#higher-kinded-type)
 - [Higher-kinded type](#higher-kinded-type)
+- [Higher-order function](#higher-order-function)
 - [Higher-rank type](#higher-rank-type)
 - [Implicit typing](#implicit-typing)
 - [Impredicative polymorphism](#impredicative-polymorphism)
@@ -73,12 +76,14 @@
 - [Program termination](#program-termination)
 - [Rank polymorphism](#rank-polymorphism)
 - [Regular type constructor](#regular-type-constructor)
+- [Reification](#reification)
 - [Resource](#resource)
 - [Rigid type](#rigid-type)
 - [Rigid skolem](#rigid-skolem)
 - [role signature](#role-signature)
 - [role system](#role-system)
 - [Rigid type](#rigid-type-1)
+- [Run-time system](#run-time-system)
 - [seq](#seq)
 - [Singletons](#singletons)
 - [Stack](#stack)
@@ -88,7 +93,9 @@
 - [singleton](#singleton)
 - [Skolem's variable](#skolems-variable)
 - [ST trick](#st-trick)
+- [Symmetric function](#symmetric-function)
 - [Thunk](#thunk)
+- [Type class](#type-class)
 - [Typed hole](#typed-hole)
 - [Type role](#type-role)
 - [Type signature](#type-signature)
@@ -100,23 +107,48 @@
 - [Unlifted type](#unlifted-type)
 - [Variance](#variance)
 - [Values](#values)
+- [Visible type application](#visible-type-application)
 - [Weak Head Normal Form](#weak-head-normal-form)
 - [Wobbly type](#wobbly-type)
 - [Zero-cost coercions](#zero-cost-coercions)
 
 <!-- /TOC -->
 
+## Algebraic data types
+Algebraic data types (ADT) are data types resulting from the use of specific methods of type construction that resamble algebraic operations, in most part in terms on the cardinality of the produces types. In algebra, fixing the set of numbers to ℕ, the number 0 is the additive unit, i.e. the identity element of addition. In Haskell, the `Void` ADT plays that role, with the addition corresponding to sum types, e.g. enums, tagged unions, disjoint unions; in general, the types that correspond to the logical disjunction (OR types) - because sums are compound types, but to construct a value of a sum type, you only need a single value of any of its constituent types. This is contrast to product types (resords, tuples, structs) which require all the values (of its component types) in order to construct a value; and they use the singletone type `()` as the identity (unit plays the role of multiplicative identity, 1).
+
+- 0 type: `Void`
+- 1 type: `()`
+- Canonical sum type:       `Either a b` ≅ `a + b`
+- Canonical product type:     `Pair a b` ≅ `a ⨯ b` ≅ `(a, b)`
+- Exponental type: `(->) a b` = `a -> b` ≅ `a ^ b`
+
+
+```
+Maybe a = Nothing | Just a` ≅ `Either () a
+       m = 1 + a            ≡         1 + a
+```
+
+
+Namely, 0 is represented by the empty type `Void`, 1 is represented by the unit type `()`, the addition is represented by the sum types (tagged union), multiplication by the product types (tuples, records), and exponentiation by the function types. The algebra of the ADTs is justified by the 
+
+isomorphisms such as `aᵇ ⨯ aᶜ = aᵇᐩᶜ`, which translates into the type signature `(b -> a, c -> a) -> (a -> Either b c)`, where pair `(x,y)` is the canonical product type, (⨯) ≅ x ⨯ y, `Either x y` is the canonical sum type, (+) ≅ x + y, and function type `x -> y` is the canonical exponentiation type, (^) ≅ yˣ. So, e.g. the type `Maybe a` is canonically expressed as `Either () a`.
+
+(b -> a, c -> a) -> a -> Either b c
+(a -> b, a -> c) -> a -> (b, c)
+
+
 ## Algebraic effects
-Algebraic effects are computational effects that can be represented by an equational theory, or algebraic theory, whose operations produce the effects at hand. They provide an alternative to using monads for modelling effects in FP. This approach has been realized in the programming language Eff.
+Effects may be handled in different ways in FP. Haskell uses monads for modelling the effects - they provide an elegant, but still not a perfect solution, because they are often not explicit enough about the type of an effect they handle. For example, the value `doSomething :: IO ()` does not tell us anything about what it might actually do, which is somewhat similar to the situation from imperative languages where we have no idea what a function actually does looking at its signature. Algebraic effects is the approach to solve this problem by naming all the effects a function may exert. The effects are collected in an open union type (as constraints or as data types), so a function's signature lists each effect associated with it. Algebraic effects are represented by an equational theory or algebraic theory, whose operations produce the effects. This approach has been realized in the programming language "Eff".
 
 ## Ambiguous type
-A type is ambiguous when the compiler is unable to infer it from the call site. The pragma `AllowAmbiguousTypes` permits defining ambiguously typed functions, and the pragma `TypeApplications` permits calling them.
-
-## Associated type family
-A type family that is associated with a class. Normally, they are used to emphasize the association between a class and a type family, but that type family could also be defined outside of the class.
+A type is ambiguous when the compiler is unable to determine a unique instantiation of a type variable. The extension `AllowAmbiguousTypes` permits defining ambiguously-typed functions, and the extension `TypeApplications` permits calling them.
 
 ## Applicative-monad proposal
 Applicative-monad proposal (AMP) was the accepted RFC aimed to add the `Applicative` class logically positioned between the `Functor` and `Monad` classes. This entailed the subsequent reorganization of constraints: `Functor` became the superclass of `Applicative`, `Applicative` became the superclass of `Monad`. Thus, before you can define a Monad instance for your type, first you have to make the type a member of Functor and Applicative classes, the fact that the compiler will happily remind you of.
+
+## Associated type family
+A type family that is associated with a class. Normally, they are used to emphasize the association between a class and a type family, but that type family could also be defined outside of the class.
 
 ## Bifunctor
 In Category Theory, a bifunctor (binary functor) is a functor whose domain is a product category. For example, `Hom` functor is of the type `Cᵒᵖ ⨯ C → Set`, and it can be seen as a functor in two arguments. The `Hom` functor is a natural example - it is contravariant in one argument, covariant in the other.
@@ -140,14 +172,17 @@ The call-by-need evaluation strategy of function's arguments in which the argume
 ## Canonical representation
 In Haskell, every ADT has a canonical representation in which it is defined as a, possibly recursive, sum of products. Every type is isomorphic to its canonical representation.
 
-## Constant Applicative Form
-In Haskell, CAF is any supercombinator that is not a lambda abstraction. This includes truly constant expressions such as `12`, `((+) 1 2)`, `[1,2,3]`, as well as partially applied functions such as `((+) 4)`; Even though `(\x -> (+) 4 x)` is an expression equivalent to the section `((+) 4)`, the former is not a CAF merely because it is a lambda abstraction.
+## Constant applicative form
+In Haskell, CAF is any supercombinator that is not a lambda abstraction. This includes truly constant expressions such as `12`, `((+) 1 2)`, `[1,2,3]`, and partially applied functions such as `((+) 4)`; Even though `(\x -> (+) 4 x)` is an expression equivalent to the section `((+) 4)`, the former is not a CAF merely because it is a lambda abstraction.
 
 ## Carrier
 In Haskell, a carrier is an informal name for a typeclass whose only purpose is to carry ad-hoc polymorphic implementations for generic methods.
 
 ## Closed type family
 In Haskell, a closed type family is a type family with all of its instances provided in its definition. Closed type families are a close analogue of functions at the type-level.
+
+## Common subexpression elimination
+Common Subexpression Elimination (CSE) is a compiler optimization. In GHC, it is controlled with the flag `-f-cse` (on by default). The compiler flag `-fno-cse` prevents common subexpression elimination being performed on the module (e.g. CSE may combine side effects, induced by a common subexpression, that were meant to be separate).
 
 ## Constraint synonym
 In Haskell, a technique for turning a type synonym of CONSTRAINTs into something partially-applicable. Performed by making a new typeclass with a superclass constraint of the synonym, and giving instances of it for free given the superclass constraint. For example, class c a => Trick a and instance c a => Trick a.
@@ -174,31 +209,36 @@ The Core is the name of the basic language that normal Haskell code is desugared
 Complete User-Supplied Kind (CUSK) signatures are a legacy feature replaced by the modern `StandaloneKindSignatures` approach.
 
 ## Defunctionalization
-Defunctionalization is a program transformation that aims to turn a higher-order functional program into a first-order one, that is, to eliminate the use of functions as first-class values. Its purpose is thus identical to that of closure conversion. It differs from closure conversion, however, by storing a tag, instead of a code pointer, within every closure. Defunctionalization has been used both as a reasoning tool and as a compilation technique. Defunctionalization is commonly defined and studied in the setting of a simply-typed λ-calculus, where it is shown that semantics and well-typedness are preserved.
+A technique for replacing a family of functions with an opaque symbol, and moving the original logic into an evaluation function. Used by first class type families.
+
+Defunctionalization is a program transformation intended to turn a higher-order functional program into a first-order one by eliminating the use of higher order functions (i.e.the use of functions as first-class values).
+
+Its purpose is thus identical to that of closure conversion. It differs from closure conversion, however, by storing a tag, instead of a code pointer, within every closure. Defunctionalization has been used both as a reasoning tool and as a compilation technique. Defunctionalization is commonly defined and studied in the setting of a simply-typed λ-calculus, where it is shown that semantics and well-typedness are preserved.
+
 
 ## Dynamic binding
 A variable is called dynamically bound when it is bound by the calling context of a function, and statically bound when bound by the callee's context.
-## defunctionalization
-a technique for replacing a family of functions with an opaque symbol, and moving the original logic into an eval function. Used by First Class Families.
 
-## dependent pair
-a type that pairs a singleton with a value indexed by the singleton.
+## Dependent pair
+A type that pairs a singleton with a value indexed by the singleton.
 
-## dependent type
-a type which isn't known statically, which depends on term-level values.
+## Dependent type
+A type which isn't known statically, which depends on term-level values.
 
-## endomorphism
-a function of the form a -> a.
+## Endomorphism
+In category theory, an endomorphism is a morphism on the same object. Each object has at least one endomorphism - its identity morphism. In general, "endo" prefix indicates adjectives like "homogeneous".
 
 ## Evaluation strategies
 Various approaches and technics regarding the time and manner of evaluation of arguments in a function application. Some common evaluation strategies are: call-by-value, call-by-name, call-by-sharing, call-by-need, call-by-reference.
 
-## first class family
+## Fast and loose reasoning
+Functional programmers often reason about programs as if they were written in a total language, expecting the results to carry over to a partial languages. This phrase stands for the justification of such reasoning. It comes from the title of the 2006's paper `Fast and loose reasoning is morally correct` by Nils Anders Danielsson, John Hughes, Patrik Jansson, Jeremy Gibbons in which they justify such reasoning. The phrase is directly related to justifying categorical reasoning in Haskell in term of the "Hask" category, despite it being no category at all (due to, at least, the presence of the bottom).
+
+## First class family
 FCF is a technique for building reusable, higher-order type families via defunctionalization.
 
-## functional dependency
-an additional invariant added to a multiparameter typeclass declaration saying that some of its type varaibles are entirely determined by others. Primarily
-used to improve type inference.
+## Functional dependency
+A form of special constraint, added to a multiparameter class declaration, that asserts an additional invariant expressed as determination (dependency) relation between type variables in a class' head. Often used to help drive type inference. For example, a multiparameter class' head is normally declared as, e.g. `class Multi a b c where …`, but with a functional dependency (fundep) added, it may look like e.g. `class Multi a b c | a, b -> c where …`, where the fundep states that the type var `c` is completely determined by the type vars `a` and `b`.
 
 ## Higher-kinded polymorphism
 Polymorphism abstracts types, just as functions abstract values. Higher-kinded polymorphism takes things a step further, abstracting both types and type constructors, just as higher-order functions abstract both first-order values and functions.
@@ -218,17 +258,18 @@ In Haskell (unlike in set theory), the term "forcing" denotes some way to force 
 ## Functions
 Haskell provides functions that may be classified according to at least a dozen of factors, including arity (nullary, unary, binary, n-ary), polymorphic rank (rank-1, rank-2, rank-K, rank-N), genericity (parametrically polymorphic, overloaded), syntactic level (term-level, type-level, kind-level), term-level association (standalone function, data ctor, field accessor), syntacic position (prefix, infix, suffix), associativity, type of identifier (alphabetical, symbolic), general shape (multi-part equations, sections, lambdas).
 
+## Functional dependency
+A functional dependency, aka *fundep* or *fd*, usually occurs in class definitions where it is used to express additional constraints on the type parameters. That is, it expresses the dependencies between the type parameters, e.g. `r -> a` means that the type param `a` is completely determined by the type param `r`. It requires enabling the `FunctionalDependencies` GHC pragma.
+
 ## Fusion
 Merging several operations, that operate on the same data, into one. GHC often explores opportunities to fuse multiple list traversals and operations into a single traversal with operations merged.
 
 ## higher rank
-another name for a rank-n type.
-
-## higher-kinded type
-a type which is parameterized by something other than `TYPE`.
-
+Another name for a rank-n type.
 
 ## Higher-kinded type
+A higher-kinded type is a type which is parameterized by something other than `TYPE`.
+
 A higher kinded type (HKT) is a kind-polymorphic type variable that can be instantiated at type constructors of many different kinds.
 
 ```hs
@@ -242,6 +283,9 @@ type HKT (a :: k) = a
 ```
 
 Higher-kinded types are those which have type variables. Fully saturated HKTs in everyday Haskell always have kind `Type`, which means that their type constructors do not.
+
+## Higher-order function
+the use of functions as first-class values
 
 ## Higher-rank type
 A Higher-Rank Type (HRT) is a language entity (usually a function) that takes (parametrically) polymorphic functions as args (as opposed to taking functions with concrete types).
@@ -293,7 +337,7 @@ Making a pure function available to some (monadic, computational) context.
 Unlifted types are the basic primitive types, not commonly encountered in code; these are the most primitive machine types like integers and floats, which have kind `#`. So the most primitive machine type of numbers is `Int#` which is usually a 64-bit values. When a type is expanded to include the bottom value, it becomes a so-called lifted type. So, There are the unlifted integers, `Int#`, and the lifted integers, `Int`. All the usual types (e.g. of the kind `*`) in Haskell include the special value called *bottom* (`⟘`) that denotes divergence.
 
 ## Monad transformer
-A monad transformer is a data type, usually defined as a newtype. It is a monad that is based on another monad (referred to as the precursor monad); this fact is reflected in the similarity of their names: the transformers have the same name as their corresponding precursor only suffixed with a `-T` (e.g. `State` vs `StateT`, `Maybe` vs `MaybeT`, `IO` vs … gotcha! there's no `IOT` because the `IO` monad, if used, must be the base monad). Different monads are combined and their effects composed in a stack-like arrangement, with one monad nested inside another. The base monad is the most deeply nested monad, i.e. the one at the base of the monad stack. The outer monad is the exposed monad, in terms of which the whole monad stack is typed. However, for one monad to host another monad (which itself may be wrapping yet another monad, etc.), while retaining the capability to pinpoint and address any monad in this structure, we don't use vanilla monads but their t-suffixed transformer versions, all of which have a type parameter `m`, a slot for a monad they wrap. For example, the State monad transformer,`StateT s m a`, is parameterized by a state `s`, a monad `m`, and a value type `a`. Its precursor is the `State` monad, which is actually based on its transformer (with `m` filled by the `Identity` monad), rather than the other way around (which is the case with monads like Maybe, Either, list, etc.).
+A monad transformer is a data type that combines the capabilities of multiple monads into a single one. Monad transformers are composed into a *monad stack* which allows us to interleave the effects and capabilities of multiple monads.
 
 ## Name equality
 Haskell uses name equality (not structural equality) when determining whether two types are equal: if they have the same name, they are the same type, they are equal. In Haskell, `data` and `newtype` keywords are used to define new datatypes. You can make an abstract datatype by hiding its data constructors (leaving them out from a module's export list), but the association between a type name and the datatype it denotes cannot be abstracted. Therefore, it is straightforward (for the type checker) to determine whether two type names denote the same datatype: after expanding synonyms, two types are the same if they have the same name.
@@ -344,6 +388,9 @@ Array-oriented PLs are primarily concerned with manipulation of array-like struc
 ## Regular type constructor
 A type constructor `d` is regular if the data type `d a` contains no function spaces and if the `d`'s type argument is the same on both sides of its type declaration.
 
+## Reification
+Reification is the observation of underlying structure.
+
 ## Resource
 The Haskell 2010 Report uses the term "resource" to refer to the language items brought into scope from other modules.
 
@@ -362,6 +409,9 @@ the system that ensures role annotations are not violated.
 
 ## Rigid type
 Rigid types originally went under the name "user-specified types", but the change was made [probably] because the current term unambiguously and uniquely pinpoints the issue. The term is the most comfortably used in GHC errors (the "typefucker" Easter egg is said to be triggered when the user provokes GHC to issue exactly 23 error msgs pertaining to a single type expresion), especially in situations involving type variables in polymorphic functions. They are dual to wobbly (co-rigid :) types, i.e. GHC-inferred types. [A/N] The division to rigid and wobbly types is perhaps significant from the aspect of the type-checker, which must makes sure all expressions are assigned an explicit type, procured one way or the other. The names chosen for these two sorts of types seem (to me) to imply that a type-less expression may wobble around a bit, making the type-checker busy re-infering its type (the type annotation is in the "flow"). But when the user slaps it with a type- annotation, the wobbling stops since an explicit type fox the expression in place, preventing any modification that is not accompanied by the corresponding type adjustment.
+
+## Run-time system
+Run-time system (RTS) is the program that actually executes compiled Haskell code. RTS is impure, thus allowing Haskell functions to remain pure. Within Haskell, an effectful function is pure because side effects are still represented by datatypes that only describe various effects. It is only when RTS executes a program that effects are executed, affecting the environment. RTS schedules and manages the execution of Haskell programs. It takes care of threading, inlcuding concurrency and parallelism, manages memory, garbage collection, etc.
 
 ## seq
 The `seq` function works by returning its second argument, while it ties to evaluate the first one into the normal form. In `seq a b`, the value of `a` is always evaluated before `b`.
@@ -390,9 +440,35 @@ A Skolem's variable (or just Skolem) is an existentially quantified variable.
 ## ST trick
 In Haskell, the `ST` trick is a technique for scoping the lifetime of a piece of data via an existential variable.
 
+## Symmetric function
+A function is symmetric is it can be composed with itself.
 
 ## Thunk
 In strict languages, a thunk usually refers to a function that is used as a way to delay the evaluation of an expression. Thunks are more effective in PLs with first-class function support. For example, in JS, as in all strict PLs, function application triggers a full evaluation of function's args; to prevent an argument from being evaluated, JS programmers can wrap that arg in a thunk, e.g. `let thunk = () => arg`, and pass that into function instead. Later, that arg can be retrieved and evaluated by calling the `thunk()`. In Haskell, thunks have a similar purpose, but here they are realized as highly specialized function-like objects adjusted for use in a non-strict setting.
+
+## Type class
+A type class is a language entity similar to an interface, in that it defines a set of behaviors that members of the class must implement.
+
+Type classes divide types into subclasses, like a class of number types, printable types, mappable types, etc.
+
+The type of polymorphism type classes give rise to is *ad hoc polymorphism*; it allows using the same name for a function that does a similar thing across many different types. More concretely, the 'Functor' class groups mappable types. Each member type had to implement the main mapping function "map" to be granted membership to Functor. This means that many different types have the same name for the mapping function ('map'), even though each type has (even drastically) different implementation of it.
+
+The immediate advantage is that thenceforth, we can use the same, easily remembered name, for a mapping function at any type. Ad hoc polymorphism enables generic programming in exactly the same way - common functionality (behavior, like mapping) has the same name everywhere. If we have a set of such behaviors, we can write highly generic functions that don't even know what concrete type they are dealing with - that gets resolved later at call sites; a function then sees that its arg is, e.g. an integer, so it gets reveled that all generic behaviors (functions) should be specialized to integers (so the 'map' name is resolved with, say, 'mapInt' function).
+
+- type class declaration
+- type class implementation
+- defining an class instance for a type
+- deriving type class instances automatically
+- a type class instance
+- type class head
+  - receiver type ctor of a class
+- type class body
+  - type class methods
+  - method signatures
+  - minimal definition
+  - methods with default implementation
+  - default (specialized) methods
+
 
 ## Typed hole
 A typed hole is a part of type signature that is left unspecified. The "hole" is formed when a type-level subexpression, that is a part of the overall type signature, is annotated with an underscore (either placed there by itself or prefixing an existing name). For example, instead of writing the entire type `StateT Integer IO`, you may leave out the (easily inferrable) middle part, writing `StateT _ IO` instead. Typed holes are half-way between a compiler-inferred and a user-annotated type. Typed holes may be useful when dealing with a particularly long and verbose signature (especially in type aliases). A *partially annotated type* is a type signature or a type annotation with a typed hole.
@@ -443,6 +519,51 @@ In GHC, enabling the `OverloadedLists` language extension, makes it possible to 
 Since *functions* are also values, and frequently used values at that, also have a literal form, `\ x -> sqrt x`.
 
 Values of other types are created using the corresponding constructor function, thus called *value constructors* (or data constructors).
+
+## Visible type application
+When calling a polymorphic function, Haskell, unlike System F, does not require you to pass it the type arguments since GHC can infer them from their value arguments. 
+
+This is called visible type applications because you can only explicitly specify the types of type parameters that are not hidden (using the `{p}` syntax).
+
+However, should you wish to specify the type argument explicitly, GHC provides the special syntax to do so, enabled via the pragma `TypeApplication`. 
+
+Then, in a call to a polymorphic function, you can specify the types, after the function's name but before the value arguments, by prefixing each type argument by `@`.
+
+The syntax is
+
+```hs
+         function call
+┌─────────────┴──────────────────────────┐
+fun   @τ₀ @τ₁ … @τₙ  t₀ t₁ … tₙ  x₀ x₁ … xₖ
+└┬┘   └───┬───────┘ └──┬─────┘  └──┬─────┘
+ │        │            │        value args
+ │        │         value args
+ │      type args
+name
+
+τᵢ - type args
+tᵢ - value args corresponding to the type args
+xᵢ - value args corresponding to concrete types
+```
+
+For example, `fmap` is a polymorphic function that declares the type parameters in the order `f`, `a`, `b`, where `f` must be a type ctor `f :: Type -> Type`. So the visible type applications must be specified respecting this order.
+
+```hs
+-- the type of fmap
+fmap :: forall (f :: Type -> Type) a b. Functor f => (a -> b) -> f a -> f b
+
+fmap @[] @(Map Int Char) @Char
+
+```
+
+`fmap @[] @(Map Int Char) @Char` completely monomorphisizes `fmap` to work over these concrete types
+
+  :: (Map Int Char -> Char) -> [Map Int Char] -> [Char]
+
+For example, `fmap @[]` specializes the `fmap` function to only work over lists (otherwise it works over all foldable types). The types are specified in the order of declaration of their corresponding type varaibles, including the type varaibles mentioned in the constraint context. To skip an type in the explict type application use `@_`. For example, `fmap @_ @Int` specializes fmap to work over foldable types that hold integers.
+
+
+With the move that equalizes types and kinds, the same syntax is also used to explicitly spacify a kind.
 
 ## Weak Head Normal Form
 As opposed to strict PLs, where an expression is either unevaluated or fully evaluated, Haskell's evaluation process is far more segmented. Haskell expressions undergo several intermediary forms as they progress from virginal (untouched) to fully evaluated values. Expressions can be considered as if having several value layers, and the way these layers are stripped (whether all at once, or ever so gently) depends on numerous factors, ranging from the surrounding context to the type of the value itself. WHNF is a stage in the process of evaluating an expression. It is usually related in pattern matching against a particular data ctor. An expression that is evaluated just enough to reveal its data ctor is in weak-head normal form (WHNF). For example, a function that expects an arg of type `Val x`, where `Val` is the data ctor, and it declares the corresponding parameter as `x` i.e. using an irrefutable pattern, then the arg is not even smelled - no evaluation of the arg happens (it may even be undefined). However, if the param binds the arg using a pattern match against the data ctor, as `(Val x)` then the arg has to undergo evaluation until it reveals the expected `Val` data ctor, or it fails to pattern-match (maybe because the arg was some other type). If the pattern match fails, the pattern in the next equation is tried (and so on), but, at that point the arg has already lost a few layers, it got peeled just enough to reveal whether it was a data ctor, so the evaluation might proceed from there or the arg may be evaluated enough at that point to determine if it matches.

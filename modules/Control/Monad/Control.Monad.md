@@ -3,65 +3,66 @@
 https://hackage.haskell.org/package/base-4.14.0.0/docs/Control-Monad.html
 
 
-Control.Monad
-Control.Monad.Cont
-  Control.Monad.Cont.Class
-Control.Monad.Error
-  Control.Monad.Error.Class
-  Control.Monad.Error.Lens
-Control.Monad.Except
-Control.Monad.Fail
-Control.Monad.Fix
-Control.Monad.Identity
-Control.Monad.Instances
-Control.Monad.IO.Class
-Control.Monad.List
-Control.Monad.Reader
-  Control.Monad.Reader.Class
-Control.Monad.RWS
-  Control.Monad.RWS.Class
-  Control.Monad.RWS.Lazy
-  Control.Monad.RWS.Strict
-Control.Monad.Signatures
-Control.Monad.ST
-  Control.Monad.ST.Lazy
-  Control.Monad.ST.Lazy.Safe
-  Control.Monad.ST.Lazy.Unsafe
-  Control.Monad.ST.Safe
-  Control.Monad.ST.Strict
-  Control.Monad.ST.Unsafe
-Control.Monad.State
-  Control.Monad.State.Class
-  Control.Monad.State.Lazy
-  Control.Monad.State.Strict
-Control.Monad.STM
-Control.Monad.Trans
-  Control.Monad.Trans.Accum
-  Control.Monad.Trans.Class
-  Control.Monad.Trans.Cont
-  Control.Monad.Trans.Error
-  Control.Monad.Trans.Except
-  Control.Monad.Trans.Identity
-  Control.Monad.Trans.List
-  Control.Monad.Trans.Maybe
-  Control.Monad.Trans.Reader
-  Control.Monad.Trans.RWS
-  Control.Monad.Trans.RWS.CPS
-  Control.Monad.Trans.RWS.Lazy
-  Control.Monad.Trans.RWS.Strict
-  Control.Monad.Trans.Select
-  Control.Monad.Trans.State
-  Control.Monad.Trans.State.Lazy
-  Control.Monad.Trans.State.Strict
-  Control.Monad.Trans.Writer
-  Control.Monad.Trans.Writer.CPS
-  Control.Monad.Trans.Writer.Lazy
-  Control.Monad.Trans.Writer.Strict
-Control.Monad.Writer
-  Control.Monad.Writer.Class
-  Control.Monad.Writer.Lazy
-  Control.Monad.Writer.Strict
-Control.Monad.Zip
+- Control
+  - Control.Monad
+    - Control.Monad.Cont
+      - Control.Monad.Cont.Class
+    - Control.Monad.Error
+      - Control.Monad.Error.Class
+      - Control.Monad.Error.Lens
+    - Control.Monad.Except
+    - Control.Monad.Fail
+    - Control.Monad.Fix
+    - Control.Monad.Identity
+    - Control.Monad.Instances
+    - Control.Monad.IO.Class
+    - Control.Monad.List
+    - Control.Monad.Reader
+      - Control.Monad.Reader.Class
+    - Control.Monad.RWS
+      - Control.Monad.RWS.Class
+      - Control.Monad.RWS.Lazy
+      - Control.Monad.RWS.Strict
+    - Control.Monad.Signatures
+    - Control.Monad.ST
+      - Control.Monad.ST.Lazy
+        - Control.Monad.ST.Lazy.Safe
+        - Control.Monad.ST.Lazy.Unsafe
+      - Control.Monad.ST.Safe
+      - Control.Monad.ST.Strict
+      - Control.Monad.ST.Unsafe
+    - Control.Monad.State
+      - Control.Monad.State.Class
+      - Control.Monad.State.Lazy
+      - Control.Monad.State.Strict
+    - Control.Monad.STM
+    - Control.Monad.Trans
+      - Control.Monad.Trans.Accum
+      - Control.Monad.Trans.Class
+      - Control.Monad.Trans.Cont
+      - Control.Monad.Trans.Error
+      - Control.Monad.Trans.Except
+      - Control.Monad.Trans.Identity
+      - Control.Monad.Trans.List
+      - Control.Monad.Trans.Maybe
+      - Control.Monad.Trans.Reader
+      - Control.Monad.Trans.RWS
+        - Control.Monad.Trans.RWS.CPS
+        - Control.Monad.Trans.RWS.Lazy
+        - Control.Monad.Trans.RWS.Strict
+      - Control.Monad.Trans.Select
+      - Control.Monad.Trans.State
+        - Control.Monad.Trans.State.Lazy
+        - Control.Monad.Trans.State.Strict
+      - Control.Monad.Trans.Writer
+        - Control.Monad.Trans.Writer.CPS
+        - Control.Monad.Trans.Writer.Lazy
+        - Control.Monad.Trans.Writer.Strict
+    - Control.Monad.Writer
+      - Control.Monad.Writer.Class
+      - Control.Monad.Writer.Lazy
+      - Control.Monad.Writer.Strict
+    - Control.Monad.Zip
 
 
 ```hs

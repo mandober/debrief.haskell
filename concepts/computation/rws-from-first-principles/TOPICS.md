@@ -1,0 +1,37 @@
+# TOPICS
+
+- pure functions vs side effects
+  - side effects, about side effects, effectful computations
+  - pure functions, about purity
+  - the contradiction of having both
+- external and internal side effects
+  - external side effects (IO, RTS)
+  - internal side effects (no IO required)
+- modelling side effects with pure functions
+- modelling *external side effects* as actions (`IO` monad)
+  - actions, descriptions of actions
+  - Kleisli arrows
+  - `IO` monad manages all I/O interaction
+  - exectution of actions by the RTS
+- modelling *internal side effects* with pure functions (no `IO` monad)
+  - modelling a global state
+  - modelling a global environment
+  - maintaining a global log
+  - tracing the execution of functions
+- threading the state through pure functions
+  - taking the state through an extra input parameter
+  - returning the possibly updated state as an extra output value
+- Reader, Writer, State data types from the first principles
+  - modelling a global mutable state with the `State` data type
+  - modelling a global read-only environment with the `Reader` data type
+  - maintaining a global log with the `Writer` data type
+  - the `State` data type
+  - the `Reader` data type
+  - the `Writer` data type
+- Monad transformers
+  - composing effects
+  - monad stack
+  - base monad
+  - the `StateT` data type
+  - the `ReaderT` data type
+  - the `WriterT` data type

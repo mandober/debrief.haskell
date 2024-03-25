@@ -414,3 +414,8 @@ https://downloads.haskell.org/~ghc/latest/docs/html/libraries/
 * ghc-9.2.1: The GHC API
 Documentation on the GHC API, see ghc-9.2.1
 https://downloads.haskell.org/~ghc/latest/docs/html/libraries/ghc-9.2.1/index.html
+
+
+
+* **ALL** modules 9.4.3
+https://downloads.haskell.org/ghc/latest/docs/libraries/doc-index-All.html

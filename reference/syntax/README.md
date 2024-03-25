@@ -1,0 +1,50 @@
+# Haskell Syntax
+
+- functions
+  - sorts of functions
+    - value level function
+    - type level function
+      - type ctor
+      - type family
+    - kind level function?
+    - constraint-level?
+      - `Show -> Constraint`
+  - declaring and defining functions
+    - (syntactic) forms
+      - top-level function declaration
+        - function definition (named function)
+        - lambda expression
+      - implicit function declaration
+        - data ctor (is a tagging, irreducible function)
+        - accessor function
+      - nested function declaration
+  - function declaration
+    - function hadock commment
+    - function specification
+    - function signature
+    - function definition (implementation)
+- case expressions
+- pattern matching
+  - pattern to match the term against
+  - scrutinee - the term to match against the pattern
+  - classification of patterns
+    - by refutability
+      - refutable patterns
+      - irrefutable patterns
+    - by strictness
+      - strict, `!`
+      - lazy, `~`
+      - extra lazy (newtype layering)
+    - by properties and attributes
+      - simple patterns
+        - literal patterns, `9`, `'z'`
+        - plain (irrefutable) patterns, `x`
+        - compound patterns
+          - with data ctors, `(x : xs)`
+          - with records
+      - nested patterns
+      - as-pattern
+      - wild-card (catch-all) pattern
+      - ignore (dont-care, discard) pattern
+      - value hole
+      - type hole

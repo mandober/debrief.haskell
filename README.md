@@ -3,7 +3,18 @@
 - name: Haskell debris
 - repo: https://github.com/mandober/debrief.haskell
 - desc: Haskell cold cuts - el sabor de mis besos
-- line: 🚌 🚏 🐀 👜
+- tags: 🚌 🚏 🐀 👜
+
+
+Haskell motto #1:
+>Make invalid states impossible to construct.
+i.e. correctness by construction.
+
+
+
+
+
+
 
 
 ```hs

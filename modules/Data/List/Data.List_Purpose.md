@@ -1,6 +1,6 @@
 # Data.List
 
-`Data.List` functions arranged by the similarity of their functionality.
+`Data.List` functions arranged by the similarity of functionality.
 
 Ops
 * Insertion

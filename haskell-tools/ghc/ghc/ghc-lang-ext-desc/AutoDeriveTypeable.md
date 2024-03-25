@@ -1,0 +1,4 @@
+# AutoDeriveTypeable
+
+Lang Pragma: `AutoDeriveTypeable`
+

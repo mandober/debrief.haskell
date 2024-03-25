@@ -1,0 +1,377 @@
+# GHC :: Language extensions
+
+Legend:
+- D  Deriving
+- F  FFI
+- R  Records
+- S  Syntax
+- T  Types
+- HM Haskell major modes:
+     Template Haskell
+     Haskell Arrows
+     Parallel Haskell
+     Safe Haskell
+     Trustworthy Haskell
+     Dependent Haskell
+- D  Deprecated
+- O  Obsolete
+
+
+                                      |M:Mine enabled
+                                    |f:Glasgow (-fglasgow-exts)
+                                 |8:Haskell98
+                               |0:Haskell2010
+                             |G:GHC2021
+                           |k:kind   |
+                           | | | |   |
+All extensions in 9.4.2    |k|G|0|8|f|M|Notes
+---------------------------|-|-|-|-|-|-|----------------
+BangPatterns               |σ|1| | | |✓|
+BinaryLiterals             |σ|1| | | |✓|
+ConstrainedClassMethods    |τ|1| | |w|✓|
+ConstraintKinds            |τ|1| | | |✓|
+DeriveDataTypeable         |δ|1| | |w|✓|
+DeriveFoldable             |δ|1| | |w|✓|
+DeriveFunctor              |δ|1| | |w|✓|
+DeriveGeneric              |δ|1| | | |✓|
+DeriveLift                 |δ|1| | | |✓|
+DeriveTraversable          |δ|1| | | |✓|
+EmptyCase                  |σ|1| | | |✓|
+EmptyDataDecls             |τ|1|0| |w|✓|
+EmptyDataDeriving          |δ|1| | | |✓|
+ExistentialQuantification  |τ|1| | |w|✓|
+ExplicitForAll             |τ|1| | | |✓|
+FlexibleContexts           |τ|1| | |w|✓|
+FlexibleInstances          |τ|1| | |w|✓|
+GeneralisedNewtypeDeriving |δ|1| | |w|✓|
+HexFloatLiterals           |σ|1| | | |✓|
+ImportQualifiedPost        |σ|1| | | |✓|
+InstanceSigs               |σ|1| | | |✓|
+KindSignatures             |σ|1| | |w|✓|
+MultiParamTypeClasses      |σ|1| | |w|✓|
+NumericUnderscores         |σ|1| | | |✓|
+PatternGuards              |σ|1|0| |w|✓|
+PolyKinds                  |τ|1| | | |✓|
+PostfixOperators           |σ|1| | |w|✓|
+RankNTypes                 |τ|1| | |w|✓|
+ScopedTypeVariables        |τ|1| | |w|✓|
+StandaloneDeriving         |δ|1| | |w|✓|
+StandaloneKindSignatures   |τ|1| | | |✓|
+StarIsType                 |σ|1|0|8| |✓|
+TraditionalRecordSyntax    |ρ|1|0|8| |✓|
+TupleSections              |τ|1| | | |✓|
+TypeApplications           |τ|1| | | |✓|
+TypeOperators              |τ|1| | |w|✓|
+TypeSynonymInstances       |τ|1| | |w|✓|
+DoAndIfThenElse            |σ|1|0| | | | 
+FieldSelectors             |ρ|1|0|8| | | 
+GADTSyntax                 |σ|1| | | | | 
+ImplicitPrelude            |σ|1|0|8|W| | 
+MonomorphismRestriction    |τ|1|0|8| | | 
+NamedFieldPuns             |ρ|1| | | | | 
+NamedWildCards             |ρ|1| | | | | 
+RelaxedPolyRec             |τ|1|0| | | | 
+ForeignFunctionInterface   |φ|1|0| |w| | 
+AllowAmbiguousTypes        |τ| | | | | | 
+ApplicativeDo              |σ| | | | |✓|
+BlockArguments             |σ| | | | |✓|
+DataKinds                  |τ| | | | |✓|
+DefaultSignatures          |τ| | | | |✓|
+DerivingStrategies         |δ| | | | |✓|
+DisambiguateRecordFields   |ρ| | | | |✓|
+FunctionalDependencies     |τ| | | |w|✓|
+GADTs                      |τ| | | | |✓|
+LambdaCase                 |σ| | | | |✓|
+LexicalNegation            |σ| | | | |✓|
+LiberalTypeSynonyms        |σ| | | |w|✓|
+MonadComprehensions        |σ| | | | |✓|
+MultiWayIf                 |σ| | | | |✓|
+NegativeLiterals           |σ| | | | |✓|
+NondecreasingIndentation   |σ| | |8| |✓|
+NumDecimals                |σ| | | | |✓|
+OverloadedRecordDot        |ρ| | | | |✓|
+OverloadedRecordUpdate     |ρ| | | | |✓|
+PartialTypeSignatures      |σ| | | | |✓|
+PatternSynonyms            |σ| | | | |✓|
+QuantifiedConstraints      |σ| | | | |✓|
+RoleAnnotations            |τ| | | | |✓|
+TypeFamilies               |τ| | | | |✓|
+TypeFamilyDependencies     |τ| | | | |✓|
+ViewPatterns               |σ| | | | |✓|
+CUSKs                      |τ| |0|8| | | 
+DatatypeContexts           |τ| |0|8| | | 
+DeepSubsumption            |τ| | | | | | 
+DeriveAnyClass             |δ| | | | | | 
+DerivingVia                |δ| | | | | | 
+DuplicateRecordFields      |ρ| | | | | | 
+ExplicitNamespaces         |σ| | | |w| | 
+ExtendedDefaultRules       |τ| | | | | | 
+ImplicitParams             |σ| | | |w| | 
+ImpredicativeTypes         |τ| | | | | | 
+IncoherentInstances        |τ| | | | | | 
+LinearTypes                |τ| | | | | | 
+MagicHash                  |σ| | | |w| | 
+MonoLocalBinds             |τ| | | | | | 
+OverlappingInstances       |τ| | | | | | 
+OverloadedLabels           |σ| | | | | | 
+OverloadedLists            |σ| | | | | | 
+OverloadedStrings          |σ| | | | | | 
+PackageImports             |σ| | | | | | 
+ParallelListComp           |σ| | | |w| | 
+QualifiedDo                |σ| | | | | | 
+RebindableSyntax           |σ| | | | | | 
+RecordWildCards            |ρ| | | | | | 
+RecursiveDo                |σ| | | |w| | 
+TransformListComp          |σ| | | | | | 
+UnboxedSums                |τ| | | | | | 
+UnboxedTuples              |τ| | | |w| | 
+UndecidableInstances       |τ| | | | | | 
+UndecidableSuperClasses    |τ| | | | | | 
+UnicodeSyntax              |σ| | | |w| | 
+UnliftedDatatypes          |τ| | | | | | 
+UnliftedNewtypes           |τ| | | | | | 
+TemplateHaskell            |T| | | | | | 
+TemplateHaskellQuotes      |T| | | | | | 
+QuasiQuotes                |T| | | | | | 
+Arrows                     |A| | | | | | 
+CPP                        |A| | | | | | 
+GHC2021                    |A| | | | | | 
+Haskell2010                |A| | | | | | 
+Haskell98                  |A| | | | | | 
+Trustworthy                |A| | | | | | 
+Strict                     |A| | | | | | 
+StrictData                 |A| | | | | | 
+Safe                       |A| | | | | | 
+Unsafe                     |A| | | | | | 
+GHCForeignImportPrim       |φ| | | | | | 
+CApiFFI                    |φ| | | | | | 
+StaticPointers             |φ| | | | | | 
+InterruptibleFFI           |φ| | | |w| | 
+UnliftedFFITypes           |φ| | | |w| | 
+TypeInType                 |D| | | | | | 
+NullaryTypeClasses         |D| | | | | | 
+Rank2Types                 |O| | | | | | 
+NPlusKPatterns             |O| | |8| | | 
+
+
+
+
+
+## GHC2021
+
+The GHC2021 language set comprises the following extensions:
+
+BangPatterns
+BinaryLiterals
+ConstrainedClassMethods
+ConstraintKinds
+DeriveDataTypeable
+DeriveFoldable
+DeriveFunctor
+DeriveGeneric
+DeriveLift
+DeriveTraversable
+DoAndIfThenElse
+EmptyCase
+EmptyDataDecls
+EmptyDataDeriving
+ExistentialQuantification
+ExplicitForAll
+FieldSelectors
+FlexibleContexts
+FlexibleInstances
+ForeignFunctionInterface
+GADTSyntax
+GeneralisedNewtypeDeriving
+HexFloatLiterals
+ImplicitPrelude
+ImportQualifiedPost
+InstanceSigs
+KindSignatures
+MonomorphismRestriction
+MultiParamTypeClasses
+NamedFieldPuns
+NamedWildCards
+NumericUnderscores
+PatternGuards
+PolyKinds
+PostfixOperators
+RankNTypes
+RelaxedPolyRec
+ScopedTypeVariables
+StandaloneDeriving
+StandaloneKindSignatures
+StarIsType
+TraditionalRecordSyntax
+TupleSections
+TypeApplications
+TypeOperators
+TypeSynonymInstances
+
+## All
+
+AllowAmbiguousTypes
+ApplicativeDo
+Arrows
+BangPatterns
+BinaryLiterals
+BlockArguments
+ConstrainedClassMethods
+ConstraintKinds
+CPP
+CUSKs
+DataKinds
+DatatypeContexts
+DeepSubsumption
+DefaultSignatures
+DeriveAnyClass
+DeriveDataTypeable
+DeriveFoldable
+DeriveFunctor
+DeriveGeneric
+DeriveLift
+DeriveTraversable
+DerivingStrategies
+DerivingVia
+DoAndIfThenElse
+DisambiguateRecordFields
+DuplicateRecordFields
+EmptyCase
+EmptyDataDecls
+EmptyDataDeriving
+ExistentialQuantification
+ExplicitForAll
+ExplicitNamespaces
+ExtendedDefaultRules
+FieldSelectors
+FlexibleContexts
+FlexibleInstances
+FunctionalDependencies
+GADTs
+GADTSyntax
+GeneralisedNewtypeDeriving
+HexFloatLiterals
+ImplicitParams
+ImplicitPrelude
+ImportQualifiedPost
+ImpredicativeTypes
+IncoherentInstances
+InstanceSigs
+KindSignatures
+LambdaCase
+LexicalNegation
+LiberalTypeSynonyms
+LinearTypes
+MagicHash
+MonadComprehensions
+MonoLocalBinds
+MonomorphismRestriction
+MultiParamTypeClasses
+MultiWayIf
+NamedFieldPuns
+NamedWildCards
+NegativeLiterals
+NondecreasingIndentation
+NPlusKPatterns
+NullaryTypeClasses
+NumDecimals
+NumericUnderscores
+OverlappingInstances
+OverloadedLabels
+OverloadedLists
+OverloadedRecordDot
+OverloadedRecordUpdate
+OverloadedStrings
+PackageImports
+ParallelListComp
+PartialTypeSignatures
+PatternGuards
+PatternSynonyms
+PolyKinds
+PostfixOperators
+QualifiedDo
+QuantifiedConstraints
+QuasiQuotes
+RebindableSyntax
+RecursiveDo
+RelaxedPolyRec
+ScopedTypeVariables
+StandaloneDeriving
+StandaloneKindSignatures
+TraditionalRecordSyntax
+TransformListComp
+TupleSections
+UnboxedSums
+UnboxedTuples
+UndecidableInstances
+UndecidableSuperClasses
+UnliftedDatatypes
+UnliftedNewtypes
+
+* Records
+  RecordWildCards
+* Syntax
+  RoleAnnotations
+  StarIsType
+  UnicodeSyntax
+  ViewPatterns
+* Types
+  RankNTypes
+  TypeApplications
+  TypeFamilies
+  TypeFamilyDependencies
+  TypeInType
+  TypeOperators
+  TypeSynonymInstances
+* Template Haskell
+  TemplateHaskell
+  TemplateHaskellQuotes
+* FFI
+  CApiFFI
+  ForeignFunctionInterface
+  GHCForeignImportPrim
+  InterruptibleFFI
+  UnliftedFFITypes
+  StaticPointers
+* General
+  Strict
+  StrictData
+  Safe
+  Unsafe
+  Trustworthy
+* Reports
+  GHC2021
+  Haskell2010
+  Haskell98
+* Obsolete
+  Rank2Types
+* Deprecated
+
+
+## My set
+
+ApplicativeDo
+BlockArguments
+DataKinds
+DefaultSignatures
+DerivingStrategies
+DisambiguateRecordFields
+FunctionalDependencies
+GADTs
+LambdaCase
+LexicalNegation
+LiberalTypeSynonyms
+MonadComprehensions
+MultiWayIf
+NegativeLiterals
+NondecreasingIndentation
+NumDecimals
+OverloadedRecordDot
+OverloadedRecordUpdate
+PartialTypeSignatures
+PatternSynonyms
+QuantifiedConstraints
+RoleAnnotations
+TypeFamilies
+TypeFamilyDependencies
+ViewPatterns

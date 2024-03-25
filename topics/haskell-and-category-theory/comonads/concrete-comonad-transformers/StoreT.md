@@ -1,0 +1,1 @@
+# StoreT comonad transformer

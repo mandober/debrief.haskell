@@ -1,0 +1,74 @@
+# Haskell :: Index
+
+
+Haskell indices:
+- Index of Reserved words
+- Index of Haskell subsystems
+  - Haskell modes
+    - Safe Haskell
+    - Unsafe Haskell
+    - Trusworthy Haskell
+  - Haskell components
+    - FFI
+    - Unlifted vs lifted
+    - Linear Haskell
+    - Concurrent Haskell
+    - Template Haskell
+    - Dependent Haskell
+    - Arrow subsystem
+  - Haskell subcomponents
+    - SQL queries (group by, sort by)
+    - RebindibleSyntax
+    - mdo notation
+- Index of GHC language extensions
+- Index of GHC versions
+- Index of GHC pragmas
+- Index of GHC language extensions
+- Index of GHC compiler flags
+- Index of packages
+- Index of modules
+- Index of Haskell concepts
+- Index of Haskell names (identifiers)
+- Index of Haskell namespaces
+- Index of Haskell semantic units
+  - package
+  - module
+  - function
+- Haskell's semantic hierarchy
+    - class
+    - kind
+    - type
+    - data ctor
+    - value
+- Index of functions
+- Index of partial functions
+- Index of Haskell reserved words
+- Index of Haskell keywords
+- Index of Haskell syntactic entities
+- Index of Haskell symbols (operators, functions)
+- Index of Haskell Unicode symbols
+- Index of Haskell semantic modifiers (strictness, extra laziness)
+- Index of Haskell expressions
+- Index of Haskell language constructs
+- Index of Haskell language items
+- Index of Haskell notational conventions
+- Index of Haskell restrictions (type, polymorphism, constraints, rank, etc.)
+- Index of Haskell classes
+- Index of class' laws
+- Index of constraints
+- Index of monads
+- Index of monads transformers
+- Index of Haskell subsystems (parts, components) e.g. TH, DH, CH
+- Index of Haskell addons (LiquidHaskell)
+- Index of Haskell standards (98, 2010, GHC2021)
+- Index of Haskell implementations (YHC, GHCJS)
+- Index of Haskell dialects ()
+- Index of Haskell-like languages (Frege)
+- Index of Haskell types
+- Index of Haskell primitive types
+- Index of Haskell unlifted types
+- Index of Haskell base types
+- Index of Haskell flat types
+- Index of Haskell data structures
+- Index of Haskell basic data structures
+- Index of essential Haskell papers

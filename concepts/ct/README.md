@@ -1,0 +1,80 @@
+# Haskell :: Category theory and Haskell
+
+- Hask category
+  - objects in Hask (types)
+  - arrows in Hask (functions)
+  - comparing Hask with other categories
+    - Set category
+    - PoSet category
+    - Rel category
+    - category of propositions (logic)
+  - categories in Haskell
+    - category of types and functions
+    - category of types and linear functions
+    - subcategory, full subcategory
+    - skeletal category
+    - opposite category
+    - Kleisli category
+    - duality
+- functions:
+  - identity
+  - composition
+  - injection
+  - surjection
+  - bijection
+  - isomorphism
+  - inverse
+  - retraction
+  - section
+  - half inverse
+  - extensionality
+- morphisms:
+  - homset
+  - epimorphism
+  - monomorphism
+  - isomorphism
+  - identity morphism
+  - endomorphism
+  - automorphism
+- jectivity of mappings
+  - mappings wrt all morphisms in a cat
+  - mappings wrt homsets in a cat
+  - mappings wrt objects in a cat
+- objects:
+  - types
+  - parametric polymorphism
+  - initial object
+  - terminal object
+- universal constructions
+  - universal property
+  - product
+  - coproduct
+  - exponential objects
+- functors
+  - functor
+  - identity functor
+  - endofunctor
+  - full functor
+  - faithful functor
+  - fully faithful functor
+- composition of functors
+  - vertical composition of functors
+  - horizontal composition of functors
+- NT
+  - identity NT
+  - NI
+- monoid
+- monad
+- equivalence of categories
+  - equality of categories
+  - isomorphism of categories
+  - adjunction of categories
+- adjunction
+  - adjoint functors
+- Yoneda lemma
+  - Yoneda perspective
+  - homset
+  - representable functor
+- free constructions
+  - free functor
+  - forgetful functor

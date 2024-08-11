@@ -1,0 +1,53 @@
+# Syntax, evaluation and typing rules
+
+## Term syntax
+
+```hs
+data Term                    -- Terms (exps)
+  = EVar String              e := x    -- Variable
+  | EAbs String Term            | λx.e -- Abstraction
+  | EApp Term Term              | e e  -- Application
+```
+
+## Single-step term evaluation
+
+```hs
+  M ->ᵦ Mʹ
+----------- EApp1
+M N ->ᵦ M N
+
+  N ->ᵦ Nʹ
+----------- EApp2
+v N ->ᵦ v N
+
+--------------------- β
+(λx.M)N ⟶ᵦ [x:=N]M
+```
+
+## Subterm evaluation
+
+if  `L ->>ᵦ Lʹ` then
+- M L  ->>ᵦ M Lʹ
+- L N  ->>ᵦ Lʹ N
+- λx.L ->>ᵦ λx.Lʹ
+
+## Term equivalence
+
+```hs
+--------------------- β
+(λx.M)N ⟶ᵦ [x:=N]M
+
+----------------------- α
+λx.E =α= λxʹ.[x:=xʹ]E
+
+------------- η
+λx.fx =η= f
+```
+
+## Term
+
+```hs
+Γ, x ⊢ M
+------------ EAbs
+Γ ⊢ λ x . M
+```

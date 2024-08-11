@@ -1,0 +1,72 @@
+# Lambda expression trees
+
+## K I I
+
+```hs
+((λxy.y) (λa.a)) (λb.b)
+
+       @   
+     /   \ 
+    @    λb
+  /   \   |
+λx    λa  b
+ |     |   
+λy     a   
+ |         
+ x         
+```
+
+## K (I I)
+
+```hs
+
+     @     
+   /   \   
+λx      @  
+ |     / \ 
+λy   λa  λb
+ |    |   |
+ x    a   b
+```
+
+## Succ One Succ Zero
+
+```hs
+S 1 S Z
+= ((S 1) S) Z
+= ((S @ 1) @ S) @ Z
+
+         @  
+       /  \ 
+      @    Z
+    /  \    
+   @    S   
+ /  \       
+S    1      
+```
+
+## S 1 S Z expanded
+
+```hs
+(λnfx.f(nfx)) (λab.ab) (λmsy.s(msy)) (λcd.d)
+
+                @       
+             ⟋     ⟍    
+           @        λc  
+        ⟋     ⟍      |  
+      @        λm   λd  
+   ⟋    ⟍       |    |  
+ λn     λa     λs    @  
+  |      |      |   / \ 
+ λf     λb     λy  c   d
+  |      |      |       
+ λx      @      @       
+  |     / \    / \      
+  @    a   b  s   @     
+ / \             / \    
+f   @           @   y   
+   / \         / \      
+  @   x       m   s     
+ / \                    
+n   f                   
+```

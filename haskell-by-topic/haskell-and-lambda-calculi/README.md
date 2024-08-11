@@ -1,0 +1,50 @@
+# Haskell by Topic :: Haskell and Lambda Calculi
+
+Implementing lambda calculi in Haskell
+- Implementing untyped lambda calculus in Haskell
+- Implementing simply-typed lambda calculus in Haskell
+- Type systems
+  - typed lambda calculi
+  - STLC type system
+  - System F type system
+  - System Fω type system
+  - λΠ type system
+  - λC (CoC) type system
+  - Type systems features
+    - adding types
+    - adding polymorphism
+    - adding type functions (type ctors)
+    - adding dependent types
+  - Functional dependencies
+    - terms depending on terms
+    - types depending on types (type ctors)
+    - terms depending on types (polymorphism)
+    - terms depending on types (dependent types)
+  - Type system extensions
+    - adding base types (constant/atomic types) with term constants/literals
+      - adding type: empty / ⊥ / bottom
+      - adding type: unit / () / ⊤ / 𝟙, with the term `⋆`
+      - adding type: 𝔹 / bool / 𝟚, and conditionals / if-then-else / flow
+      - adding type: ℕ / nat, and ops
+      - adding type: ℤ / int, and ops
+    - adding ad hoc polymorphism (unifying access to `+`, `-`, `*`)
+    - adding recursion: fix combinator Y, `fix` operator/fn
+    - adding let-expressions / top-level definitions
+  - Hindley-Milner type system
+    - let-polymorphism = polymorphism in let-expressions only
+    - type checking
+    - type inference
+      - algorithm W
+      - algorithm M
+- Type checking
+  - bidirectional type checking (checking + inference)
+  - decidability of type checking
+  - decidability of type inference
+- Polymorphism
+  - polymorphic types
+  - type instantiation
+  - type generalization
+  - let-polymorphism
+- Other properties
+  - strong normalization (confluence)
+  - canonical forms

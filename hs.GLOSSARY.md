@@ -2,11 +2,14 @@
 
 <!-- TOC -->
 
+- [Abstract data type](#abstract-data-type)
+- [Action](#action)
 - [Algebraic data types](#algebraic-data-types)
 - [Algebraic effects](#algebraic-effects)
 - [Ambiguous type](#ambiguous-type)
 - [Applicative-monad proposal](#applicative-monad-proposal)
 - [Associated type family](#associated-type-family)
+- [Bindings](#bindings)
 - [Bifunctor](#bifunctor)
 - [Bidirectional typechecking](#bidirectional-typechecking)
 - [Cabal](#cabal)
@@ -16,11 +19,13 @@
 - [Carrier](#carrier)
 - [Closed type family](#closed-type-family)
 - [Common subexpression elimination](#common-subexpression-elimination)
+- [Concrete data type](#concrete-data-type)
 - [Constraint synonym](#constraint-synonym)
 - [Constraint trick](#constraint-trick)
-- [continuation-passing style](#continuation-passing-style)
-- [contravariance](#contravariance)
-- [covariance](#covariance)
+- [Constructive type theory](#constructive-type-theory)
+- [Continuation-passing style](#continuation-passing-style)
+- [Contravariance](#contravariance)
+- [Covariance](#covariance)
 - [Constraint](#constraint)
 - [Core](#core)
 - [Complete User-Supplied Kind](#complete-user-supplied-kind)
@@ -67,6 +72,7 @@
 - [Non-injectivity](#non-injectivity)
 - [Overloaded labels](#overloaded-labels)
 - [Operational semantics](#operational-semantics)
+- [Parametrized data type](#parametrized-data-type)
 - [Phantom type](#phantom-type)
 - [Profunctor](#profunctor)
 - [Promoted data constructor](#promoted-data-constructor)
@@ -105,6 +111,7 @@
 - [Type Family](#type-family)
 - [Thread State Object](#thread-state-object)
 - [Unlifted type](#unlifted-type)
+- [Variable](#variable)
 - [Variance](#variance)
 - [Values](#values)
 - [Visible type application](#visible-type-application)
@@ -113,6 +120,16 @@
 - [Zero-cost coercions](#zero-cost-coercions)
 
 <!-- /TOC -->
+
+## Abstract data type
+https://wiki.haskell.org/Abstract_data_type
+
+>An abstract data type is a type with exposed associated operations (API), but hidden representation (hidden implementation).
+
+Common examples of abstract data types are the built-in primitive types. Haskell supports the definition of custom abstract data types via the module system. In many cases it is not necessary to completely hide the representation of data - it is sufficient to hide its data ctors, instead providing custom *smart constructors*. *Parametrized types* can be viewed as a kind of abstract type, because they leave some parts of the data type undefined, i.e. abstract.
+
+## Action
+An action is a value that, if performed, may have an effect upon some context in order to produce its result. Actions are sometimes referred to as computations. Actions usually have an abstract monadic type. For example, `IO a`, the type of I/O actions, `ST s a`, the type of encapsulated-state actions. There is really only one safe way to "perform" an I/O action: bind it to `Main.main` in the program; when the program is run, the I/O will be performed. `Main.main` is also an action, so it requires a context as well. But unlike `ST s a`, that is provided by the Haskell implementation itself. Actions exist as a separate group between imperative procedures and ordinary Haskell values, having some properties of each: like other Haskell values, they can be inertly passed from definition to definition; like imperative procedures, they can have effects, but only when used in the appropriate context.
 
 ## Algebraic data types
 Algebraic data types (ADT) are data types resulting from the use of specific methods of type construction that resamble algebraic operations, in most part in terms on the cardinality of the produces types. In algebra, fixing the set of numbers to ℕ, the number 0 is the additive unit, i.e. the identity element of addition. In Haskell, the `Void` ADT plays that role, with the addition corresponding to sum types, e.g. enums, tagged unions, disjoint unions; in general, the types that correspond to the logical disjunction (OR types) - because sums are compound types, but to construct a value of a sum type, you only need a single value of any of its constituent types. This is contrast to product types (resords, tuples, structs) which require all the values (of its component types) in order to construct a value; and they use the singletone type `()` as the identity (unit plays the role of multiplicative identity, 1).
@@ -150,6 +167,9 @@ Applicative-monad proposal (AMP) was the accepted RFC aimed to add the `Applicat
 ## Associated type family
 A type family that is associated with a class. Normally, they are used to emphasize the association between a class and a type family, but that type family could also be defined outside of the class.
 
+## Bindings
+A binding is the association between a name and an expression. Bindings may occur at the top level, where they resamble variables in other languages, e.g. `x = 5`. A binding is also the association between a functions's name and its defining equations. Other bindings are not obvious and they may occur at many different places. Bindings almost always occur in pattern matching. A binding has a scope, so there are module-level, function-level, expression-level, and other bindings. A nested binding will *shadow* the same binding from an outer level.
+
 ## Bifunctor
 In Category Theory, a bifunctor (binary functor) is a functor whose domain is a product category. For example, `Hom` functor is of the type `Cᵒᵖ ⨯ C → Set`, and it can be seen as a functor in two arguments. The `Hom` functor is a natural example - it is contravariant in one argument, covariant in the other.
 
@@ -184,20 +204,26 @@ In Haskell, a closed type family is a type family with all of its instances prov
 ## Common subexpression elimination
 Common Subexpression Elimination (CSE) is a compiler optimization. In GHC, it is controlled with the flag `-f-cse` (on by default). The compiler flag `-fno-cse` prevents common subexpression elimination being performed on the module (e.g. CSE may combine side effects, induced by a common subexpression, that were meant to be separate).
 
+## Concrete data type
+A concrete data type is an opposite of an abstract data type. It is a specialized solution-oriented data type that represents a well-defined single solution domain concept. A concrete data type is rarely reusable beyond its original use, but can be embedded or composed with other data types to form larger data types. Concrete data types can be introduced with the `data` construct (without parameters), or by specializing a parametrized data type to a specific situation. For example, `Maybe Integer`, `Bool`, `[(String,String)]` and `Tree String` are concrete data types.
+
 ## Constraint synonym
 In Haskell, a technique for turning a type synonym of CONSTRAINTs into something partially-applicable. Performed by making a new typeclass with a superclass constraint of the synonym, and giving instances of it for free given the superclass constraint. For example, class c a => Trick a and instance c a => Trick a.
 
 ## Constraint trick
 In Haskell, the transformation of a multiparameter typeclass instance from instance Foo Int b to instance (a ∼ Int) => Foo a b. Useful for improving type inference when working with MPTCs.
 
-## continuation-passing style
+## Constructive type theory
+Haskell is said to be based on Constructive Type Theory (CTT).
+
+## Continuation-passing style
 CPS is the technique of taking (and subsequently calling) a callback, rather than directly returning a value.
 
-## contravariance
-a type T a is contravariant with respect to a if it can lift a function a -> b into a function T b -> T a.
+## Contravariance
+A type T a is contravariant with respect to a if it can lift a function a -> b into a function T b -> T a.
 
-## covariance
-a type T a is covariant with respect to a if it can lift a function a -> b into a function T a -> T b. Another name for a Functor.
+## Covariance
+A type T a is covariant with respect to a if it can lift a function a -> b into a function T a -> T b. Another name for a Functor.
 
 ## Constraint
 A constraint is a relation between variables which limits the values these variables can take simultaneously. Constraints are the conditions (predicates) that restrict the types a type variable can be instantiated to. A comma in a list of constraints is playing the role of conjunction: each constraints is satisfied by some subset of types, and a variable can only be instantiated to a type belonging to the intersection of these subsets. If the constraints cannot be satisfied, the instantation of the variable fails.
@@ -360,6 +386,9 @@ In Haskell, syntax for converting `SYMBOL`s into values. Used via the syntax `my
 ## Operational semantics
 deals with the operational aspects of evaluation. It describes a PL by using an abstract or virtual machine.
 
+## Parametrized data type
+A parametrized data type is a type whose type ctor has at least one type parameter, e.g. `List a` which is a list of any type. It may be *instantiated* at any type, so it becomes a list specialized to that type; e.g. `List Int` gets us a list of integers. Type parameters are used to parameterize a type. A function with type params is called a generic function, e.g. `map :: (a -> b) -> List a -> List b`. More complex types are parameterized or indexed over types that belong to a certain kind; e.g. the type of vectors, `Vec a Nat` is said to be parameterized over any type `a`, but *indexed* over the type of natural numbers, `Nat`. In dependently-typed languages, indexing is done using the actual values (i.e. term-level natural numbers), instead of the awkward (in Haskell, by the runtime, all types get erased) type-level naturals.
+
 ## Phantom type
 In Haskell and other PLs, a type variable is at role phantom if it may be safely coerced into any other type. Type parameters are called phantom if they aren't represented as values (at the term-level).
 
@@ -368,7 +397,6 @@ a type T a b is a profunctor if it is contravariant in a and covariant with resp
 
 ## Promoted data constructor
 the type that results from a data constructor when lifting its type to the kind level. Enabled via -XDataKinds.
-
 
 ## Polytypic functions
 A polytypic program behaves uniformly over a large class of data types. This uniformity is achieved by parameterizing functions over type constructors to obtain polytypic functions. A polytypic function is defined by induction on the structure of a regular type constructor (of a user-defined data type) or in terms of other polytypic functions.
@@ -499,6 +527,11 @@ A Thread State Object (TSO) object is only ~18words + stack.
 
 ## Unlifted type
 Unlifted types do not include bottom value. These types live in kind `#` rather than kind `*`.
+
+## Variable
+The notion of variable in Haskell is the same as the notion of variable in math or lambda calculus. Variables are preferably called **bindings** as they are names that bind values and expressions.
+
+Once defined, the binding cannot be changed - there is no notion of reassignment, like reassigning a different expression to a previously declared variable. In fact, declaration and initialization - aka definition - must happen at the same time (on the same line), i.e. it is not possible to declare a variable of some type (declaration), but only later to assign a value/exp to it (initialization). So binding are variables in the sense that their value won't (and connot) be changed in the same module (or during the exactution of the same program), but another module may associate a different exp to the same variable name. On the other hand, this is not the case with true constants, which *never* change (not across modules, programs, not even across languages). For example, the name `pi` could be called a variable, but is a sort of variable that is always associated with some approximation of the number `π` expressed in terms of the `Double` type. So, `pi` may be called a variable, especially in PL that allow mutation (so nothing prevents users from reassigning it), but it really should be considered a proper constant - one that has the same value even across programming languages.
 
 ## Variance
 In Haskell, variance is a property of a type ctor `T` in relation to one of its type parameters, `T a`. Briefly, the question of variance is: if we can transform an `a` into `b`, does that necessarily mean we can transform a `T a` into `T b`? If these two are not correlated (a change in one doesn't affect the other) the relation is *invariant*. Otherwise, the relation is *variant*: if a change in one triggers a change in the same direction in the other, the relation is *covariant*; if a change in one elicits a change in the other, but in the opposite direction, the relation is *contravariant*.
